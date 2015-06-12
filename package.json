@@ -1,0 +1,57 @@
+{
+  "name": "Tipflip",
+  "version": "0.0.1",
+  "private": true,
+  "description": "A webserver and rest api for the tipflip service.",
+  "scripts": {
+    "start": "node ./server/bin/www",
+    "test": "mocha test/backend",
+    "posttest": "node node_modules/karma/bin/karma start test/karma.conf.js",
+    "update-webdriver": "webdriver-manager update",
+    "preprotractor": "npm run update-webdriver",
+    "protractor": "protractor test/e2e-tests/protractor.conf.js",
+    "update-index-async": "node -e \"require('shelljs/global'); sed('-i', /\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/, '//@@NG_LOADER_START@@\\n' + sed(/sourceMappingURL=angular-loader.min.js.map/,'sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map','app/bower_components/angular-loader/angular-loader.min.js') + '\\n//@@NG_LOADER_END@@', 'app/index-async.html');\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hyber1z0r/TipflipServerSommer.git"
+  },
+  "keywords": [
+    "REST",
+    "Node",
+    "Angular",
+    "Mongo",
+    "Express",
+    "Tipflip",
+    "Ads",
+    "Ad",
+    "hyber1z0r",
+    "hyber"
+  ],
+  "author": "hyber1z0r <jakobsky@live.dk>",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "~1.8.1",
+    "bower": "^1.4.1",
+    "cookie-parser": "~1.3.3",
+    "debug": "~2.0.0",
+    "ejs": "^2.3.1",
+    "express": "~4.9.0",
+    "jade": "~1.6.0",
+    "mongoose": "^4.0.5",
+    "morgan": "~1.3.0",
+    "serve-favicon": "~2.1.3"
+  },
+  "devDependencies": {
+    "jasmine-core": "^2.3.4",
+    "karma": "^0.12.36",
+    "karma-chrome-launcher": "^0.1.12",
+    "karma-firefox-launcher": "^0.1.6",
+    "karma-jasmine": "^0.3.5",
+    "karma-safari-launcher": "^0.1.1",
+    "mocha": "^2.2.5",
+    "shelljs": "^0.5.1",
+    "should": "^6.0.3",
+    "supertest": "^1.0.1"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "Tipflip",
+  "version": "0.0.1",
+  "authors": [
+    "hyber1z0r <jakobsky@live.dk>"
+  ],
+  "description": "A webserver and rest api for the tipflip service.",
+  "keywords": [
+    "REST",
+    "Node",
+    "Angular",
+    "Mongo",
+    "Express",
+    "Tipflip",
+    "Ads",
+    "Ad",
+    "hyber1z0r",
+    "hyber"
+  ],
+  "license": "MIT",
+  "homepage": "http://tipflip.herokuapp.com",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "public/vendor",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.0",
+    "bootstrap": "~3.3.4",
+    "angular-route": "~1.4.0",
+    "angular-mocks": "~1.4.0",
+    "angular-loader": "~1.4.0"
+  }
+}
