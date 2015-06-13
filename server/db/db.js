@@ -36,10 +36,10 @@ process.on('SIGINT', function () {
 });
 
 var CategorySchema = new Schema({
-    name: {type: String, required: 'Category name required!'},
+    name: {type: String, required: 'Category name required!', unique: 'Category already exists!'},
     image: {type: Buffer, contentType: String, required: 'An image for the category is required!'}
 });
-mongoose.model('Category', CategorySchema, 'category');
+mongoose.model('Category', CategorySchema, 'categories');
 
 var StoreSchema = new Schema({
     name: {type: String, required: true},
