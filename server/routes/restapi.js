@@ -24,15 +24,54 @@ router.post('/category', function (req, res) {
 
         datalayer.createCategory(name, image, contentType)
             .then(function (category) {
-                // deletes the file from the server, as it was only there temp
-                fs.unlinkSync(imagePath);
                 // 201 indicates that a POST request created a new document
-                res.status(201).json(category);
+                res.status(201).json({message: 'Successfully created new category ' + category.name});
             }, function (error) {
                 // the document already exists or some weird error happened
-                res.status(400).json(error);
+                if (error.code === 11000) {
+                    res.status(400).json({message: 'The category \'' + name + '\' already exists!'})
+                } else {
+                    res.status(400).json(error);
+                }
+            })
+            .finally(function () {
+                // deletes the file from the server, as it was only there temp
+                fs.unlinkSync(imagePath);
             });
     }
+});
+
+/**
+ * Is for getting all the categories, excluding their image
+ * */
+router.get('/category', function (req, res) {
+    datalayer.getAllCategories()
+        .then(function (categories) {
+            if (categories.length === 0) {
+                res.status(404).json({message: 'No categories added yet.'})
+            } else {
+                res.json(categories);
+            }
+        }, function (error) {
+            res.status(500).json(error);
+        });
+});
+
+
+/**
+ * Is for getting a single category, if it exists, by id. Excluding image
+ * */
+router.get('/category/:id', function (req, res) {
+    datalayer.getCategory(req.param('id'))
+        .then(function (category) {
+            res.json(category);
+        }, function (error) {
+            if (error.name === 'CastError') {
+                res.status(404).json({message: 'No category with id ' + id});
+            } else {
+                res.status(500).json(error);
+            }
+        });
 });
 
 module.exports = router;

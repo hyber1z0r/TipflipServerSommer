@@ -36,7 +36,7 @@ process.on('SIGINT', function () {
 });
 
 var CategorySchema = new Schema({
-    name: {type: String, required: 'Category name required!', unique: 'Category already exists!'},
+    name: {type: String, required: 'Category name required!', unique: true},
     image: {type: Buffer, contentType: String, required: 'An image for the category is required!'}
 });
 mongoose.model('Category', CategorySchema, 'categories');
