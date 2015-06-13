@@ -33,6 +33,7 @@
     "bootstrap": "~3.3.4",
     "angular-route": "~1.4.0",
     "angular-mocks": "~1.4.0",
-    "angular-loader": "~1.4.0"
+    "angular-loader": "~1.4.0",
+    "ng-flow": "~2.6.1"
   }
 }
