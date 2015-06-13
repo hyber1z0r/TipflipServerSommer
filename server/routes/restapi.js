@@ -62,18 +62,24 @@ router.get('/category', function (req, res) {
  * Is for getting a single category, if it exists, by id. Excluding image
  * */
 router.get('/category/:id', function (req, res) {
+    console.log(req.param('id'));
     datalayer.getCategory(req.param('id'))
         .then(function (category) {
             res.json(category);
         }, function (error) {
+            console.log(error);
             if (error.name === 'CastError') {
-                res.status(404).json({message: 'No category with id ' + id});
+                res.status(404).json({message: 'No category with id ' + req.param('id')});
             } else {
                 res.status(500).json(error);
             }
         });
 });
 
+
+/**
+* Returns the image for a given category
+* */
 router.get('/category/image/:id', function (req, res) {
     datalayer.getCategory(req.param('id'), true)
         .then(function (category) {
@@ -81,7 +87,7 @@ router.get('/category/image/:id', function (req, res) {
             res.end(category.image);
         }, function (error) {
             if (error.name === 'CastError') {
-                res.status(404).json({message: 'No category with id ' + id});
+                res.status(404).json({message: 'No category with id ' + req.param('id')});
             } else {
                 res.status(500).json(error);
             }
