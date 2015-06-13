@@ -49,10 +49,13 @@ function getAllCategories() {
 /**
  * Returns a category with given objectId, excluding its image.
  * */
-function getCategory(id) {
+function getCategory(id, withImage) {
     var deferred = Q.defer();
 
-    Category.findOne({_id: id}, '-image', function (err, category) {
+    // options is blank if we want image, else options is excluding image
+    var options = withImage ? '' : '-image';
+
+    Category.findOne({_id: id}, options, function (err, category) {
         if (err) {
             deferred.reject(err);
         } else {

@@ -74,4 +74,18 @@ router.get('/category/:id', function (req, res) {
         });
 });
 
+router.get('/category/image/:id', function (req, res) {
+    datalayer.getCategory(req.param('id'), true)
+        .then(function (category) {
+            res.writeHead(200, {'Content-Type': 'image/jpeg'});
+            res.end(category.image);
+        }, function (error) {
+            if (error.name === 'CastError') {
+                res.status(404).json({message: 'No category with id ' + id});
+            } else {
+                res.status(500).json(error);
+            }
+        });
+});
+
 module.exports = router;
