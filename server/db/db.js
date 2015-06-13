@@ -37,7 +37,8 @@ process.on('SIGINT', function () {
 
 var CategorySchema = new Schema({
     name: {type: String, required: 'Category name required!', unique: true},
-    image: {type: Buffer, contentType: String, required: 'An image for the category is required!'}
+    image: {type: Buffer, required: 'An image for the category is required!'},
+    contentType: {type: String, required: 'No contenttype provided!'}
 });
 mongoose.model('Category', CategorySchema, 'categories');
 

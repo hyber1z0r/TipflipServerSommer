@@ -52,18 +52,13 @@ function getAllCategories() {
 function getCategory(id, withImage) {
     var deferred = Q.defer();
 
-    console.log('the id: ' + id + ' withImage: ' + withImage);
     // options is blank if we want image, else options is excluding image
     var options = withImage ? '' : '-image';
 
-    console.log('options: ' + options);
-
     Category.findOne({_id: id}, options, function (err, category) {
         if (err) {
-            console.log('There was an error');
             deferred.reject(err);
         } else {
-            console.log('I found a category');
             deferred.resolve(category);
         }
     });
