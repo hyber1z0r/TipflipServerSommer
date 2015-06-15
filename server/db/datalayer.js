@@ -32,38 +32,16 @@ function createCategory(name, image, contentType) {
  * Returns all categories, excluding their images
  * */
 function getAllCategories() {
-    var deferred = Q.defer();
-
-    // categories is an array of all the categories without their images, if any.
-    Category.find({}, '-image', function (err, categories) {
-        if (err) {
-            deferred.reject(err);
-        } else {
-            deferred.resolve(categories);
-        }
-    });
-
-    return deferred.promise;
+    return Category.find({}, '-image').exec();
 }
 
 /**
  * Returns a category with given objectId, excluding its image.
  * */
 function getCategory(id, withImage) {
-    var deferred = Q.defer();
-
     // options is blank if we want image, else options is excluding image
     var options = withImage ? '' : '-image';
-
-    Category.findOne({_id: id}, options, function (err, category) {
-        if (err) {
-            deferred.reject(err);
-        } else {
-            deferred.resolve(category);
-        }
-    });
-
-    return deferred.promise;
+    return Category.findById(id, options).exec();
 }
 
 module.exports = {

@@ -13,19 +13,23 @@ if (typeof global.TEST_DATABASE != 'undefined') {
     //dbURI = 'mongodb://test:test@ds051841.mongolab.com:51841/tipflip';
 }
 
-mongoose.connect(dbURI);
+mongoose.connect(dbURI, {server: {auto_reconnect: true}});
 
 mongoose.connection.on('connected', function () {
     console.log('Mongoose connected to ' + dbURI);
 });
 
 mongoose.connection.on('error', function (err) {
-    global.mongo_error = 'Not Connected to the database';
     console.error('Mongoose connection error: ' + err);
+    mongoose.disconnect();
 });
 
 mongoose.connection.on('disconnected', function () {
     console.log('Mongoose disconnected');
+});
+
+mongoose.connection.on('reconnected', function () {
+    console.log('MongoDB reconnected!');
 });
 
 process.on('SIGINT', function () {
