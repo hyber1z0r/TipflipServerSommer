@@ -9,11 +9,11 @@ angular.module('tipflip', [
     'tipflip.filters',
     'tipflip.services',
     'tipflip.home'
-]).
-    config(['$routeProvider', function ($routeProvider) {
+])
+    .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/'});
-    }]);
+    }])
 
-//.config(function ($httpProvider) {
-//    $httpProvider.interceptors.push('authInterceptor');
-//});
+    .config(function ($httpProvider) {
+        $httpProvider.interceptors.push('authInterceptor');
+    });

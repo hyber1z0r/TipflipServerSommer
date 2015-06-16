@@ -8,35 +8,35 @@ var datalayer = require('../db/datalayer');
 
 /**
  *  For creating a new category. Requires a name and an image for the category.
+ *  TODO Do not delete from uploads, instead register the url in mongo and serve them static
+ *  Ofcourse only delete if there was an error
  * */
 router.post('/category', function (req, res) {
-    // get args and validate
-    if (!req.body.name || !req.files.image) {
-        res.status(400).json({message: 'No name or image provided.'});
+    // get args and validate, also validate if image is an image!!
+    if (!req.files.image) {
+        res.status(400).json({message: 'No image provided.'});
+    } else if (!req.body.name) {
+        // delete image
+        var image = req.files.image.path;
+        fs.unlinkSync(image);
+        res.status(400).json({message: 'No name provided.'});
     } else {
         var name = req.body.name;
-
-        // image is saved in ./server/db/uploads temporarily
-        var imagePath = req.files.image.path;
+        var imagePath = req.files.image.path.replace('server/public/', '');
         var contentType = req.files.image.mimetype;
-        // file is a buffer object of image
-        var image = fs.readFileSync(imagePath, {});
 
-        datalayer.createCategory(name, image, contentType)
+        datalayer.createCategory(name, imagePath, contentType)
             .then(function (category) {
                 // 201 indicates that a POST request created a new document
                 res.status(201).json({message: 'Successfully created new category ' + category.name});
             }, function (error) {
                 // the document already exists or some weird error happened
+                fs.unlinkSync(req.files.image.path);
                 if (error.code === 11000) {
                     res.status(400).json({message: 'The category \'' + name + '\' already exists!'})
                 } else {
                     res.status(400).json(error);
                 }
-            })
-            .finally(function () {
-                // deletes the file from the server, as it was only there temp
-                fs.unlinkSync(imagePath);
             });
     }
 });
@@ -71,24 +71,6 @@ router.get('/category/:id', function (req, res) {
             }
         }, function (error) {
             res.status(500).json(error);
-        });
-});
-
-
-/**
- * Returns the image for a given category
- * */
-router.get('/category/image/:id', function (req, res) {
-    datalayer.getCategory(req.param('id'), true)
-        .then(function (category) {
-            res.writeHead(200, {'Content-Type': category.contentType});
-            res.end(category.image);
-        }, function (error) {
-            if (error.name === 'CastError') {
-                res.status(404).json({message: 'No category with id ' + req.param('id')});
-            } else {
-                res.status(500).json(error);
-            }
         });
 });
 

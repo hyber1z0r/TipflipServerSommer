@@ -8,12 +8,12 @@ var Q = require('q');
 /**
  * Creates a new category in the database
  * */
-function createCategory(name, image, contentType) {
+function createCategory(name, imagePath, contentType) {
     var deferred = Q.defer();
 
     cat = new Category({
         name: name,
-        image: image,
+        imagePath: imagePath,
         contentType: contentType
     });
 
@@ -32,16 +32,15 @@ function createCategory(name, image, contentType) {
  * Returns all categories, excluding their images
  * */
 function getAllCategories() {
-    return Category.find({}, '-image').exec();
+    return Category.find({}).exec();
 }
 
 /**
  * Returns a category with given objectId, excluding its image.
+ * @return Category
  * */
-function getCategory(id, withImage) {
-    // options is blank if we want image, else options is excluding image
-    var options = withImage ? '' : '-image';
-    return Category.findById(id, options).exec();
+function getCategory(id) {
+    return Category.findById(id).exec();
 }
 
 module.exports = {
