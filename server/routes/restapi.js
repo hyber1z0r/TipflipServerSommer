@@ -8,8 +8,6 @@ var datalayer = require('../db/datalayer');
 
 /**
  *  For creating a new category. Requires a name and an image for the category.
- *  TODO Do not delete from uploads, instead register the url in mongo and serve them static
- *  Ofcourse only delete if there was an error
  * */
 router.post('/category', function (req, res) {
     // get args and validate, also validate if image is an image!!

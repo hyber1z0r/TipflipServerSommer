@@ -39,6 +39,22 @@ process.on('SIGINT', function () {
     });
 });
 
+var CenterSchema = new Schema({
+    name: {type: String, required: 'Center must have a name!', unique: true},
+    imagePath: {type: String, required: 'An imagepath for the center is required!'},
+    contentType: {type: String, required: 'No contenttype provided!'},
+    location: {type: String, required: 'A location is required!'}
+});
+mongoose.model('Center', CenterSchema, 'centers');
+
+var StoreSchema = new Schema({
+    name: {type: String, required: 'Name for store is required!'},
+    imagePath: {type: String, required: 'An imagepath for the store is required!'},
+    contentType: {type: String, required: 'No contenttype provided!'},
+    _center: {type: mongoose.Schema.Types.ObjectId, ref: 'Center', required: 'A store must belong to a center!'}
+});
+mongoose.model('Store', StoreSchema, 'stores');
+
 var CategorySchema = new Schema({
     name: {type: String, required: 'Category name required!', unique: true},
     imagePath: {type: String, required: 'An imagepath for the category is required!'},
@@ -46,28 +62,22 @@ var CategorySchema = new Schema({
 });
 mongoose.model('Category', CategorySchema, 'categories');
 
-var StoreSchema = new Schema({
-    name: {type: String, required: true},
-    image: {type: String},
-    location: {type: String}
-});
-mongoose.model('Store', StoreSchema, 'stores');
-
 var OffersSchema = new Schema({
-    category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
+    _category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
     discount: {type: String, required: 'Discount required'},
-    offer: {type: String, required: 'Offer desc required'},
-    image: {type: String},
+    description: {type: String, required: 'Offer desc required'},
+    imagePath: {type: String, required: 'An imagepath for the offer is required!'},
+    contentType: {type: String, required: 'No contenttype provided!'},
     created: {type: Date, default: Date.now()},
     expiration: {type: Date, required: 'Expiration date required'},
-    store: {type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: 'Store ref required'}
+    _store: {type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: 'Store ref required'}
 });
 mongoose.model('Offer', OffersSchema, 'offers');
 
 var ProfileSchema = new Schema({
     name: {type: String},
     regID: {type: String},
-    categories: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
-    offers: [{type: mongoose.Schema.Types.ObjectId, ref: 'Offer'}]
+    _categories: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
+    _offers: [{type: mongoose.Schema.Types.ObjectId, ref: 'Offer'}]
 });
 mongoose.model('Profile', ProfileSchema, 'profiles');

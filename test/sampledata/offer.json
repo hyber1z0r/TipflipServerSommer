@@ -1,0 +1,47 @@
+[
+  {
+    "_category": "not_set_yet",
+    "discount": "20%",
+    "description": "Super fine høretelefoner fra Sennheiser, sælges i begrænset antal!",
+    "imagePath": "uploads/no-photo-grey_1x.png",
+    "contentType": "image/png",
+    "expiration" : "2015-06-17T23:59:59-00:00",
+    "_store": "not_set_yet"
+  },
+  {
+    "_category": "not_set_yet",
+    "discount": "10%",
+    "description": "Nye jakker fra carhartt lige ankommet. Giv dem et kig.",
+    "imagePath": "uploads/no-photo-grey_1x.png",
+    "contentType": "image/png",
+    "expiration" : "2015-06-21T23:59:59-00:00",
+    "_store": "not_set_yet"
+  },
+  {
+    "_category": "not_set_yet",
+    "discount": "25%",
+    "description": "Lækre sportsleggings fra vores egen kollektion. Fås i flere farver.",
+    "imagePath": "uploads/no-photo-grey_1x.png",
+    "contentType": "image/png",
+    "expiration" : "2015-06-24T16:00:00-00:00",
+    "_store": "not_set_yet"
+  },
+  {
+    "_category": "not_set_yet",
+    "discount": "20%",
+    "description": "iPhone covers i alle størrelser og farver fra PURO. Enkelte til Samsung og HTC.",
+    "imagePath": "uploads/no-photo-grey_1x.png",
+    "contentType": "image/png",
+    "expiration" : "2015-06-18T20:00:00-00:00",
+    "_store": "not_set_yet"
+  },
+  {
+    "_category": "not_set_yet",
+    "discount": "15%",
+    "description": "Dell 3415W 34\" IPS 21:9 monitor. Noget af det lækreste der findes. Spar 15%",
+    "imagePath": "uploads/no-photo-grey_1x.png",
+    "contentType": "image/png",
+    "expiration" : "2015-07-17T18:00:00-00:00",
+    "_store": "not_set_yet"
+  }
+]
