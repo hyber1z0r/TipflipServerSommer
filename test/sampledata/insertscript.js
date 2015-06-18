@@ -13,12 +13,10 @@ var offers = require('./offer.json');
 
 function insertCenters(callback) {
     Center.remove({}, function () {
-        console.log('\nRemoved all centers');
         Center.create(centers, function (err, insertedCenters) {
             if (err) {
                 console.log(err);
             } else {
-                console.log('Inserted ' + centers.length + ' centers');
                 callback(insertedCenters);
             }
         });
@@ -31,9 +29,7 @@ function insertStores(insertedCenters, callback) {
         stores[i]._center = insertedCenters[rand]._id;
     }
     Store.remove({}, function () {
-        console.log('Removed all stores');
         Store.create(stores, function (err, insertedStores) {
-            console.log('Inserted ' + stores.length + ' stores');
             callback(insertedStores);
         });
     });
@@ -41,9 +37,7 @@ function insertStores(insertedCenters, callback) {
 
 function insertCategories(callback) {
     Category.remove({}, function () {
-        console.log('Removed all categories');
         Category.create(categories, function (err, insertedCategories) {
-            console.log('Inserted ' + categories.length + ' categories');
             callback(insertedCategories);
         });
     });
@@ -58,9 +52,7 @@ function insertOffers(categories, stores, callback) {
         offers[i].created = Date.now();
     }
     Offer.remove({}, function () {
-        console.log('Removed all offers');
         Offer.create(offers, function (err, insertedOffers) {
-            console.log('Inserted ' + offers.length + ' offers');
             callback();
         });
     });
@@ -71,7 +63,6 @@ function insert(done) {
         insertStores(centerData, function (storeData) {
             insertCategories(function (categoryData) {
                 insertOffers(categoryData, storeData, function () {
-                    console.log('Done');
                     done();
                 });
             });
