@@ -1,0 +1,1 @@
+web: node server/bin/www PORT=80 SPORT=443
