@@ -39,7 +39,7 @@ function getAllCategories() {
 }
 
 /**
- * Returns a category with given objectId
+ * Returns a category with given ObjectId
  * */
 function getCategory(id) {
     return Category.findById(id).exec();
@@ -77,7 +77,7 @@ function getAllCenters() {
 }
 
 /**
- * Returns a center with given objectId.
+ * Returns a center with given ObjectId.
  * */
 function getCenter(id) {
     return Center.findById(id).exec();
@@ -115,12 +115,15 @@ function getAllStores() {
 }
 
 /**
- * Returns a stores with given objectId.
+ * Returns a store with given ObjectId.
  * */
 function getStore(id) {
     return Store.findById(id).exec();
 }
 
+/**
+ * Creates a new offer in the database
+ * */
 function createOffer(discount, description, imagePath, contentType, created, expiration, _store, _category) {
     var deferred = Q.defer();
 
@@ -146,10 +149,16 @@ function createOffer(discount, description, imagePath, contentType, created, exp
     return deferred.promise;
 }
 
+/**
+ * Returns all offers
+ * */
 function getAllOffers() {
     return Offer.find({}).exec();
 }
 
+/**
+ * Returns an offer with given ObjectId
+ * */
 function getOffer(id) {
     return Offer.findById(id).exec();
 }

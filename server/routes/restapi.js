@@ -40,7 +40,7 @@ router.post('/category', function (req, res) {
 });
 
 /**
- * Is for getting all the categories, excluding their image
+ * Is for getting all the categories
  * */
 router.get('/category', function (req, res) {
     datalayer.getAllCategories()
@@ -57,7 +57,7 @@ router.get('/category', function (req, res) {
 
 
 /**
- * Is for getting a single category, if it exists, by id. Excluding image
+ * Is for getting a single category, if it exists, by id.
  * */
 router.get('/category/:id', function (req, res) {
     datalayer.getCategory(req.param('id'))
@@ -71,5 +71,65 @@ router.get('/category/:id', function (req, res) {
             res.status(500).json(error);
         });
 });
+
+router.post('/center', function (req, res) {
+    // get args and validate, also validate if image is an image!!
+    if (!req.files.image) {
+        res.status(400).json({message: 'No image provided.'});
+    } else if (!req.body.name) {
+        // delete image
+        fs.unlinkSync(req.files.image.path);
+        res.status(400).json({message: 'No name provided.'});
+    } else if (!req.body.location) {
+        // delete image
+        fs.unlinkSync(req.files.image.path);
+        res.status(400).json({message: 'No location provided.'});
+    } else {
+        var name = req.body.name;
+        var imagePath = req.files.image.path.replace('server/public/', '');
+        var contentType = req.files.image.mimetype;
+        var location = req.body.location;
+        datalayer.createCenter(name, imagePath, contentType, location)
+            .then(function (center) {
+                // 201 indicates that a POST request created a new document
+                res.status(201).json({message: 'Successfully created new center ' + center.name});
+            }, function (error) {
+                // the document already exists or some weird error happened
+                fs.unlinkSync(req.files.image.path);
+                if (error.code === 11000) {
+                    res.status(400).json({message: 'The center \'' + name + '\' already exists!'})
+                } else {
+                    res.status(400).json(error);
+                }
+            });
+    }
+});
+
+router.get('/center', function (req, res) {
+    datalayer.getAllCenters()
+        .then(function (centers) {
+            if (centers.length === 0) {
+                res.status(404).json({message: 'No centers added yet.'})
+            } else {
+                res.json(centers);
+            }
+        }, function (error) {
+            res.status(500).json(error);
+        });
+});
+
+router.get('/center/:id', function (req, res) {
+    datalayer.getCenter(req.param('id'))
+        .then(function (center) {
+            if (center) {
+                res.json(center);
+            } else {
+                res.status(404).json({message: 'No center with id ' + req.param('id')});
+            }
+        }, function (error) {
+            res.status(500).json(error);
+        });
+});
+
 
 module.exports = router;
