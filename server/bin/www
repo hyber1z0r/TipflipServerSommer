@@ -5,10 +5,17 @@ var https = require('https');
 var express = require('express');
 var fs = require('fs');
 
+app.set('port', process.env.SPORT || 3443);
+
 var http = express();
 // set up a route to redirect http to https
 http.get('*', function (req, res) {
-    res.redirect('https://' + req.headers['host'].replace('3000', '3443') + req.url)
+    var host = req.get('Host');
+    // replace the port in the host
+    host = host.replace(/:\d+$/, ':' + app.get('port'));
+    // determine the redirect destination
+    var destination = ['https://', host, req.url].join('');
+    return res.redirect(destination);
 });
 
 http.listen(process.env.PORT || 3000);
@@ -18,7 +25,6 @@ var options = {
     cert: fs.readFileSync(__dirname + '/ssl/tipflip-cert.pem')
 };
 
-app.set('port', process.env.SPORT || 3443);
 
 // Create an HTTPS service identical to the HTTP service.
 var server = https.createServer(options, app).listen(app.get('port'), function () {
