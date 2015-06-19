@@ -98,7 +98,51 @@ describe('Datalayer', function () {
 
     describe('createCenter', function () {
         it('should create a center and return an inserted with _id property', function () {
-            true.should.equal(false, 'Test not written yet');
+            var name = 'TestCenter';
+            var imagePath = 'uploads/fakeimage.png';
+            var contentType = 'image/png';
+            var location = '23.323213,45.3123131';
+            return datalayer.createCenter(name, imagePath, contentType, location).should.eventually.have.property('_id');
+        });
+
+        it('should be rejected if center already exists', function () {
+            var name = 'Lyngby Storcenter'; // already exists
+            var imagePath = 'uploads/fakeimage.png';
+            var contentType = 'image/png';
+            var location = '23.323213,45.3123131';
+            return datalayer.createCenter(name, imagePath, contentType, location).should.be.rejected;
+        });
+
+        it('should be rejected if name is not provided', function () {
+            var name = undefined;
+            var imagePath = 'uploads/fakeimage.png';
+            var contentType = 'image/png';
+            var location = '23.323213,45.3123131';
+            return datalayer.createCenter(name, imagePath, contentType, location).should.be.rejected;
+        });
+
+        it('should be rejected if imagePath is not provided', function () {
+            var name = 'TestCenter';
+            var imagePath = undefined;
+            var contentType = 'image/png';
+            var location = '23.323213,45.3123131';
+            return datalayer.createCenter(name, imagePath, contentType, location).should.be.rejected;
+        });
+
+        it('should be rejected if contentType is not provided', function () {
+            var name = 'TestCenter';
+            var imagePath = 'uploads/fakeimage.png';
+            var contentType = undefined;
+            var location = '23.323213,45.3123131';
+            return datalayer.createCenter(name, imagePath, contentType, location).should.be.rejected;
+        });
+
+        it('should be rejected if location is not provided', function () {
+            var name = 'TestCenter';
+            var imagePath = 'uploads/fakeimage.png';
+            var contentType = 'image/png';
+            var location = undefined;
+            return datalayer.createCenter(name, imagePath, contentType, location).should.be.rejected;
         });
     });
 
@@ -124,7 +168,33 @@ describe('Datalayer', function () {
 
     describe('createStore', function () {
         it('should create a store and return an inserted with _id property', function () {
-            true.should.equal(false, 'Test not written yet');
+            var name = 'TestCenter';
+            var imagePath = 'uploads/fakeimage.png';
+            var contentType = 'image/png';
+            var location = '23.3231231,32.3232332';
+            datalayer.createCenter(name, imagePath, contentType, location)
+                .then(function (center) {
+                    return datalayer.createStore('TestStore', imagePath, contentType, center._id).should.eventually.have.property('_id');
+                });
+        });
+
+        it('should be rejected if no center is provided', function () {
+            var name = 'TestStore';
+            var imagePath = 'uploads/fakeimage.png';
+            var contentType = 'image/png';
+            return datalayer.createStore(name, imagePath, contentType).should.be.rejected;
+        });
+
+        // it should be possible to have two of the same store in one center. This is typical for stores like 7-eleven
+        it('should be fulfilled if store name and center already exists', function () {
+            var name = 'TestCenter';
+            var imagePath = 'uploads/fakeimage.png';
+            var contentType = 'image/png';
+            var location = '23.3231231,32.3232332';
+            datalayer.createCenter(name, imagePath, contentType, location)
+                .then(function (center) {
+                    return datalayer.createStore('Quint', imagePath, contentType, center._id).should.eventually.have.property('_id');
+                });
         });
     });
 });
