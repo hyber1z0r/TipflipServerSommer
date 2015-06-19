@@ -63,14 +63,14 @@ var CategorySchema = new Schema({
 mongoose.model('Category', CategorySchema, 'categories');
 
 var OffersSchema = new Schema({
-    _category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'},
     discount: {type: String, required: 'Discount required'},
     description: {type: String, required: 'Offer desc required'},
     imagePath: {type: String, required: 'An imagepath for the offer is required!'},
     contentType: {type: String, required: 'No contenttype provided!'},
     created: {type: Date, default: Date.now()},
     expiration: {type: Date, required: 'Expiration date required'},
-    _store: {type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: 'Store ref required'}
+    _store: {type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: 'Store ref required'},
+    _category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'}
 });
 mongoose.model('Offer', OffersSchema, 'offers');
 

@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 var Category = mongoose.model('Category');
 var Center = mongoose.model('Center');
 var Store = mongoose.model('Store');
+var Offer = mongoose.model('Offer');
 var Q = require('q');
 
 /**
@@ -120,6 +121,39 @@ function getStore(id) {
     return Store.findById(id).exec();
 }
 
+function createOffer(discount, description, imagePath, contentType, created, expiration, _store, _category) {
+    var deferred = Q.defer();
+
+    var offer = new Offer({
+        discount: discount,
+        description: description,
+        imagePath: imagePath,
+        contentType: contentType,
+        created: created,
+        expiration: expiration,
+        _store: _store,
+        _category: _category
+    });
+
+    offer.save(function (err, o) {
+        if (err) {
+            deferred.reject(err);
+        } else {
+            deferred.resolve(o);
+        }
+    });
+
+    return deferred.promise;
+}
+
+function getAllOffers() {
+    return Offer.find({}).exec();
+}
+
+function getOffer(id) {
+    return Offer.findById(id).exec();
+}
+
 module.exports = {
     createCategory: createCategory,
     getAllCategories: getAllCategories,
@@ -131,5 +165,9 @@ module.exports = {
 
     createStore: createStore,
     getAllStores: getAllStores,
-    getStore: getStore
+    getStore: getStore,
+
+    createOffer: createOffer,
+    getAllOffers: getAllOffers,
+    getOffer: getOffer
 };
