@@ -6,19 +6,22 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var db = require('./db/db');
 var multer = require('multer');
+var enforce = require('express-sslify');
 
 var index = require('./routes/index');
 var restapi = require('./routes/restapi');
 
 var app = express();
-
+app.use(enforce.HTTPS(true));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 app.locals.pretty = true;
 
+
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
+app.enable('trust proxy');
 app.use(multer({dest: './server/public/uploads/'}));
 app.use(logger('dev'));
 app.use(bodyParser.json());
