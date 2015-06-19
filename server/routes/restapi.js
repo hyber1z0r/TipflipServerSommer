@@ -62,13 +62,17 @@ router.get('/category', function (req, res) {
 router.get('/category/:id', function (req, res) {
     datalayer.getCategory(req.param('id'))
         .then(function (category) {
-            if (category) {
+            if(category){
                 res.json(category);
             } else {
                 res.status(404).json({message: 'No category with id ' + req.param('id')});
             }
         }, function (error) {
-            res.status(500).json(error);
+            if (error.name === 'CastError') {
+                res.status(400).json({message: req.param('id') + ' is not a valid id'});
+            } else {
+                res.status(500).json(error);
+            }
         });
 });
 
@@ -121,13 +125,17 @@ router.get('/center', function (req, res) {
 router.get('/center/:id', function (req, res) {
     datalayer.getCenter(req.param('id'))
         .then(function (center) {
-            if (center) {
+            if(center){
                 res.json(center);
             } else {
                 res.status(404).json({message: 'No center with id ' + req.param('id')});
             }
         }, function (error) {
-            res.status(500).json(error);
+            if (error.name === 'CastError') {
+                res.status(400).json({message: req.param('id') + ' is not a valid id'});
+            } else {
+                res.status(500).json(error);
+            }
         });
 });
 
