@@ -76,6 +76,9 @@ router.get('/category/:id', function (req, res) {
         });
 });
 
+/**
+ * For creating a new center, requires an image, name and location
+ * */
 router.post('/center', function (req, res) {
     // get args and validate, also validate if image is an image!!
     if (!req.files.image) {
@@ -109,6 +112,9 @@ router.post('/center', function (req, res) {
     }
 });
 
+/**
+ * Is for getting all centers.
+ * */
 router.get('/center', function (req, res) {
     datalayer.getAllCenters()
         .then(function (centers) {
@@ -122,6 +128,11 @@ router.get('/center', function (req, res) {
         });
 });
 
+/**
+ * Is for getting a specific center, if the id is parsable by mongo, it'll return the center if found
+ * or an appropriate message if not found
+ * If the id is unparsable or the mongo is down, the error callback will be called with an appropriate message
+ * */
 router.get('/center/:id', function (req, res) {
     datalayer.getCenter(req.param('id'))
         .then(function (center) {
