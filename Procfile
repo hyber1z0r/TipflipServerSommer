@@ -1,1 +1,1 @@
-web: node server/bin/www PORT=80 SPORT=443
+web: PORT=80 SPORT=443 node server/bin/www
