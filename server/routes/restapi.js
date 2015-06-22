@@ -11,13 +11,12 @@ var datalayer = require('../db/datalayer');
  * */
 router.post('/category', function (req, res) {
     // get args and validate, also validate if image is an image!!
-    if (!req.files.image) {
-        res.status(400).json({message: 'No image provided.'});
-    } else if (!req.body.name) {
-        // delete image
-        var image = req.files.image.path;
-        fs.unlinkSync(image);
-        res.status(400).json({message: 'No name provided.'});
+    if (!req.files.image || !req.body.name) {
+        if (req.files.image) {
+            // delete image
+            fs.unlinkSync(req.files.image.path);
+        }
+        res.status(400).json({message: 'No image or name provided.'});
     } else {
         var name = req.body.name;
         var imagePath = req.files.image.path.replace('server/public/', '');
@@ -62,7 +61,7 @@ router.get('/category', function (req, res) {
 router.get('/category/:id', function (req, res) {
     datalayer.getCategory(req.param('id'))
         .then(function (category) {
-            if(category){
+            if (category) {
                 res.json(category);
             } else {
                 res.status(404).json({message: 'No category with id ' + req.param('id')});
@@ -81,16 +80,12 @@ router.get('/category/:id', function (req, res) {
  * */
 router.post('/center', function (req, res) {
     // get args and validate, also validate if image is an image!!
-    if (!req.files.image) {
-        res.status(400).json({message: 'No image provided.'});
-    } else if (!req.body.name) {
-        // delete image
-        fs.unlinkSync(req.files.image.path);
-        res.status(400).json({message: 'No name provided.'});
-    } else if (!req.body.location) {
-        // delete image
-        fs.unlinkSync(req.files.image.path);
-        res.status(400).json({message: 'No location provided.'});
+    if (!req.files.image || !req.body.name || !req.body.location) {
+        if (req.files.image) {
+            // delete image
+            fs.unlinkSync(req.files.image.path);
+        }
+        res.status(400).json({message: 'No image, name or location provided.'});
     } else {
         var name = req.body.name;
         var imagePath = req.files.image.path.replace('server/public/', '');
@@ -136,10 +131,154 @@ router.get('/center', function (req, res) {
 router.get('/center/:id', function (req, res) {
     datalayer.getCenter(req.param('id'))
         .then(function (center) {
-            if(center){
+            if (center) {
                 res.json(center);
             } else {
                 res.status(404).json({message: 'No center with id ' + req.param('id')});
+            }
+        }, function (error) {
+            if (error.name === 'CastError') {
+                res.status(400).json({message: req.param('id') + ' is not a valid id'});
+            } else {
+                res.status(500).json(error);
+            }
+        });
+});
+
+/**
+ * For creating a new store, requires an image, name and center
+ * */
+router.post('/store', function (req, res) {
+    // get args and validate, also validate if image is an image!!
+    if (!req.files.image || !req.body.name || !req.body._center) {
+        if (req.files.image) {
+            // delete image
+            fs.unlinkSync(req.files.image.path);
+        }
+        res.status(400).json({message: 'No image, name or center provided.'});
+    } else {
+        var name = req.body.name;
+        var imagePath = req.files.image.path.replace('server/public/', '');
+        var contentType = req.files.image.mimetype;
+        var _center = req.body._center;
+        datalayer.createStore(name, imagePath, contentType, _center)
+            .then(function (store) {
+                // 201 indicates that a POST request created a new document
+                res.status(201).json({message: 'Successfully created new store ' + store.name});
+            }, function (error) {
+                // the document already exists or some weird error happened
+                fs.unlinkSync(req.files.image.path);
+                if (error.code === 11000) {
+                    res.status(400).json({message: 'The store \'' + name + '\' already exists!'})
+                } else {
+                    res.status(400).json(error);
+                }
+            });
+    }
+});
+
+/**
+ * Is for getting all stores.
+ * */
+router.get('/store', function (req, res) {
+    datalayer.getAllStores()
+        .then(function (stores) {
+            if (stores.length === 0) {
+                res.status(404).json({message: 'No stores added yet.'})
+            } else {
+                res.json(stores);
+            }
+        }, function (error) {
+            res.status(500).json(error);
+        });
+});
+
+/**
+ * Is for getting a specific store, if the id is parsable by mongo, it'll return the store if found
+ * or an appropriate message if not found
+ * If the id is unparsable or the mongo is down, the error callback will be called with an appropriate message
+ * */
+router.get('/store/:id', function (req, res) {
+    datalayer.getStore(req.param('id'))
+        .then(function (store) {
+            if (store) {
+                res.json(store);
+            } else {
+                res.status(404).json({message: 'No store with id ' + req.param('id')});
+            }
+        }, function (error) {
+            if (error.name === 'CastError') {
+                res.status(400).json({message: req.param('id') + ' is not a valid id'});
+            } else {
+                res.status(500).json(error);
+            }
+        });
+});
+
+/**
+ * For creating a new offer, requires an image, discount, description, expiration date, store and a category
+ * */
+router.post('/offer', function (req, res) {
+    // get args and validate, also validate if image is an image!!
+    if (!req.files.image || !req.body.discount || !req.body.description
+        || !req.body.expiration || !req.body.store || !req.body.category) {
+        if (req.files.image) {
+            // delete image
+            fs.unlinkSync(req.files.image.path);
+        }
+        res.status(400).json({message: 'No image, discount, description, expiration date, store or category provided.'});
+    } else {
+        var imagePath = req.files.image.path.replace('server/public/', '');
+        var contentType = req.files.image.mimetype;
+        var discount = req.body.discount;
+        var description = req.body.description;
+        var expiration = req.body.expiration;
+        var _store = req.body._store;
+        var _category = req.body._category;
+        datalayer.createOffer(discount, description, imagePath, contentType, new Date(), expiration, _store, _category)
+            .then(function (offer) {
+                // 201 indicates that a POST request created a new document
+                res.status(201).json({message: 'Successfully created new offer ' + offer.name});
+            }, function (error) {
+                // the document already exists or some weird error happened
+                fs.unlinkSync(req.files.image.path);
+                if (error.code === 11000) {
+                    res.status(400).json({message: 'The offer \'' + name + '\' already exists!'})
+                } else {
+                    res.status(400).json(error);
+                }
+            });
+    }
+});
+
+/**
+ * Is for getting all offers.
+ * */
+router.get('/offer', function (req, res) {
+    datalayer.getAllStores()
+        .then(function (offers) {
+            if (offers.length === 0) {
+                res.status(404).json({message: 'No offers added yet.'})
+            } else {
+                res.json(offers);
+            }
+        }, function (error) {
+            res.status(500).json(error);
+        });
+});
+
+/**
+ * Is for getting a specific offer, if the id is parsable by mongo, it'll return the store if found
+ * or an appropriate message if not found
+ * If the id is unparsable or the mongo is down, the error callback will be called with an appropriate message
+ * */
+router.get('/offer/:id', function (req, res) {
+    datalayer.getOffer(req.param('id'))
+        .then(function (offer) {
+            if (offer) {
+                res.json(offer);
+            } else {
+                res.status(404).json({message: 'No offer with id ' + req.param('id')});
             }
         }, function (error) {
             if (error.name === 'CastError') {

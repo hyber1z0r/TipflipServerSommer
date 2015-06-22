@@ -12,7 +12,8 @@ var index = require('./routes/index');
 var restapi = require('./routes/restapi');
 
 var app = express();
-app.use(enforce.HTTPS(true));
+// disabled when testing
+//app.use(enforce.HTTPS(true));
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

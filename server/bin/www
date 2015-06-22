@@ -4,22 +4,21 @@ var app = require('../app');
 var https = require('https');
 var fs = require('fs');
 
-// set up a route to redirect http to https
-
-// This line is from the Node.js HTTPS documentation.
-var options = {
-    key: fs.readFileSync(__dirname + '/ssl/tipflip-key.pem'),
-    cert: fs.readFileSync(__dirname + '/ssl/tipflip-cert.pem')
-};
-
 app.set('port', process.env.PORT || 3000);
 
-// Create an HTTPS service identical to the HTTP service.
-var server = https.createServer(options, app).listen(app.get('port'), function () {
-    debug('Express https server listening on port ' + server.address().port);
+var server = app.listen(app.get('port'), function () {
+    debug('Express server listening on port ' + server.address().port);
 });
 
-//// HTTP SERVER
-//var server = app.listen(app.get('port'), function () {
-//    debug('Express server listening on port ' + server.address().port);
+// This line is from the Node.js HTTPS documentation.
+//var options = {
+//    key: fs.readFileSync(__dirname + '/ssl/tipflip-key.pem'),
+//    cert: fs.readFileSync(__dirname + '/ssl/tipflip-cert.pem')
+//};
+
+// disabled when testing
+// Create an HTTPS service identical to the HTTP service.
+//var server = https.createServer(options, app).listen(app.get('port'), function () {
+//    debug('Express https server listening on port ' + server.address().port);
 //});
+
