@@ -8,6 +8,7 @@ var Schema = mongoose.Schema;
 //This is set by the backend tests
 if (typeof global.TEST_DATABASE != 'undefined') {
     dbURI = global.TEST_DATABASE;
+    //mongoose.set('debug', true);
 } else {
     dbURI = 'mongodb://localhost/TipflipDB';
     //dbURI = 'mongodb://test:test@ds051841.mongolab.com:51841/tipflip';
@@ -63,8 +64,14 @@ var storeSchema = new Schema({
 
 storeSchema.pre('remove', function (next) {
     var offer = mongoose.model('Offer');
-    offer.remove({_store: this._id}).exec();
-    next();
+    offer.find({_store: this._id}).exec()
+        .then(function (offers) {
+            var len = offers.length;
+            for(var i = 0; i < len; i++ ) {
+                offers[i].remove();
+            }
+            next();
+        });
 });
 
 mongoose.model('Store', storeSchema, 'stores');
@@ -78,7 +85,13 @@ var categorySchema = new Schema({
 categorySchema.pre('remove', function (next) {
     var offer = mongoose.model('Offer');
     var profile = mongoose.model('Profile');
-    offer.remove({_category: this._id}).exec();
+    offer.find({_category: this._id}).exec()
+        .then(function (offers) {
+            var len = offers.length;
+            for(var i = 0; i < len; i++ ) {
+                offers[i].remove();
+            }
+        });
     profile.update({_categories: this._id}, {$pull: {_categories: this._id}}).exec();
     next();
 });
@@ -99,7 +112,7 @@ var offersSchema = new Schema({
 offersSchema.pre('remove', function (next) {
     var profile = mongoose.model('Profile');
     // remove the offer from all profiles that has received this offer
-    profile.update({_offers: this._id}, {$pull: {_offers: this._id}}).exec();
+    //profile.update({_offers: this._id}, {$pull: {_offers: this._id}}).exec();
     next();
 });
 

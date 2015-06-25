@@ -147,7 +147,7 @@ describe('Datalayer', function () {
     });
 
     describe('getAllStores', function () {
-        it('should return 8 offers', function () {
+        it('should return 8 stores', function () {
             return datalayer.getAllStores().should.eventually.have.length(8);
         });
     });
@@ -194,6 +194,25 @@ describe('Datalayer', function () {
             datalayer.createCenter(name, imagePath, contentType, location)
                 .then(function (center) {
                     return datalayer.createStore('Quint', imagePath, contentType, center._id).should.eventually.have.property('_id');
+                });
+        });
+    });
+
+    describe('deleteStore', function () {
+        it('should delete 1 store', function (done) {
+            datalayer.getAllStores()
+                .then(function (stores) {
+                    stores.should.be.an('array');
+                    stores.length.should.equal(8);
+                    return datalayer.deleteStore(stores[0]._id);
+                })
+                .then(function () {
+                    datalayer.getAllStores()
+                        .then(function (storesUpdate) {
+                            storesUpdate.should.be.an('array');
+                            console.log(storesUpdate.length);
+                            done();
+                        });
                 });
         });
     });

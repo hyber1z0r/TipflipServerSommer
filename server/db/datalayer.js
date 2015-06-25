@@ -139,7 +139,10 @@ function getStore(id) {
  * Deletes a store with given ObjectId
  * */
 function deleteStore(id) {
-    return Store.remove({_id: id}).exec();
+    getStore(id)
+        .then(function (store) {
+            return store.remove().exec();
+        });
 }
 
 /**
