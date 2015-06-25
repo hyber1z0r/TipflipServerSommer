@@ -49,7 +49,10 @@ function getCategory(id) {
  * Deletes a category with given ObjectId
  * */
 function deleteCategory(id) {
-    return Category.remove({_id: id}).exec();
+    getCategory(id)
+        .then(function (category) {
+            return category.remove().exec();
+        });
 }
 
 /**
@@ -94,7 +97,10 @@ function getCenter(id) {
  * Deletes a center with given ObjectId
  * */
 function deleteCenter(id) {
-    return Center.remove({_id: id}).exec();
+    getCenter(id)
+        .then(function (center) {
+            return center.remove().exec();
+        });
 }
 
 /**
@@ -191,7 +197,10 @@ function getOffer(id) {
  * Deletes an offer with given ObjectId
  * */
 function deleteOffer(id) {
-    return Offer.remove({_id: id}).exec();
+    getOffer(id)
+        .then(function (offer) {
+            return offer.remove().exec();
+        });
 }
 
 module.exports = {
