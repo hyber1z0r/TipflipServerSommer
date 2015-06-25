@@ -58,6 +58,18 @@ function insertOffers(categories, stores, callback) {
     });
 }
 
+function removeAll(done) {
+    Offer.remove({}, function () {
+        Category.remove({}, function () {
+            Store.remove({}, function () {
+                Center.remove({}, function () {
+                    done();
+                });
+            });
+        });
+    });
+}
+
 function insert(done) {
     insertCenters(function (centerData) {
         insertStores(centerData, function (storeData) {
@@ -71,5 +83,6 @@ function insert(done) {
 }
 
 module.exports = {
-    insert: insert
+    insert: insert,
+    removeAll: removeAll
 };

@@ -46,6 +46,13 @@ function getCategory(id) {
 }
 
 /**
+ * Deletes a category with given ObjectId
+ * */
+function deleteCategory(id) {
+    return Category.remove({_id: id}).exec();
+}
+
+/**
  * Creates a new center in the database
  * */
 function createCenter(name, imagePath, contentType, location) {
@@ -84,6 +91,13 @@ function getCenter(id) {
 }
 
 /**
+ * Deletes a center with given ObjectId
+ * */
+function deleteCenter(id) {
+    return Center.remove({_id: id}).exec();
+}
+
+/**
  * Creates a new store in the database
  * */
 function createStore(name, imagePath, contentType, _center) {
@@ -119,6 +133,13 @@ function getAllStores() {
  * */
 function getStore(id) {
     return Store.findById(id).exec();
+}
+
+/**
+ * Deletes a store with given ObjectId
+ * */
+function deleteStore(id) {
+    return Store.remove({_id: id}).exec();
 }
 
 /**
@@ -163,20 +184,31 @@ function getOffer(id) {
     return Offer.findById(id).exec();
 }
 
+/**
+ * Deletes an offer with given ObjectId
+ * */
+function deleteOffer(id) {
+    return Offer.remove({_id: id}).exec();
+}
+
 module.exports = {
     createCategory: createCategory,
     getAllCategories: getAllCategories,
     getCategory: getCategory,
+    deleteCategory: deleteCategory,
 
     createCenter: createCenter,
     getAllCenters: getAllCenters,
     getCenter: getCenter,
+    deleteCenter: deleteCenter,
 
     createStore: createStore,
     getAllStores: getAllStores,
     getStore: getStore,
+    deleteStore: deleteStore,
 
     createOffer: createOffer,
     getAllOffers: getAllOffers,
-    getOffer: getOffer
+    getOffer: getOffer,
+    deleteOffer: deleteOffer
 };

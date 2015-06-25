@@ -39,30 +39,53 @@ process.on('SIGINT', function () {
     });
 });
 
-var CenterSchema = new Schema({
+var centerSchema = new Schema({
     name: {type: String, required: 'Center must have a name!', unique: true},
     imagePath: {type: String, required: 'An imagepath for the center is required!'},
     contentType: {type: String, required: 'No contenttype provided!'},
     location: {type: String, required: 'A location is required!'}
 });
-mongoose.model('Center', CenterSchema, 'centers');
 
-var StoreSchema = new Schema({
+centerSchema.pre('remove', function (next) {
+    var store = mongoose.model('Store');
+    store.remove({_center: this._id}).exec();
+    next();
+});
+
+mongoose.model('Center', centerSchema, 'centers');
+
+var storeSchema = new Schema({
     name: {type: String, required: 'Name for store is required!'},
     imagePath: {type: String, required: 'An imagepath for the store is required!'},
     contentType: {type: String, required: 'No contenttype provided!'},
     _center: {type: mongoose.Schema.Types.ObjectId, ref: 'Center', required: 'A store must belong to a center!'}
 });
-mongoose.model('Store', StoreSchema, 'stores');
 
-var CategorySchema = new Schema({
+storeSchema.pre('remove', function (next) {
+    var offer = mongoose.model('Offer');
+    offer.remove({_store: this._id}).exec();
+    next();
+});
+
+mongoose.model('Store', storeSchema, 'stores');
+
+var categorySchema = new Schema({
     name: {type: String, required: 'Category name required!', unique: true},
     imagePath: {type: String, required: 'An imagepath for the category is required!'},
     contentType: {type: String, required: 'No contenttype provided!'}
 });
-mongoose.model('Category', CategorySchema, 'categories');
 
-var OffersSchema = new Schema({
+categorySchema.pre('remove', function (next) {
+    var offer = mongoose.model('Offer');
+    var profile = mongoose.model('Profile');
+    offer.remove({_category: this._id}).exec();
+    profile.update({_categories: this._id}, {$pull: {_categories: this._id}}).exec();
+    next();
+});
+
+mongoose.model('Category', categorySchema, 'categories');
+
+var offersSchema = new Schema({
     discount: {type: String, required: 'Discount required'},
     description: {type: String, required: 'Offer desc required'},
     imagePath: {type: String, required: 'An imagepath for the offer is required!'},
@@ -72,12 +95,20 @@ var OffersSchema = new Schema({
     _store: {type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: 'Store ref required'},
     _category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'}
 });
-mongoose.model('Offer', OffersSchema, 'offers');
 
-var ProfileSchema = new Schema({
+offersSchema.pre('remove', function (next) {
+    var profile = mongoose.model('Profile');
+    // remove the offer from all profiles that has received this offer
+    profile.update({_offers: this._id}, {$pull: {_offers: this._id}}).exec();
+    next();
+});
+
+mongoose.model('Offer', offersSchema, 'offers');
+
+var profileSchema = new Schema({
     name: {type: String},
     regID: {type: String},
     _categories: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
     _offers: [{type: mongoose.Schema.Types.ObjectId, ref: 'Offer'}]
 });
-mongoose.model('Profile', ProfileSchema, 'profiles');
+mongoose.model('Profile', profileSchema, 'profiles');

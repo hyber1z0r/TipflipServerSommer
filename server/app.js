@@ -22,7 +22,7 @@ app.locals.pretty = true;
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
-app.enable('trust proxy');
+//app.enable('trust proxy');
 app.use(multer({dest: './server/public/uploads/'}));
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -33,6 +33,12 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(express.static(path.join(__dirname, '../public/app')));
 
 app.use('/', index);
+if (app.get('env') === 'production') {
+    app.use(function (req, res, next) {
+        console.log('Production mode');
+        next();
+    });
+}
 app.use('/api', restapi);
 
 // catch 404 and forward to error handler
