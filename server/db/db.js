@@ -62,7 +62,7 @@ var storeSchema = new Schema({
     _center: {type: mongoose.Schema.Types.ObjectId, ref: 'Center', required: 'A store must belong to a center!'}
 });
 
-storeSchema.pre('remove', function (next) {
+storeSchema.pre('remove', function (next, done) {
     var offer = mongoose.model('Offer');
     offer.find({_store: this._id}).exec()
         .then(function (offers) {
@@ -70,8 +70,9 @@ storeSchema.pre('remove', function (next) {
             for(var i = 0; i < len; i++ ) {
                 offers[i].remove();
             }
-            next();
+            done();
         });
+    next();
 });
 
 mongoose.model('Store', storeSchema, 'stores');
@@ -112,7 +113,7 @@ var offersSchema = new Schema({
 offersSchema.pre('remove', function (next) {
     var profile = mongoose.model('Profile');
     // remove the offer from all profiles that has received this offer
-    //profile.update({_offers: this._id}, {$pull: {_offers: this._id}}).exec();
+    profile.update({_offers: this._id}, {$pull: {_offers: this._id}}).exec();
     next();
 });
 

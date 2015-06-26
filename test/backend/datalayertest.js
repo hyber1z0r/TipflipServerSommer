@@ -202,16 +202,14 @@ describe('Datalayer', function () {
         it('should delete 1 store', function (done) {
             datalayer.getAllStores()
                 .then(function (stores) {
-                    stores.should.be.an('array');
                     stores.length.should.equal(8);
-                    return datalayer.deleteStore(stores[0]._id);
-                })
-                .then(function () {
-                    datalayer.getAllStores()
-                        .then(function (storesUpdate) {
-                            storesUpdate.should.be.an('array');
-                            console.log(storesUpdate.length);
-                            done();
+                    datalayer.deleteStore(stores[0]._id)
+                        .then(function () {
+                            datalayer.getAllStores()
+                                .then(function (storesUpdate) {
+                                    storesUpdate.length.should.equal(7);
+                                    done();
+                                });
                         });
                 });
         });

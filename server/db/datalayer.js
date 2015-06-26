@@ -145,10 +145,22 @@ function getStore(id) {
  * Deletes a store with given ObjectId
  * */
 function deleteStore(id) {
+    var deferred = Q.defer();
+
     getStore(id)
         .then(function (store) {
-            return store.remove().exec();
+            store.remove(function (err) {
+                if (err) {
+                    deferred.reject(err);
+                } else {
+                    deferred.resolve();
+                }
+            });
+        }, function (error) {
+            deferred.reject(error);
         });
+
+    return deferred.promise;
 }
 
 /**
