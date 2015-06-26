@@ -49,10 +49,22 @@ function getCategory(id) {
  * Deletes a category with given ObjectId
  * */
 function deleteCategory(id) {
+    var deferred = Q.defer();
+
     getCategory(id)
         .then(function (category) {
-            return category.remove().exec();
+            category.remove(function (err) {
+                if (err) {
+                    deferred.reject(err);
+                } else {
+                    deferred.resolve();
+                }
+            });
+        }, function (error) {
+            deferred.reject(error);
         });
+
+    return deferred.promise;
 }
 
 /**
@@ -97,10 +109,22 @@ function getCenter(id) {
  * Deletes a center with given ObjectId
  * */
 function deleteCenter(id) {
+    var deferred = Q.defer();
+
     getCenter(id)
         .then(function (center) {
-            return center.remove().exec();
+            center.remove(function (err) {
+                if (err) {
+                    deferred.reject(err);
+                } else {
+                    deferred.resolve();
+                }
+            });
+        }, function (error) {
+            deferred.reject(error);
         });
+
+    return deferred.promise;
 }
 
 /**
@@ -209,10 +233,22 @@ function getOffer(id) {
  * Deletes an offer with given ObjectId
  * */
 function deleteOffer(id) {
+    var deferred = Q.defer();
+
     getOffer(id)
         .then(function (offer) {
-            return offer.remove().exec();
+            offer.remove(function (err) {
+                if (err) {
+                    deferred.reject(err);
+                } else {
+                    deferred.resolve();
+                }
+            });
+        }, function (error) {
+            deferred.reject(error);
         });
+
+    return deferred.promise;
 }
 
 module.exports = {
