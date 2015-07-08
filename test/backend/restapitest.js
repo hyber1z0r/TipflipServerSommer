@@ -72,6 +72,60 @@ describe('RestAPI', function () {
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
                 .end(function (err, res) {
                     res.status.should.equal(201);
+                    // notice capitalized Category name
+                    JSON.parse(res.text).message.should.equal('Successfully created new category Shoes');
+                    done();
+                });
+        });
+
+        it('should return 400 when name field is missing', function (done) {
+            request(app)
+                .post('/api/category')
+                .field('test', 'true')
+                .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+                .end(function (err, res) {
+                    res.status.should.equal(400);
+                    JSON.parse(res.text).message.should.equal('No image or name provided.');
+                    done();
+                });
+        });
+
+        it('should return 400 when image field is missing', function (done) {
+            request(app)
+                .post('/api/category')
+                .field('name', 'shoes')
+                .field('test', 'true')
+                .end(function (err, res) {
+                    res.status.should.equal(400);
+                    JSON.parse(res.text).message.should.equal('No image or name provided.');
+                    done();
+                });
+        });
+
+        it('should return 400 when the category already exists', function (done) {
+            // the category 'Elektronik' already exists!
+            request(app)
+                .post('/api/category')
+                .field('name', 'Elektronik')
+                .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+                .field('test', 'true')
+                .end(function (err, res) {
+                    res.status.should.equal(400);
+                    JSON.parse(res.text).message.should.equal('The category \'Elektronik\' already exists!');
+                    done();
+                });
+        });
+
+        it('should return 400 when the category already exists, CASE INSENSITIVE', function (done) {
+            // the category 'Elektronik' already exists!
+            request(app)
+                .post('/api/category')
+                .field('name', 'eLeKTRoNik')
+                .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+                .field('test', 'true')
+                .end(function (err, res) {
+                    res.status.should.equal(400);
+                    JSON.parse(res.text).message.should.equal('The category \'eLeKTRoNik\' already exists!');
                     done();
                 });
         });
