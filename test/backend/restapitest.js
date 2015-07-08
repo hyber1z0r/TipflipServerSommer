@@ -8,6 +8,7 @@ var should = chai.should();
 var request = require('supertest');
 var app = require('../../server/app');
 var insertScript = require('../sampledata/insertscript');
+var path = require('path');
 
 
 describe('RestAPI', function () {
@@ -37,11 +38,11 @@ describe('RestAPI', function () {
                     var category = categories[0];
                     req.get('/api/category/' + category._id)
                         .end(function (error, result) {
-                            var fecthedCategory = JSON.parse(result.text);
-                            category._id.should.equal(fecthedCategory._id);
-                            category.name.should.equal(fecthedCategory.name);
-                            category.imagePath.should.equal(fecthedCategory.imagePath);
-                            category.contentType.should.equal(fecthedCategory.contentType);
+                            var fetchedCategory = JSON.parse(result.text);
+                            category._id.should.equal(fetchedCategory._id);
+                            category.name.should.equal(fetchedCategory.name);
+                            category.imagePath.should.equal(fetchedCategory.imagePath);
+                            category.contentType.should.equal(fetchedCategory.contentType);
                             should.not.exist(error);
                             done();
                         });
@@ -62,6 +63,18 @@ describe('RestAPI', function () {
             });
         });
 
+        it('should create a new category', function (done) {
+            // Test field is a field i added, that deletes the photo from the server when we're testing
+            request(app)
+                .post('/api/category')
+                .field('name', 'shoes')
+                .field('test', 'true')
+                .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+                .end(function (err, res) {
+                    res.status.should.equal(201);
+                    done();
+                });
+        });
     });
 
     describe('Center', function () {

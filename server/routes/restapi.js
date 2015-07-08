@@ -25,6 +25,9 @@ router.post('/category', function (req, res) {
         datalayer.createCategory(name, imagePath, contentType)
             .then(function (category) {
                 // 201 indicates that a POST request created a new document
+                if(req.body.test === 'true') {
+                    fs.unlinkSync(req.files.image.path);
+                }
                 res.status(201).json({message: 'Successfully created new category ' + category.name});
             }, function (error) {
                 // the document already exists or some weird error happened
@@ -289,5 +292,8 @@ router.get('/offer/:id', function (req, res) {
         });
 });
 
+
+// TODO: Get my offers, that i've created as a store
+// Get my offers i've received (user page)
 
 module.exports = router;
