@@ -6,7 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var db = require('./db/db');
 var multer = require('multer');
-var enforce = require('express-sslify');
+//var enforce = require('express-sslify');
 
 var index = require('./routes/index');
 var restapi = require('./routes/restapi');
@@ -24,7 +24,6 @@ app.locals.pretty = true;
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 //app.enable('trust proxy');
 // defaults includeEmptyFields to false
-// TODO check to see if multer has a test setting, that doesn't save any data. Try inMemory: true
 // TODO also check what happens when i upload more than 1 file, and files in another name than 'image'
 // TODO implement socket.io for emitting upload progress to the client. (but how???)
 app.use(multer({dest: './server/public/uploads/', limits: {

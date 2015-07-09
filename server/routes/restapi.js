@@ -6,10 +6,29 @@ var router = express.Router();
 var fs = require('fs');
 var datalayer = require('../db/datalayer');
 
+function isImage(path) {
+    // magicnumbers for jpg, png and bmp
+    // http://www.astro.keele.ac.uk/oldusers/rno/Computing/File_magic.html#Image
+    var magic = ['ffd8ffe0', '89504e47', '424d'];
+    var buffer = fs.readFileSync(path);
+    var magicNumber = buffer.toString('hex', 0, 4);
+    return magic.indexOf(magicNumber) !== -1;
+}
+
+var imageValidator = function (req, res, next) {
+    if (req.files.image) {
+        if (!isImage(req.files.image.path)) {
+            fs.unlinkSync(req.files.image.path);
+            return res.status(400).json({message: 'File was not an image'});
+        }
+    }
+    next();
+};
+
 /**
  *  For creating a new category. Requires a name and an image for the category.
  * */
-router.post('/category', function (req, res) {
+router.post('/category', imageValidator, function (req, res) {
     // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.name) {
         if (req.files.image) {
@@ -21,11 +40,10 @@ router.post('/category', function (req, res) {
         var name = req.body.name;
         var imagePath = req.files.image.path.replace('server/public/', '');
         var contentType = req.files.image.mimetype;
-
         datalayer.createCategory(name, imagePath, contentType)
             .then(function (category) {
                 // 201 indicates that a POST request created a new document
-                if(req.body.test === 'true') {
+                if (req.body.test === 'true') {
                     fs.unlinkSync(req.files.image.path);
                 }
                 res.status(201).json({message: 'Successfully created new category ' + category.name});
@@ -81,7 +99,7 @@ router.get('/category/:id', function (req, res) {
 /**
  * For creating a new center, requires an image, name and location
  * */
-router.post('/center', function (req, res) {
+router.post('/center', imageValidator, function (req, res) {
     // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.name || !req.body.location) {
         if (req.files.image) {
@@ -151,7 +169,7 @@ router.get('/center/:id', function (req, res) {
 /**
  * For creating a new store, requires an image, name and center
  * */
-router.post('/store', function (req, res) {
+router.post('/store', imageValidator, function (req, res) {
     // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.name || !req.body._center) {
         if (req.files.image) {
@@ -221,7 +239,7 @@ router.get('/store/:id', function (req, res) {
 /**
  * For creating a new offer, requires an image, discount, description, expiration date, store and a category
  * */
-router.post('/offer', function (req, res) {
+router.post('/offer', imageValidator, function (req, res) {
     // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.discount || !req.body.description
         || !req.body.expiration || !req.body.store || !req.body.category) {

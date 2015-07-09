@@ -2,22 +2,17 @@
  * Created by jakobgaardandersen on 12/06/15.
  */
 var mongoose = require('mongoose');
-var dbURI;
+var fs = require('fs');
+var path = require('path');
 var Schema = mongoose.Schema;
 
-//This is set by the backend tests
-if (typeof global.TEST_DATABASE != 'undefined') {
-    dbURI = global.TEST_DATABASE;
-    //mongoose.set('debug', true);
-} else {
-    dbURI = 'mongodb://localhost/TipflipDB';
-    //dbURI = 'mongodb://test:test@ds051841.mongolab.com:51841/tipflip';
-}
+// global test database is set by the tests.
+var dbURI = global.TEST_DATABASE ? global.TEST_DATABASE : 'mongodb://localhost/TipflipDB';
 
 mongoose.connect(dbURI, {server: {auto_reconnect: true}});
 
 mongoose.connection.on('connected', function () {
-    console.log('Mongoose connected to ' + dbURI);
+    console.log('Mongoose connected to ' + dbURI + '\n');
 });
 
 mongoose.connection.on('error', function (err) {
@@ -40,6 +35,13 @@ process.on('SIGINT', function () {
     });
 });
 
+// only if we're not testing, as we don't want to delete the test photo
+function deletePhoto(path) {
+    if(!global.TEST_DATABASE) {
+        fs.unlinkSync(path);
+    }
+}
+
 var centerSchema = new Schema({
     name: {type: String, required: 'Center must have a name!', unique: true},
     imagePath: {type: String, required: 'An imagepath for the center is required!'},
@@ -47,7 +49,9 @@ var centerSchema = new Schema({
     location: {type: String, required: 'A location is required!'}
 });
 
+// TODO when removing a center, also delete the image from the server..
 centerSchema.pre('remove', function (next) {
+    deletePhoto(path.resolve(__dirname, '../public/' + this.imagePath));
     var store = mongoose.model('Store');
     store.remove({_center: this._id}).exec();
     next();
@@ -63,11 +67,12 @@ var storeSchema = new Schema({
 });
 
 storeSchema.pre('remove', function (next, done) {
+    deletePhoto(path.resolve(__dirname, '../public/' + this.imagePath));
     var offer = mongoose.model('Offer');
     offer.find({_store: this._id}).exec()
         .then(function (offers) {
             var len = offers.length;
-            for(var i = 0; i < len; i++ ) {
+            for (var i = 0; i < len; i++) {
                 offers[i].remove();
             }
             done();
@@ -84,12 +89,13 @@ var categorySchema = new Schema({
 });
 
 categorySchema.pre('remove', function (next) {
+    deletePhoto(path.resolve(__dirname, '../public/' + this.imagePath));
     var offer = mongoose.model('Offer');
     var profile = mongoose.model('Profile');
     offer.find({_category: this._id}).exec()
         .then(function (offers) {
             var len = offers.length;
-            for(var i = 0; i < len; i++ ) {
+            for (var i = 0; i < len; i++) {
                 offers[i].remove();
             }
         });
@@ -111,6 +117,7 @@ var offersSchema = new Schema({
 });
 
 offersSchema.pre('remove', function (next) {
+    deletePhoto(path.resolve(__dirname, '../public/' + this.imagePath));
     var profile = mongoose.model('Profile');
     // remove the offer from all profiles that has received this offer
     profile.update({_offers: this._id}, {$pull: {_offers: this._id}}).exec();
