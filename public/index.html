@@ -4,15 +4,41 @@
     <meta charset="UTF-8">
     <title>Hello world</title>
     <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.css">
+    <link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.css"/>
+    <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
-<div>
-    <h1>Hello world!</h1>
-
+<!-- Static navbar -->
+<nav class="navbar navbar-trans navbar-static-top" role="navigation">
     <div class="container">
-        <div ng-view="ng-view"></div>
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapsible">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand text-danger" href="#/">TIPFLIP</a>
+        </div>
+        <div id="navbar-collapsible" class="navbar-collapse collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
+                <li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>
+                <li><a href="#/">Then</a></li>
+                <li><a href="#/">Form</a></li>
+                <li><a href="#/">More</a></li>
+                <li><a href="#/">Last</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/" data-toggle="modal" data-target="#myModal"><i class="fa fa-heart-o fa-lg"></i></a></li>
+            </ul>
+        </div>
     </div>
+</nav>
+<div class="container">
+    <div ng-view="ng-view"></div>
 </div>
+
 
 <script src="vendor/angular/angular.js"></script>
 <script src="vendor/angular-route/angular-route.js"></script>

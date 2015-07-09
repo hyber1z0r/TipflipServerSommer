@@ -9,9 +9,6 @@ var Offer = mongoose.model('Offer');
 var Q = require('q');
 require('sugar');
 
-// TODO, LOWERCASE then UPPERCASE FIRST CHAR IN EVERY 'UNIQUE' FIELD! TO KEEP DATABASE NICE AND CLEAN!
-// TODO, CREATE TESTS FOR THAT TOO!
-
 /**
  * Creates a new category in the database
  * */
