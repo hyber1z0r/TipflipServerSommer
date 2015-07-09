@@ -7,6 +7,7 @@ var Center = mongoose.model('Center');
 var Store = mongoose.model('Store');
 var Offer = mongoose.model('Offer');
 var Q = require('q');
+require('sugar');
 
 // TODO, LOWERCASE then UPPERCASE FIRST CHAR IN EVERY 'UNIQUE' FIELD! TO KEEP DATABASE NICE AND CLEAN!
 // TODO, CREATE TESTS FOR THAT TOO!
@@ -18,7 +19,7 @@ function createCategory(name, imagePath, contentType) {
     var deferred = Q.defer();
 
     var cat = new Category({
-        name: name ? name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase() : name,
+        name: name ? name.capitalize(true) : name,
         imagePath: imagePath,
         contentType: contentType
     });
@@ -77,9 +78,7 @@ function createCenter(name, imagePath, contentType, location) {
     var deferred = Q.defer();
 
     var c = new Center({
-        name: name ? name.replace(/\b./g, function (m) {
-            return m.toUpperCase();
-        }) : name,
+        name: name ? name.capitalize(true) : name,
         imagePath: imagePath,
         contentType: contentType,
         location: location
@@ -139,7 +138,7 @@ function createStore(name, imagePath, contentType, _center) {
     var deferred = Q.defer();
 
     var s = new Store({
-        name: name ? name.substr(0, 1).toUpperCase() + name.substr(1).toLowerCase() : name,
+        name: name ? name.capitalize(true) : name,
         imagePath: imagePath,
         contentType: contentType,
         _center: _center

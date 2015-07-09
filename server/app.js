@@ -23,7 +23,14 @@ app.locals.pretty = true;
 // uncomment after placing your favicon in /public
 //app.use(favicon(__dirname + '/public/favicon.ico'));
 //app.enable('trust proxy');
-app.use(multer({dest: './server/public/uploads/'}));
+// defaults includeEmptyFields to false
+// TODO check to see if multer has a test setting, that doesn't save any data. Try inMemory: true
+// TODO also check what happens when i upload more than 1 file, and files in another name than 'image'
+// TODO implement socket.io for emitting upload progress to the client. (but how???)
+app.use(multer({dest: './server/public/uploads/', limits: {
+    files: 1,
+    fields: 10
+}}));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false, limit: '16384kb'}));
