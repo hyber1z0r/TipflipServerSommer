@@ -23,14 +23,14 @@
         <div id="navbar-collapsible" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-left">
                 <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
-                <li ng-class="{ active: isActive('/login')}"><a href="#/login">Login</a></li>
+                <li><a href="#/">First</a></li>
                 <li><a href="#/">Then</a></li>
                 <li><a href="#/">Form</a></li>
                 <li><a href="#/">More</a></li>
                 <li><a href="#/">Last</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/" data-toggle="modal" data-target="#myModal"><i class="fa fa-heart-o fa-lg"></i></a></li>
+                <li ng-class="{ active: isActive('/login')}"><a href="#/login">Log in</a></li>
             </ul>
         </div>
     </div>
@@ -46,6 +46,7 @@
 <script src="vendor/bootstrap/dist/js/bootstrap.js"></script>
 <script src="app/app.js"></script>
 <script src="app/home/home.js"></script>
+<script src="app/login/login.js"></script>
 <script src="app/components/controllers.js"></script>
 <script src="app/components/directives.js"></script>
 <script src="app/components/factories.js"></script>

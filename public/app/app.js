@@ -8,7 +8,8 @@ angular.module('tipflip', [
     'tipflip.factories',
     'tipflip.filters',
     'tipflip.services',
-    'tipflip.home'
+    'tipflip.home',
+    'tipflip.login'
 ])
     .config(['$routeProvider', function ($routeProvider) {
         $routeProvider.otherwise({redirectTo: '/'});
