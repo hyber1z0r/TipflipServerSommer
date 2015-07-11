@@ -39,8 +39,18 @@ angular.module('tipflip.admin', ['ngRoute'])
     .controller('AdminCategoryCtrl', function ($scope) {
         $scope.hello = 'This is where you manage and create categoires';
     })
-    .controller('AdminCenterCtrl', function ($scope) {
+    .controller('AdminCenterCtrl', function ($scope, apiFactory) {
         $scope.hello = 'This is where you manage and create centres';
+
+        apiFactory.getAllCenters()
+            .success(function (data, status, headers, config) {
+                $scope.centers = data;
+            })
+            .error(function (data, status, headers, config) {
+
+            })
+
+
     })
     .controller('AdminOfferCtrl', function ($scope) {
         $scope.hello = 'This is where you manage and create offers';

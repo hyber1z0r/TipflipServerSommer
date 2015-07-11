@@ -10,12 +10,33 @@
                         <div class="panel panel-default">
                             <div class="panel-body">
                                 <img src="http://i.imgur.com/qVdr1Ll.png" class="img-circle pull-left widget-icon">
+
                                 <div class="widget-title text-info">3</div>
                                 <div class="comment text-info">Centres</div>
                             </div>
                         </div>
                     </div>
                 </div>
+
+
+                <!-- The table with all the centers -->
+
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Location</th>
+                        <th>Stores (todo, get the stores from this center)</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="center in centers">
+                        <td>{{center.name}}</td>
+                        <td>{{center.location}}</td>
+                    </tr>
+
+                    </tbody>
+                </table>
 
                 <!-- The form for creating a new center -->
                 <form role="form">

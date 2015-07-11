@@ -22,4 +22,14 @@ app.factory('authInterceptor', function ($rootScope, $q, $window) {
     };
 });
 
+app.factory('apiFactory', function ($http) {
+    var getAllCenters = function () {
+        return $http.get('/api/center');
+    };
+
+    return {
+        getAllCenters: getAllCenters
+    }
+});
+
 
