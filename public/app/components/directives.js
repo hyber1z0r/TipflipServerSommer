@@ -9,4 +9,11 @@ angular.module('tipflip.directives', [])
             replace: 'true',
             templateUrl: '/app/directives/footer.html'
         }
+    })
+    .directive('sideBar', function () {
+        return {
+            restrict: 'E',
+            replace: 'true',
+            templateUrl: '/app/directives/sidebar.html'
+        }
     });

@@ -220,15 +220,45 @@ footer .nav > li > a:hover {
     display: block;
 }
 
-.top-buffer {
+.top-buffer100 {
     margin-top: 100px;
 }
 
-.bottom-buffer {
+.bottom-buffer100 {
     margin-bottom: 100px;
 }
 
-.buffer {
+.buffer100 {
     margin-top: 100px;
     margin-bottom: 100px;
+}
+
+.no-bottom-margin {
+    margin-bottom: 0;
+}
+
+/*sidebar navigation*/
+
+#sidebar {
+    width: 210px;
+    height: 100%;
+    position: static;
+    background: #f44d3c;
+}
+
+#sidebar h5 {
+    color: #f2f2f2;
+    font-weight: 700;
+}
+
+#sidebar ul li {
+    position: relative;
+}
+
+#sidebar .sub-menu > .sub li  {
+    padding-left: 32px;
+}
+
+#sidebar .sub-menu > .sub li:last-child {
+    padding-bottom: 10px;
 }

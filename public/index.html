@@ -6,10 +6,11 @@
     <link rel="stylesheet" href="vendor/bootstrap/dist/css/bootstrap.css">
     <link rel="stylesheet" href="vendor/fontawesome/css/font-awesome.css"/>
     <link rel="stylesheet" href="style.css"/>
+    <link rel="stylesheet" href="sidebar.css"/>
 </head>
 <body>
 <!-- Static navbar -->
-<nav class="navbar navbar-trans navbar-static-top" role="navigation">
+<nav class="navbar navbar-trans navbar-static-top no-bottom-margin" role="navigation">
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapsible">
@@ -23,7 +24,7 @@
         <div id="navbar-collapsible" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-left">
                 <li ng-class="{ active: isActive('/')}"><a href="#/">Home</a></li>
-                <li><a href="#/admin">Admin dashboard</a></li>
+                <li ng-class="{ active: isActive('/admin')}"><a href="#/admin">Admin dashboard</a></li>
                 <li><a href="#/">Then</a></li>
                 <li><a href="#/">Form</a></li>
                 <li><a href="#/">More</a></li>
@@ -36,10 +37,8 @@
     </div>
 </nav>
 <!-- The partial views -->
-<div class="container buffer">
-    <div ng-view="ng-view"></div>
-</div>
-
+<div ng-view="ng-view"></div>
+<!-- The footer -->
 <footer-template></footer-template>
 
 <script src="vendor/angular/angular.js"></script>
