@@ -27,7 +27,10 @@ angular.module('tipflip.admin', ['ngRoute'])
             });
     }])
 
-    .controller('AdminCtrl', function ($scope) {
+    .controller('AdminCtrl', function ($scope, $location) {
+        $scope.go = function (path) {
+            $location.path(path);
+        };
         $scope.hello = 'Welcome to the main overview admin dashboard page';
     })
     .controller('AdminStoreCtrl', function ($scope) {
