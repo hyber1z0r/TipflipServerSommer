@@ -42,14 +42,30 @@ angular.module('tipflip.admin', ['ngRoute'])
     .controller('AdminCenterCtrl', function ($scope, apiFactory) {
         $scope.hello = 'This is where you manage and create centres';
 
-        apiFactory.getAllCenters()
-            .success(function (data, status, headers, config) {
-                $scope.centers = data;
-            })
-            .error(function (data, status, headers, config) {
+        var getAllCenters = function () {
+            apiFactory.getAllCenters()
+                .success(function (data, status, headers, config) {
+                    $scope.centers = data;
+                })
+                .error(function (data, status, headers, config) {
 
-            })
+                })
+        };
 
+        $scope.createCenter = function () {
+            apiFactory.createCenter($scope.centerName, $scope.centerLocation, $scope.centerImage)
+                .success(function (data, status, headers, config) {
+                    alert('Success!');
+                    getAllCenters();
+                })
+                .error(function (data, status, headers, config) {
+                    alert('Error! status: ' + status);
+                    console.log(status);
+                    console.log(data);
+                })
+        };
+
+        getAllCenters();
 
     })
     .controller('AdminOfferCtrl', function ($scope) {

@@ -11,7 +11,7 @@
                             <div class="panel-body">
                                 <img src="http://i.imgur.com/qVdr1Ll.png" class="img-circle pull-left widget-icon">
 
-                                <div class="widget-title text-info">3</div>
+                                <div class="widget-title text-info" ng-bind="centers.length"></div>
                                 <div class="comment text-info">Centres</div>
                             </div>
                         </div>
@@ -26,6 +26,7 @@
                     <tr>
                         <th>Name</th>
                         <th>Location</th>
+                        <th>Image</th>
                         <th>Stores (todo, get the stores from this center)</th>
                     </tr>
                     </thead>
@@ -33,6 +34,8 @@
                     <tr ng-repeat="center in centers">
                         <td>{{center.name}}</td>
                         <td>{{center.location}}</td>
+                        <td><img ng-src="{{center.imagePath}}" class="img-thumbnail"></td>
+                        <td></td>
                     </tr>
 
                     </tbody>
@@ -42,20 +45,20 @@
                 <form role="form">
                     <div class="form-group">
                         <label for="centerName">Center name</label>
-                        <input type="text" class="form-control" id="centerName" placeholder="Enter center name">
+                        <input type="text" class="form-control" ng-model="centerName" id="centerName" placeholder="Enter center name">
                     </div>
                     <div class="form-group">
                         <label for="centerLocation">Location</label>
-                        <input type="password" class="form-control" id="centerLocation"
+                        <input type="text" class="form-control" ng-model="centerLocation" id="centerLocation"
                                placeholder="Enter location coordinats">
                     </div>
                     <div class="form-group">
                         <label for="centerImage">Center image</label>
-                        <input type="file" id="centerImage" accept='image/jpeg,image/bmp,image/png'>
+                        <input type="file" file-model="centerImage" id="centerImage" accept='image/jpeg,image/bmp,image/png'>
 
                         <p class="help-block">Choose a square photo of the center</p>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <button type="submit" ng-click="createCenter()" class="btn btn-primary">Submit</button>
                 </form>
             </div>
         </div>

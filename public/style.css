@@ -218,3 +218,7 @@ footer .nav > li > a:hover {
     cursor: pointer;
     cursor: hand;
 }
+
+.img-thumbnail {
+    height: 64px;
+}

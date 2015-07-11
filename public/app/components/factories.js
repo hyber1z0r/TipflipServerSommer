@@ -27,8 +27,20 @@ app.factory('apiFactory', function ($http) {
         return $http.get('/api/center');
     };
 
+    var createCenter = function (name, location, image) {
+        var fd = new FormData();
+        fd.append('name', name);
+        fd.append('location', location);
+        fd.append('image', image);
+        return $http.post('/api/center', fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        });
+    };
+
     return {
-        getAllCenters: getAllCenters
+        getAllCenters: getAllCenters,
+        createCenter: createCenter
     }
 });
 
