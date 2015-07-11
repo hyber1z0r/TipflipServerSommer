@@ -125,48 +125,9 @@ section {
     padding-top: 70px;
     padding-bottom: 50px;
     min-height: 100%;
-    min-height: calc(100% - 0);
     -webkit-transform-style: preserve-3d;
     -moz-transform-style: preserve-3d;
     transform-style: preserve-3d;
-}
-
-#section1, #section3 {
-    background-color: rgba(0, 0, 0, 0.7);
-    color: #fff;
-    font-family: 'Bitter', serif;
-}
-
-#section4 {
-    background-color: #f6f6f6;
-    color: #444;
-}
-
-#section2 {
-    background-color: #fff;
-}
-
-#section3 {
-    background-color: rgba(0, 0, 0, 0.9);
-}
-
-#section5 {
-    background-color: #fff;
-}
-
-#section6 {
-    background-color: #eee;
-    min-height: 130px;
-    padding-top: 40px;
-    padding-bottom: 40px;
-}
-
-#section7 {
-    background-color: #f44d3c;
-    color: #f6f6f6;
-    min-height: 130px;
-    padding-top: 40px;
-    padding-bottom: 40px;
 }
 
 footer {
