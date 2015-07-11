@@ -131,19 +131,6 @@ section {
     transform-style: preserve-3d;
 }
 
-@media (min-width: 768px) {
-    .v-center {
-        height: 50%;
-        overflow: visible;
-        margin: auto;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-    }
-}
-
 #section1, #section3 {
     background-color: rgba(0, 0, 0, 0.7);
     color: #fff;
@@ -224,10 +211,24 @@ footer .nav > li > a:hover {
 #login .btn.btn-custom {
     font-size: 14px;
     margin-bottom: 20px;
-    color: #cdcdcd;}
+    color: #cdcdcd;
+}
 
 #login .forget {
     font-size: 13px;
     text-align: center;
     display: block;
+}
+
+.top-buffer {
+    margin-top: 100px;
+}
+
+.bottom-buffer {
+    margin-bottom: 100px;
+}
+
+.buffer {
+    margin-top: 100px;
+    margin-bottom: 100px;
 }
