@@ -222,6 +222,12 @@ footer .nav > li > a:hover {
     cursor: hand;
 }
 
+.location {
+    color: #5b9bd1;
+    cursor: pointer;
+    cursor: hand;
+}
+
 .img-thumbnail {
     height: 64px;
 }

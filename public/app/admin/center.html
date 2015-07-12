@@ -33,7 +33,7 @@
                     <tbody>
                     <tr ng-repeat="center in centers">
                         <td>{{center.name}}</td>
-                        <td>{{center.location}}</td>
+                        <td><span class="location" ng-click="open(center.name, center.location)">{{center.location}}</span></td>
                         <td><img ng-src="{{center.imagePath}}" class="img-thumbnail"></td>
                         <td></td>
                     </tr>
