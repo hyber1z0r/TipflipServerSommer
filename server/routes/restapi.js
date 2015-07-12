@@ -312,6 +312,8 @@ router.get('/offer/:id', function (req, res) {
 
 
 // TODO: Get my offers, that i've created as a store
-// Get my offers i've received (user page)
+// TODO: Get my offers i've received (user page)
+// TODO: EDIT CENTER, OFFERS, STORES, CATEGORIES
+// TODO: Get number of stores in my center
 
 module.exports = router;

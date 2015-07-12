@@ -37,7 +37,7 @@ process.on('SIGINT', function () {
 
 // only if we're not testing, as we don't want to delete the test photo
 function deletePhoto(path) {
-    if(!global.TEST_DATABASE) {
+    if (!global.TEST_DATABASE) {
         fs.unlinkSync(path);
     }
 }
@@ -49,11 +49,17 @@ var centerSchema = new Schema({
     location: {type: String, required: 'A location is required!'}
 });
 
-// TODO when removing a center, also delete the image from the server..
-centerSchema.pre('remove', function (next) {
+centerSchema.pre('remove', function (next, done) {
     deletePhoto(path.resolve(__dirname, '../public/' + this.imagePath));
     var store = mongoose.model('Store');
-    store.remove({_center: this._id}).exec();
+    store.find({_center: this._id}).exec()
+        .then(function (stores) {
+            var len = stores.length;
+            for (var i = 0; i < len; i++) {
+                stores[i].remove();
+            }
+            done();
+        });
     next();
 });
 

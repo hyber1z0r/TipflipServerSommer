@@ -40,7 +40,7 @@ angular.module('tipflip.admin', ['ngRoute'])
         $scope.hello = 'This is where you manage and create categories';
     })
     .controller('AdminCenterCtrl', function ($scope, apiFactory, $modal, toastr) {
-        $scope.hello = 'This is where you manage and create centres';
+        $scope.hello = 'This is where you manage and create centers';
 
         var getAllCenters = function () {
             apiFactory.getAllCenters()
@@ -85,7 +85,7 @@ angular.module('tipflip.admin', ['ngRoute'])
         };
 
         $scope.open = function (name, location) {
-            var modalInstance = $modal.open({
+            $modal.open({
                 animation: true,
                 templateUrl: 'templates/centermapmodal.html',
                 controller: 'CenterMapModalCtrl',
@@ -107,7 +107,7 @@ angular.module('tipflip.admin', ['ngRoute'])
         $scope.name = name;
         $scope.location = location;
         $scope.cancel = function () {
-            $modalInstance.dismiss();
+            $modalInstance.dismiss('cancel');
         };
     })
 
