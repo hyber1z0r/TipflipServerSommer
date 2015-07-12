@@ -42,10 +42,16 @@ app.factory('apiFactory', function ($http) {
         return $http.delete('/api/center/' + id);
     };
 
+    var getAllOffers = function () {
+        return $http.get('/api/offer');
+    };
+
     return {
         getAllCenters: getAllCenters,
         createCenter: createCenter,
-        deleteCenter: deleteCenter
+        deleteCenter: deleteCenter,
+
+        getAllOffers: getAllOffers
     }
 });
 

@@ -40,6 +40,8 @@ angular.module('tipflip.admin', ['ngRoute'])
         $scope.hello = 'This is where you manage and create categories';
     })
     .controller('AdminCenterCtrl', function ($scope, apiFactory, $modal, toastr) {
+        $scope.centers = [];
+
         var getAllCenters = function () {
             apiFactory.getAllCenters()
                 .success(function (data, status, headers, config) {
@@ -123,6 +125,19 @@ angular.module('tipflip.admin', ['ngRoute'])
         };
     })
 
-    .controller('AdminOfferCtrl', function ($scope) {
-        $scope.hello = 'This is where you manage and create offers';
+    .controller('AdminOfferCtrl', function ($scope, apiFactory) {
+        $scope.offers = [];
+
+        var getAllOffers = function () {
+            apiFactory.getAllOffers()
+                .success(function (data, status, headers, config) {
+                    console.log(data);
+                    $scope.offers = data;
+                })
+                .error(function (data, status, headers, config) {
+
+                })
+        };
+
+        getAllOffers();
     });

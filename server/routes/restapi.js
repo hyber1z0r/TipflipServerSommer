@@ -285,7 +285,7 @@ router.post('/offer', imageValidator, function (req, res) {
  * Is for getting all offers.
  * */
 router.get('/offer', function (req, res) {
-    datalayer.getAllStores()
+    datalayer.getAllOffers()
         .then(function (offers) {
             if (offers.length === 0) {
                 res.status(404).json({message: 'No offers added yet.'})

@@ -164,7 +164,7 @@ describe('RestAPI', function () {
                 .get('/api/offer')
                 .end(function (err, res) {
                     var offers = JSON.parse(res.text);
-                    offers.length.should.equal(8);
+                    offers.length.should.equal(5);
                     should.not.exist(err);
                     done();
                 });

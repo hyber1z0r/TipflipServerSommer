@@ -240,3 +240,14 @@ footer .nav > li > a:hover {
 .img-thumbnail {
     height: 64px;
 }
+
+.table td, .table th {
+    border: none;
+}
+
+table.table.table-condensed {
+    border: 1px solid transparent;
+    border-color: #ddd;
+    box-shadow: 0 1px 1px rgba(0, 0, 0 .05);
+
+}

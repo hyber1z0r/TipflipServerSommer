@@ -19,22 +19,22 @@
                 </div>
 
                 <!-- The table with all the centers -->
-                <table class="table table-hover table-responsive table-striped">
+                <table class="table table-hover table-responsive table-condensed table-striped">
                     <thead>
                     <tr>
+                        <th>Image</th>
                         <th>Name</th>
                         <th>Location</th>
-                        <th>Image</th>
                         <th>Stores</th>
                         <th>Edit</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="center in centers">
+                        <td class="col-md-2 col-xs-2"><img ng-src="{{center.imagePath}}" class="img-thumbnail img-circle widget-icon"></td>
                         <td>{{center.name}}</td>
                         <td><span class="location"
                                   ng-click="open(center.name, center.location)">{{center.location}}</span></td>
-                        <td><img ng-src="{{center.imagePath}}" class="img-thumbnail"></td>
                         <td></td>
                         <td>
                             <div class="btn-group btn-group-sm" role="group">

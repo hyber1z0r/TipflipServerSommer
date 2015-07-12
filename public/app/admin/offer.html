@@ -5,7 +5,55 @@
         </div>
         <div class="col-md-9">
             <div class="profile-content">
-                {{hello}}
+                <div class="row">
+                    <div class="col-lg-3 col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <img src="http://i.imgur.com/Ta8gDEQ.png" class="img-circle pull-left widget-icon">
+
+                                <div class="widget-title text-info" ng-bind="offers.length"></div>
+                                <div class="comment text-info">Offers</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- The table with all the offers -->
+                <table class="table table-hover table-responsive table-condensed table-striped">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Category</th>
+                        <th>Description</th>
+                        <th>Discount</th>
+                        <!--<th>Created</th>-->
+                        <!--<th>Expiration</th>-->
+                        <th>Store</th>
+                        <th>Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="offer in offers">
+                        <td class="col-md-2 col-xs-2"><img ng-src="{{offer.imagePath}}" class="img-thumbnail img-circle widget-icon"></td>
+                        <td class="col-md-1">category</td>
+                        <td class="col-md-4">{{offer.description}}</td>
+                        <td class="col-md-1">{{offer.discount}}</td>
+                        <!--<td>{{offer.created | date: 'EEE. d. MMM. yyyy'}}</td>-->
+                        <!--<td>{{offer.expiration | date: 'EEE. d. MMM. yyyy'}}</td>-->
+                        <td class="col-md-2">store</td>
+                        <td class="col-md-2">
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-primary">Edit</button>
+                                <button type="button" class="btn btn-danger" ng-click="deleteCenter(center._id)">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+
             </div>
         </div>
     </div>
