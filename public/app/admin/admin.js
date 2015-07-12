@@ -40,8 +40,6 @@ angular.module('tipflip.admin', ['ngRoute'])
         $scope.hello = 'This is where you manage and create categories';
     })
     .controller('AdminCenterCtrl', function ($scope, apiFactory, $modal, toastr) {
-        $scope.hello = 'This is where you manage and create centers';
-
         var getAllCenters = function () {
             apiFactory.getAllCenters()
                 .success(function (data, status, headers, config) {
@@ -65,7 +63,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                     getAllCenters();
                 })
                 .error(function (data, status, headers, config) {
-                    if(status === 500) {
+                    if (status === 500) {
                         toastr.error('System failure', 'Error!', {
                             tapToDismiss: true,
                             positionClass: 'toast-top-right',
@@ -82,6 +80,20 @@ angular.module('tipflip.admin', ['ngRoute'])
                     console.log(status);
                     console.log(data);
                 })
+        };
+
+        $scope.deleteCenter = function (id) {
+            alert('Function not implemented yet!');
+            //apiFactory.deleteCenter(id)
+            //    .success(function (data, status, headers, config) {
+            //        alert('Success');
+            //    })
+            //    .error(function (data, status, headers, config) {
+            //        // TODO make the error messages more convenient!
+            //        alert('Error, check console')
+            //        console.log(status);
+            //        console.log(data);
+            //    });
         };
 
         $scope.open = function (name, location) {

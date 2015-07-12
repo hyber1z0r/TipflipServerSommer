@@ -5,7 +5,7 @@ var mongoose = require('mongoose');
 var fs = require('fs');
 var path = require('path');
 var Schema = mongoose.Schema;
-
+global.TEST_DATABASE = 'mongodb://localhost/TipflipDB_test';
 // global test database is set by the tests.
 var dbURI = global.TEST_DATABASE ? global.TEST_DATABASE : 'mongodb://localhost/TipflipDB';
 

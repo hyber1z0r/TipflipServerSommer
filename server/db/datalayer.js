@@ -114,13 +114,17 @@ function deleteCenter(id) {
 
     getCenter(id)
         .then(function (center) {
-            center.remove(function (err) {
-                if (err) {
-                    deferred.reject(err);
-                } else {
-                    deferred.resolve();
-                }
-            });
+            if(center) {
+                center.remove(function (err) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve();
+                    }
+                });
+            } else {
+                deferred.reject();
+            }
         }, function (error) {
             deferred.reject(error);
         });

@@ -166,6 +166,15 @@ router.get('/center/:id', function (req, res) {
         });
 });
 
+router.delete('/center/:id', function (req, res) {
+    datalayer.deleteCenter(req.param('id'))
+        .then(function () {
+            res.json({message: 'Success in deleting ' + id})
+        }, function (error) {
+            res.status(500).json({message: 'Server error'})
+        });
+});
+
 /**
  * For creating a new store, requires an image, name and center
  * */

@@ -38,9 +38,14 @@ app.factory('apiFactory', function ($http) {
         });
     };
 
+    var deleteCenter = function (id) {
+        return $http.delete('/api/center/' + id);
+    };
+
     return {
         getAllCenters: getAllCenters,
-        createCenter: createCenter
+        createCenter: createCenter,
+        deleteCenter: deleteCenter
     }
 });
 
