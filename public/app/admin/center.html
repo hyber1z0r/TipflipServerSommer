@@ -18,9 +18,7 @@
                     </div>
                 </div>
 
-
                 <!-- The table with all the centers -->
-
                 <table class="table table-hover table-responsive table-striped">
                     <thead>
                     <tr>
@@ -28,6 +26,7 @@
                         <th>Location</th>
                         <th>Image</th>
                         <th>Stores</th>
+                        <th>Edit</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -37,16 +36,21 @@
                                   ng-click="open(center.name, center.location)">{{center.location}}</span></td>
                         <td><img ng-src="{{center.imagePath}}" class="img-thumbnail"></td>
                         <td></td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-primary">Edit</button>
+                                <button type="button" class="btn btn-danger">Delete</button>
+                            </div>
+                        </td>
                     </tr>
 
                     </tbody>
                 </table>
-
             </div>
+
             <div class="profile-content">
                 <h1>Create new center</h1>
                 <hr>
-
                 <!-- The form for creating a new center -->
                 <form role="form">
                     <div class="form-group">
@@ -62,18 +66,17 @@
                     <div class="form-group">
                         <label for="centerImage">Center image</label>
 
-                        <!--<input type="file" file-model="centerImage" id="centerImage"-->
-                               <!--accept='image/jpeg,image/bmp,image/png'>-->
-
                         <div class="fileinput fileinput-new input-group" data-provides="fileinput">
-                            <div class="form-control" data-trigger="fileinput"><i class="glyphicon glyphicon-file fileinput-exists"></i> <span class="fileinput-filename"></span></div>
-                            <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span class="fileinput-exists">Change</span>
+                            <div class="form-control" data-trigger="fileinput"><i
+                                    class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                    class="fileinput-filename"></span></div>
+                            <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span
+                                    class="fileinput-exists">Change</span>
                                 <input type="file" file-model="centerImage" id="centerImage"
                                        accept='image/jpeg,image/bmp,image/png'></span>
-                            <a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">Remove</a>
+                            <a href="#" class="input-group-addon btn btn-default fileinput-exists"
+                               data-dismiss="fileinput">Remove</a>
                         </div>
-
-                        <p class="help-block">Choose a square photo of the center</p>
                     </div>
                     <button type="submit" ng-click="createCenter()" class="btn btn-primary">Submit</button>
                 </form>

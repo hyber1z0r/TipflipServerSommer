@@ -8,9 +8,9 @@ html, body {
     background-color: #f6f6f6;
     color: #444;
     font-family: 'Lato', sans-serif;
-    min-width:500px; /* chrome */
+    min-width:700px; /* chrome */
     width: auto !important; /* firefox */
-    width:500px; /* IE */
+    width:700px; /* IE */
 }
 
 @media (min-width: 768px) {

@@ -3,8 +3,10 @@
 // Declare app level module which depends on views, and components
 angular.module('tipflip', [
     'ngRoute',
+    'ngAnimate',
     'ui.bootstrap',
     'ngMap',
+    'toastr',
     'tipflip.controllers',
     'tipflip.directives',
     'tipflip.factories',
