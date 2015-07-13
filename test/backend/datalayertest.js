@@ -238,6 +238,8 @@ describe('Datalayer', function () {
                 return datalayer.createStore(name, imagePath, contentType, _center).should.be.rejected;
             });
 
+            // TODO what if _center is provided, but not valid?
+
             // it should be possible to have two of the same store in one center. This is typical for stores like 7-eleven
             // Quint is a store that already exists!
             it('should be fulfilled if store name and center already exists', function () {
