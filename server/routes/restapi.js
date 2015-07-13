@@ -28,7 +28,7 @@ var imageValidator = function (req, res, next) {
 /**
  *  For creating a new category. Requires a name and an image for the category.
  * */
-router.post('/category', imageValidator, function (req, res) {
+router.post('/categories', imageValidator, function (req, res) {
     // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.name) {
         if (req.files.image) {
@@ -62,8 +62,8 @@ router.post('/category', imageValidator, function (req, res) {
 /**
  * Is for getting all the categories
  * */
-router.get('/category', function (req, res) {
-    datalayer.getAllCategories()
+router.get('/categories', function (req, res) {
+    datalayer.getCategories()
         .then(function (categories) {
             if (categories.length === 0) {
                 res.status(404).json({message: 'No categories added yet.'})
@@ -79,7 +79,7 @@ router.get('/category', function (req, res) {
 /**
  * Is for getting a single category, if it exists, by id.
  * */
-router.get('/category/:id', function (req, res) {
+router.get('/categories/:id', function (req, res) {
     datalayer.getCategory(req.param('id'))
         .then(function (category) {
             if (category) {
@@ -99,7 +99,7 @@ router.get('/category/:id', function (req, res) {
 /**
  * For creating a new center, requires an image, name and location
  * */
-router.post('/center', imageValidator, function (req, res) {
+router.post('/centers', imageValidator, function (req, res) {
     // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.name || !req.body.location) {
         if (req.files.image) {
@@ -131,8 +131,8 @@ router.post('/center', imageValidator, function (req, res) {
 /**
  * Is for getting all centers.
  * */
-router.get('/center', function (req, res) {
-    datalayer.getAllCenters()
+router.get('/centers', function (req, res) {
+    datalayer.getCenters()
         .then(function (centers) {
             if (centers.length === 0) {
                 res.status(404).json({message: 'No centers added yet.'})
@@ -149,7 +149,7 @@ router.get('/center', function (req, res) {
  * or an appropriate message if not found
  * If the id is unparsable or the mongo is down, the error callback will be called with an appropriate message
  * */
-router.get('/center/:id', function (req, res) {
+router.get('/centers/:id', function (req, res) {
     datalayer.getCenter(req.param('id'))
         .then(function (center) {
             if (center) {
@@ -166,7 +166,7 @@ router.get('/center/:id', function (req, res) {
         });
 });
 
-router.delete('/center/:id', function (req, res) {
+router.delete('/centers/:id', function (req, res) {
     datalayer.deleteCenter(req.param('id'))
         .then(function () {
             res.json({message: 'Success in deleting ' + id})
@@ -178,7 +178,7 @@ router.delete('/center/:id', function (req, res) {
 /**
  * For creating a new store, requires an image, name and center
  * */
-router.post('/store', imageValidator, function (req, res) {
+router.post('/stores', imageValidator, function (req, res) {
     // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.name || !req.body._center) {
         if (req.files.image) {
@@ -210,8 +210,8 @@ router.post('/store', imageValidator, function (req, res) {
 /**
  * Is for getting all stores.
  * */
-router.get('/store', function (req, res) {
-    datalayer.getAllStores()
+router.get('/stores', function (req, res) {
+    datalayer.getStores()
         .then(function (stores) {
             if (stores.length === 0) {
                 res.status(404).json({message: 'No stores added yet.'})
@@ -228,7 +228,7 @@ router.get('/store', function (req, res) {
  * or an appropriate message if not found
  * If the id is unparsable or the mongo is down, the error callback will be called with an appropriate message
  * */
-router.get('/store/:id', function (req, res) {
+router.get('/stores/:id', function (req, res) {
     datalayer.getStore(req.param('id'))
         .then(function (store) {
             if (store) {
@@ -248,7 +248,7 @@ router.get('/store/:id', function (req, res) {
 /**
  * For creating a new offer, requires an image, discount, description, expiration date, store and a category
  * */
-router.post('/offer', imageValidator, function (req, res) {
+router.post('/offers', imageValidator, function (req, res) {
     // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.discount || !req.body.description
         || !req.body.expiration || !req.body.store || !req.body.category) {
@@ -284,8 +284,8 @@ router.post('/offer', imageValidator, function (req, res) {
 /**
  * Is for getting all offers.
  * */
-router.get('/offer', function (req, res) {
-    datalayer.getAllOffers()
+router.get('/offers', function (req, res) {
+    datalayer.getOffers()
         .then(function (offers) {
             if (offers.length === 0) {
                 res.status(404).json({message: 'No offers added yet.'})
@@ -302,7 +302,7 @@ router.get('/offer', function (req, res) {
  * or an appropriate message if not found
  * If the id is unparsable or the mongo is down, the error callback will be called with an appropriate message
  * */
-router.get('/offer/:id', function (req, res) {
+router.get('/offers/:id', function (req, res) {
     datalayer.getOffer(req.param('id'))
         .then(function (offer) {
             if (offer) {

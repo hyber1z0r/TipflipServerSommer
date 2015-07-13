@@ -43,7 +43,7 @@ angular.module('tipflip.admin', ['ngRoute'])
         $scope.centers = [];
 
         var getAllCenters = function () {
-            apiFactory.getAllCenters()
+            apiFactory.getCenters()
                 .success(function (data, status, headers, config) {
                     $scope.centers = data;
                 })
@@ -129,7 +129,7 @@ angular.module('tipflip.admin', ['ngRoute'])
         $scope.offers = [];
 
         var getAllOffers = function () {
-            apiFactory.getAllOffers()
+            apiFactory.getOffers()
                 .success(function (data, status, headers, config) {
                     $scope.offers = data;
                 })

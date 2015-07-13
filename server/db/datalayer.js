@@ -35,7 +35,7 @@ function createCategory(name, imagePath, contentType) {
 /**
  * Returns all categories
  * */
-function getAllCategories() {
+function getCategories() {
     return Category.find({}).exec();
 }
 
@@ -95,7 +95,7 @@ function createCenter(name, imagePath, contentType, location) {
 /**
  * Returns all centers
  * */
-function getAllCenters() {
+function getCenters() {
     return Center.find({}).exec();
 }
 
@@ -159,7 +159,7 @@ function createStore(name, imagePath, contentType, _center) {
 /**
  * Returns all stores
  * */
-function getAllStores() {
+function getStores() {
     return Store.find({}).exec();
 }
 
@@ -223,7 +223,7 @@ function createOffer(discount, description, imagePath, contentType, created, exp
 /**
  * Returns all offers
  * */
-function getAllOffers() {
+function getOffers() {
     return Offer.find({}).exec();
 }
 
@@ -258,22 +258,22 @@ function deleteOffer(id) {
 
 module.exports = {
     createCategory: createCategory,
-    getAllCategories: getAllCategories,
+    getCategories: getCategories,
     getCategory: getCategory,
     deleteCategory: deleteCategory,
 
     createCenter: createCenter,
-    getAllCenters: getAllCenters,
+    getCenters: getCenters,
     getCenter: getCenter,
     deleteCenter: deleteCenter,
 
     createStore: createStore,
-    getAllStores: getAllStores,
+    getStores: getStores,
     getStore: getStore,
     deleteStore: deleteStore,
 
     createOffer: createOffer,
-    getAllOffers: getAllOffers,
+    getOffers: getOffers,
     getOffer: getOffer,
     deleteOffer: deleteOffer
 };

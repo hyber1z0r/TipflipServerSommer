@@ -21,7 +21,7 @@ describe('RestAPI', function () {
     describe('Category', function () {
         it('should get all 5 categories', function (done) {
             request(app)
-                .get('/api/category')
+                .get('/api/categories')
                 .end(function (err, res) {
                     var categories = JSON.parse(res.text);
                     categories.length.should.equal(5);
@@ -32,11 +32,11 @@ describe('RestAPI', function () {
 
         it('should get 1 category', function (done) {
             var req = request(app);
-            req.get('/api/category')
+            req.get('/api/categories')
                 .end(function (err, res) {
                     var categories = JSON.parse(res.text);
                     var category = categories[0];
-                    req.get('/api/category/' + category._id)
+                    req.get('/api/categories/' + category._id)
                         .end(function (error, result) {
                             var fetchedCategory = JSON.parse(result.text);
                             category._id.should.equal(fetchedCategory._id);
@@ -52,7 +52,7 @@ describe('RestAPI', function () {
         it('should return 404 when no categories added yet', function (done) {
             insertScript.removeAll(function () {
                 request(app)
-                    .get('/api/category')
+                    .get('/api/categories')
                     .expect(404)
                     .end(function (err, res) {
                         var response = JSON.parse(res.text);
@@ -66,7 +66,7 @@ describe('RestAPI', function () {
         it('should create a new category', function (done) {
             // Test field is a field i added, that deletes the photo from the server when we're testing
             request(app)
-                .post('/api/category')
+                .post('/api/categories')
                 .field('name', 'shoes')
                 .field('test', 'true')
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
@@ -80,7 +80,7 @@ describe('RestAPI', function () {
 
         it('should return 400 when name field is missing', function (done) {
             request(app)
-                .post('/api/category')
+                .post('/api/categories')
                 .field('test', 'true')
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
                 .end(function (err, res) {
@@ -92,7 +92,7 @@ describe('RestAPI', function () {
 
         it('should return 400 when image field is missing', function (done) {
             request(app)
-                .post('/api/category')
+                .post('/api/categories')
                 .field('name', 'shoes')
                 .field('test', 'true')
                 .end(function (err, res) {
@@ -105,7 +105,7 @@ describe('RestAPI', function () {
         it('should return 409 when the category already exists', function (done) {
             // the category 'Elektronik' already exists!
             request(app)
-                .post('/api/category')
+                .post('/api/categories')
                 .field('name', 'Elektronik')
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
                 .field('test', 'true')
@@ -119,7 +119,7 @@ describe('RestAPI', function () {
         it('should return 409 when the category already exists, CASE INSENSITIVE', function (done) {
             // the category 'Elektronik' already exists!
             request(app)
-                .post('/api/category')
+                .post('/api/categories')
                 .field('name', 'eLeKTRoNik')
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
                 .field('test', 'true')
@@ -134,7 +134,7 @@ describe('RestAPI', function () {
     describe('Center', function () {
         it('should get all 3 centers', function (done) {
             request(app)
-                .get('/api/center')
+                .get('/api/centers')
                 .end(function (err, res) {
                     var centers = JSON.parse(res.text);
                     centers.length.should.equal(3);
@@ -148,7 +148,7 @@ describe('RestAPI', function () {
     describe('Store', function () {
         it('should get all 8 stores', function (done) {
             request(app)
-                .get('/api/store')
+                .get('/api/stores')
                 .end(function (err, res) {
                     var stores = JSON.parse(res.text);
                     stores.length.should.equal(8);
@@ -161,7 +161,7 @@ describe('RestAPI', function () {
     describe('Offer', function () {
         it('should get all 8 offers', function (done) {
             request(app)
-                .get('/api/offer')
+                .get('/api/offers')
                 .end(function (err, res) {
                     var offers = JSON.parse(res.text);
                     offers.length.should.equal(5);

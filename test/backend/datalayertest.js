@@ -21,13 +21,13 @@ describe('Datalayer', function () {
     describe('Category', function () {
         describe('getAllCategories', function () {
             it('should return all 5 categories', function () {
-                return datalayer.getAllCategories().should.eventually.have.length(5);
+                return datalayer.getCategories().should.eventually.have.length(5);
             });
         });
 
         describe('getCategory', function () {
             it('should return a category object and be fulfilled if exists', function () {
-                datalayer.getAllCategories()
+                datalayer.getCategories()
                     .then(function (categories) {
                         var randId = categories[0]._id;
                         return datalayer.getCategory(randId).should.eventually.have.properties(['name', 'imagePath', 'contentType']);
@@ -85,13 +85,13 @@ describe('Datalayer', function () {
     describe('Center', function () {
         describe('getAllCenters', function () {
             it('should return 3 centers', function () {
-                return datalayer.getAllCenters().should.eventually.have.length(3);
+                return datalayer.getCenters().should.eventually.have.length(3);
             });
         });
 
         describe('getCenter', function () {
             it('should return a center object and be fulfilled if exists', function () {
-                datalayer.getAllCenters()
+                datalayer.getCenters()
                     .then(function (centers) {
                         var randId = centers[0]._id;
                         return datalayer.getCenter(randId).should.eventually.have.properties(['name', 'imagePath', 'contentType', 'location']);
@@ -162,13 +162,13 @@ describe('Datalayer', function () {
     describe('Store', function () {
         describe('getAllStores', function () {
             it('should return 8 stores', function () {
-                return datalayer.getAllStores().should.eventually.have.length(8);
+                return datalayer.getStores().should.eventually.have.length(8);
             });
         });
 
         describe('getStore', function () {
             it('should return a store object and be fulfilled if exists', function () {
-                datalayer.getAllStores()
+                datalayer.getStores()
                     .then(function (stores) {
                         var randId = stores[0]._id;
                         return datalayer.getStore(randId).should.eventually.have.properties(['name', 'imagePath', 'contentType', '_center']);
@@ -254,12 +254,12 @@ describe('Datalayer', function () {
 
         describe('deleteStore', function () {
             it('should delete 1 store', function (done) {
-                datalayer.getAllStores()
+                datalayer.getStores()
                     .then(function (stores) {
                         stores.length.should.equal(8);
                         datalayer.deleteStore(stores[0]._id)
                             .then(function () {
-                                datalayer.getAllStores()
+                                datalayer.getStores()
                                     .then(function (storesUpdate) {
                                         storesUpdate.length.should.equal(7);
                                         done();
@@ -273,13 +273,13 @@ describe('Datalayer', function () {
     describe('Offer', function () {
         describe('getAllOffers', function () {
             it('should return 3 offers', function () {
-                return datalayer.getAllOffers().should.eventually.have.length(5);
+                return datalayer.getOffers().should.eventually.have.length(5);
             });
         });
 
         describe('getOffer', function () {
             it('should return an offer with given id', function () {
-                datalayer.getAllOffers()
+                datalayer.getOffers()
                     .then(function (offers) {
                         return datalayer.getOffer(offers[0]._id).should.eventually.have.property('_id');
                     });
@@ -303,9 +303,9 @@ describe('Datalayer', function () {
                 var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
-                datalayer.getAllStores()
+                datalayer.getStores()
                     .then(function (stores) {
-                        datalayer.getAllCategories()
+                        datalayer.getCategories()
                             .then(function (categories) {
                                 return datalayer.createOffer(discount, description, imagePath,
                                     contentType, created, expiration, stores[0]._id, categories[0]._id)

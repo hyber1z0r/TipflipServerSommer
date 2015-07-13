@@ -24,7 +24,7 @@ app.factory('authInterceptor', function ($rootScope, $q, $window) {
 
 app.factory('apiFactory', function ($http) {
     var getAllCenters = function () {
-        return $http.get('/api/center');
+        return $http.get('/api/centers');
     };
 
     var createCenter = function (name, location, image) {
@@ -32,14 +32,14 @@ app.factory('apiFactory', function ($http) {
         fd.append('name', name);
         fd.append('location', location);
         fd.append('image', image);
-        return $http.post('/api/center', fd, {
+        return $http.post('/api/centers', fd, {
             transformRequest: angular.identity,
             headers: {'Content-Type': undefined}
         });
     };
 
     var deleteCenter = function (id) {
-        return $http.delete('/api/center/' + id);
+        return $http.delete('/api/centers/' + id);
     };
 
     var getAllOffers = function () {
@@ -47,11 +47,11 @@ app.factory('apiFactory', function ($http) {
     };
 
     return {
-        getAllCenters: getAllCenters,
+        getCenters: getAllCenters,
         createCenter: createCenter,
         deleteCenter: deleteCenter,
 
-        getAllOffers: getAllOffers
+        getOffers: getAllOffers
     }
 });
 
