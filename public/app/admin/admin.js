@@ -42,27 +42,42 @@ angular.module('tipflip.admin', ['ngRoute'])
     .controller('AdminCenterCtrl', function ($scope, apiFactory, $modal, toastr) {
         $scope.centers = [];
 
-        var getAllCenters = function () {
+        var getCenters = function () {
             apiFactory.getCenters()
                 .success(function (data, status, headers, config) {
-                    $scope.centers = data;
+                    if (status === 204) {
+                        toastr.info('No centers are created yet! Why don\'t you create one?', 'Information', {
+                            tapToDismiss: true,
+                            positionClass: 'toast-top-right',
+                            progressBar: true
+                        });
+                        document.getElementById('centerName').focus();
+                    } else {
+                        $scope.centers = data;
+                    }
                 })
                 .error(function (data, status, headers, config) {
-
-                })
-        };
-
-        getAllCenters();
-
-        $scope.createCenter = function () {
-            apiFactory.createCenter($scope.centerName, $scope.centerLocation, $scope.centerImage)
-                .success(function (data, status, headers, config) {
-                    toastr.success('Created a new center', 'Success!', {
+                    // Can only be status 500
+                    toastr.error('Internal error!', 'Error!', {
                         tapToDismiss: true,
                         positionClass: 'toast-top-right',
                         progressBar: true
                     });
-                    getAllCenters();
+                    console.log('Error in getCenters' + data);
+                });
+        };
+
+        getCenters();
+
+        $scope.createCenter = function () {
+            apiFactory.createCenter($scope.centerName, $scope.centerLocation, $scope.centerImage)
+                .success(function (data, status, headers, config) {
+                    toastr.success(data.message, 'Success!', {
+                        tapToDismiss: true,
+                        positionClass: 'toast-top-right',
+                        progressBar: true
+                    });
+                    getCenters();
                 })
                 .error(function (data, status, headers, config) {
                     if (status === 500) {
@@ -72,6 +87,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                             progressBar: true
                         });
                     } else {
+                        // This is triggered when 400, or 409
                         toastr.warning(data.message, 'Warning!', {
                             tapToDismiss: true,
                             positionClass: 'toast-top-right',
@@ -128,15 +144,28 @@ angular.module('tipflip.admin', ['ngRoute'])
     .controller('AdminOfferCtrl', function ($scope, apiFactory) {
         $scope.offers = [];
 
-        var getAllOffers = function () {
+        var getOffers = function () {
             apiFactory.getOffers()
                 .success(function (data, status, headers, config) {
-                    $scope.offers = data;
+                    if (status === 204) {
+                        toastr.info('No offers are created yet!', 'Information', {
+                            tapToDismiss: true,
+                            positionClass: 'toast-top-right',
+                            progressBar: true
+                        });
+                    } else {
+                        $scope.offers = data;
+                    }
                 })
                 .error(function (data, status, headers, config) {
-
-                })
+                    // Can only be status 500
+                    toastr.error('System failure', 'Error!', {
+                        tapToDismiss: true,
+                        positionClass: 'toast-top-right',
+                        progressBar: true
+                    });
+                    console.log('Error in getCenters' + data);
+                });
         };
-
-        getAllOffers();
+        getOffers();
     });

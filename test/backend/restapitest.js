@@ -70,6 +70,7 @@ describe('RestAPI', function () {
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
                 .end(function (err, res) {
                     res.status.should.equal(201);
+                    should.exist(res.headers.location);
                     // notice capitalized Category name
                     JSON.parse(res.text).message.should.equal('Successfully created new category Shoes');
                     done();

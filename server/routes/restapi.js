@@ -46,14 +46,17 @@ router.post('/categories', imageValidator, function (req, res) {
                 if (req.body.test === 'true') {
                     fs.unlinkSync(req.files.image.path);
                 }
+                // location for new category in response
+                res.location('/api/categories/' + category._id);
                 res.status(201).json({message: 'Successfully created new category ' + category.name});
             }, function (error) {
                 // the document already exists or some weird error happened
                 fs.unlinkSync(req.files.image.path);
                 if (error.code === 11000) {
+                    // 409 indicates that there was a conflict in creating the resource
                     res.status(409).json({message: 'The category \'' + name + '\' already exists!'})
                 } else {
-                    res.status(400).json(error);
+                    res.status(500).json(error);
                 }
             });
     }
@@ -75,6 +78,12 @@ router.get('/categories', function (req, res) {
         });
 });
 
+/**
+ * Is for getting the number of categories
+ * */
+router.get('/categories/count', function (req, res) {
+    res.end('10');
+});
 
 /**
  * Is for getting a single category, if it exists, by id.
@@ -115,14 +124,16 @@ router.post('/centers', imageValidator, function (req, res) {
         datalayer.createCenter(name, imagePath, contentType, location)
             .then(function (center) {
                 // 201 indicates that a POST request created a new document
+                res.location('/api/centers/' + center._id);
                 res.status(201).json({message: 'Successfully created new center ' + center.name});
             }, function (error) {
                 // the document already exists or some weird error happened
                 fs.unlinkSync(req.files.image.path);
                 if (error.code === 11000) {
+                    // 409 indicates that there was a conflict in creating the resource
                     res.status(409).json({message: 'The center \'' + name + '\' already exists!'})
                 } else {
-                    res.status(400).json(error);
+                    res.status(500).json(error);
                 }
             });
     }
@@ -194,14 +205,16 @@ router.post('/stores', imageValidator, function (req, res) {
         datalayer.createStore(name, imagePath, contentType, _center)
             .then(function (store) {
                 // 201 indicates that a POST request created a new document
+                res.location('/api/stores/' + store._id);
                 res.status(201).json({message: 'Successfully created new store ' + store.name});
             }, function (error) {
                 // the document already exists or some weird error happened
                 fs.unlinkSync(req.files.image.path);
                 if (error.code === 11000) {
+                    // 409 indicates that there was a conflict in creating the resource
                     res.status(409).json({message: 'The store \'' + name + '\' already exists!'})
                 } else {
-                    res.status(400).json(error);
+                    res.status(500).json(error);
                 }
             });
     }
@@ -273,9 +286,10 @@ router.post('/offers', imageValidator, function (req, res) {
                 // the document already exists or some weird error happened
                 fs.unlinkSync(req.files.image.path);
                 if (error.code === 11000) {
+                    // 409 indicates that there was a conflict in creating the resource
                     res.status(409).json({message: 'The offer \'' + name + '\' already exists!'})
                 } else {
-                    res.status(400).json(error);
+                    res.status(500).json(error);
                 }
             });
     }
@@ -320,9 +334,6 @@ router.get('/offers/:id', function (req, res) {
 });
 
 
-// TODO: Get my offers, that i've created as a store
-// TODO: Get my offers i've received (user page)
-// TODO: EDIT CENTER, OFFERS, STORES, CATEGORIES
-// TODO: Get number of stores in my center
+// TODO: Get my offers i've received (user page) -  non-near future!
 
 module.exports = router;
