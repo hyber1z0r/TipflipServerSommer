@@ -49,14 +49,12 @@ describe('RestAPI', function () {
                 });
         });
 
-        it('should return 404 when no categories added yet', function (done) {
+        it('should return 204 (No Content) when no categories added yet', function (done) {
             insertScript.removeAll(function () {
                 request(app)
                     .get('/api/categories')
-                    .expect(404)
+                    .expect(204)
                     .end(function (err, res) {
-                        var response = JSON.parse(res.text);
-                        response.message.should.equal('No categories added yet.');
                         should.not.exist(err);
                         done();
                     });

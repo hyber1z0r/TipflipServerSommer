@@ -66,7 +66,7 @@ router.get('/categories', function (req, res) {
     datalayer.getCategories()
         .then(function (categories) {
             if (categories.length === 0) {
-                res.status(404).json({message: 'No categories added yet.'})
+                res.status(204).end();
             } else {
                 res.json(categories);
             }
@@ -135,7 +135,7 @@ router.get('/centers', function (req, res) {
     datalayer.getCenters()
         .then(function (centers) {
             if (centers.length === 0) {
-                res.status(404).json({message: 'No centers added yet.'})
+                res.status(204).end();
             } else {
                 res.json(centers);
             }
@@ -214,7 +214,7 @@ router.get('/stores', function (req, res) {
     datalayer.getStores()
         .then(function (stores) {
             if (stores.length === 0) {
-                res.status(404).json({message: 'No stores added yet.'})
+                res.status(204).end();
             } else {
                 res.json(stores);
             }
@@ -288,7 +288,7 @@ router.get('/offers', function (req, res) {
     datalayer.getOffers()
         .then(function (offers) {
             if (offers.length === 0) {
-                res.status(404).json({message: 'No offers added yet.'})
+                res.status(204).end();
             } else {
                 res.json(offers);
             }
