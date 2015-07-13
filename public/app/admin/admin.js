@@ -131,7 +131,6 @@ angular.module('tipflip.admin', ['ngRoute'])
         var getAllOffers = function () {
             apiFactory.getAllOffers()
                 .success(function (data, status, headers, config) {
-                    console.log(data);
                     $scope.offers = data;
                 })
                 .error(function (data, status, headers, config) {

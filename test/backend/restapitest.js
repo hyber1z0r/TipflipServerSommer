@@ -102,7 +102,7 @@ describe('RestAPI', function () {
                 });
         });
 
-        it('should return 400 when the category already exists', function (done) {
+        it('should return 409 when the category already exists', function (done) {
             // the category 'Elektronik' already exists!
             request(app)
                 .post('/api/category')
@@ -110,13 +110,13 @@ describe('RestAPI', function () {
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
                 .field('test', 'true')
                 .end(function (err, res) {
-                    res.status.should.equal(400);
+                    res.status.should.equal(409);
                     JSON.parse(res.text).message.should.equal('The category \'Elektronik\' already exists!');
                     done();
                 });
         });
 
-        it('should return 400 when the category already exists, CASE INSENSITIVE', function (done) {
+        it('should return 409 when the category already exists, CASE INSENSITIVE', function (done) {
             // the category 'Elektronik' already exists!
             request(app)
                 .post('/api/category')
@@ -124,7 +124,7 @@ describe('RestAPI', function () {
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
                 .field('test', 'true')
                 .end(function (err, res) {
-                    res.status.should.equal(400);
+                    res.status.should.equal(409);
                     JSON.parse(res.text).message.should.equal('The category \'eLeKTRoNik\' already exists!');
                     done();
                 });

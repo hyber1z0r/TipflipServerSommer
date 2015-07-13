@@ -51,7 +51,7 @@ router.post('/category', imageValidator, function (req, res) {
                 // the document already exists or some weird error happened
                 fs.unlinkSync(req.files.image.path);
                 if (error.code === 11000) {
-                    res.status(400).json({message: 'The category \'' + name + '\' already exists!'})
+                    res.status(409).json({message: 'The category \'' + name + '\' already exists!'})
                 } else {
                     res.status(400).json(error);
                 }
@@ -120,7 +120,7 @@ router.post('/center', imageValidator, function (req, res) {
                 // the document already exists or some weird error happened
                 fs.unlinkSync(req.files.image.path);
                 if (error.code === 11000) {
-                    res.status(400).json({message: 'The center \'' + name + '\' already exists!'})
+                    res.status(409).json({message: 'The center \'' + name + '\' already exists!'})
                 } else {
                     res.status(400).json(error);
                 }
@@ -199,7 +199,7 @@ router.post('/store', imageValidator, function (req, res) {
                 // the document already exists or some weird error happened
                 fs.unlinkSync(req.files.image.path);
                 if (error.code === 11000) {
-                    res.status(400).json({message: 'The store \'' + name + '\' already exists!'})
+                    res.status(409).json({message: 'The store \'' + name + '\' already exists!'})
                 } else {
                     res.status(400).json(error);
                 }
@@ -273,7 +273,7 @@ router.post('/offer', imageValidator, function (req, res) {
                 // the document already exists or some weird error happened
                 fs.unlinkSync(req.files.image.path);
                 if (error.code === 11000) {
-                    res.status(400).json({message: 'The offer \'' + name + '\' already exists!'})
+                    res.status(409).json({message: 'The offer \'' + name + '\' already exists!'})
                 } else {
                     res.status(400).json(error);
                 }
