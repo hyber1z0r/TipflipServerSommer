@@ -63,7 +63,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                         positionClass: 'toast-top-right',
                         progressBar: true
                     });
-                    console.log('Error in getCenters' + data);
+                    console.log('Error in getCenters: ' + data);
                 });
         };
 
@@ -86,18 +86,17 @@ angular.module('tipflip.admin', ['ngRoute'])
                             positionClass: 'toast-top-right',
                             progressBar: true
                         });
+                        console.log('Error in createCenter: ' + data);
                     } else {
                         // This is triggered when 400, or 409
                         toastr.warning(data.message, 'Warning!', {
                             tapToDismiss: true,
-                            positionClass: 'toast-top-right',
+                            positionClass: 'toast-bottom-full-width',
                             progressBar: true
                         });
+                        document.getElementById('centerName').focus();
                     }
-
-                    console.log(status);
-                    console.log(data);
-                })
+                });
         };
 
         $scope.deleteCenter = function (id) {

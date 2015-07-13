@@ -283,7 +283,7 @@ describe('Datalayer', function () {
             it('should return an offer with given id', function () {
                 datalayer.getOffers()
                     .then(function (offers) {
-                        return datalayer.getOffer(offers[0]._id).should.eventually.have.property('_id');
+                        return datalayer.getOffer(offers[0]._id).should.eventually.have.properties(['_id', '_store.name', '_category.name']);
                     });
             });
 

@@ -224,14 +224,14 @@ function createOffer(discount, description, imagePath, contentType, created, exp
  * Returns all offers
  * */
 function getOffers() {
-    return Offer.find({}).exec();
+    return Offer.find({}).populate('_store', 'name').populate('_category', 'name').exec();
 }
 
 /**
  * Returns an offer with given ObjectId
  * */
 function getOffer(id) {
-    return Offer.findById(id).exec();
+    return Offer.findById(id).populate('_store', 'name').populate('_category', 'name').exec();
 }
 
 /**
