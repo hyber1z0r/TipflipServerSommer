@@ -102,9 +102,8 @@ router.get('/categories/:id', function (req, res) {
 /**
  *  Is for getting offers in a certain category
  * */
-
 router.get('/categories/:id/offers', function (req, res) {
-    datalayer.getOffersWithCategory(req.param('id'))
+    datalayer.getCategoryOffers(req.param('id'))
         .then(function (offers) {
             if (offers.length === 0) {
                 res.status(204).end();
@@ -192,6 +191,7 @@ router.get('/centers/:id', function (req, res) {
         });
 });
 
+// TODO make this!
 router.delete('/centers/:id', function (req, res) {
     datalayer.deleteCenter(req.param('id'))
         .then(function () {
@@ -263,6 +263,26 @@ router.get('/stores/:id', function (req, res) {
                 res.json(store);
             } else {
                 res.status(404).json({message: 'No store with id ' + req.param('id')});
+            }
+        }, function (error) {
+            if (error.name === 'CastError') {
+                res.status(400).json({message: req.param('id') + ' is not a valid id'});
+            } else {
+                res.status(500).json(error);
+            }
+        });
+});
+
+/**
+ *  Is for getting offers in a certain store
+ * */
+router.get('/stores/:id/offers', function (req, res) {
+    datalayer.getStoreOffers(req.param('id'))
+        .then(function (offers) {
+            if (offers.length === 0) {
+                res.status(204).end();
+            } else {
+                res.json(offers);
             }
         }, function (error) {
             if (error.name === 'CastError') {

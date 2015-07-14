@@ -71,7 +71,7 @@ function deleteCategory(id) {
 /**
  * Returns an array of offers in a certain category
  * */
-function getOffersWithCategory(id) {
+function getCategoryOffers(id) {
     return Offer.find({_category: id}).exec();
 }
 
@@ -200,6 +200,13 @@ function deleteStore(id) {
 }
 
 /**
+ * Returns an array of offers in a certain store
+ * */
+function getStoreOffers(id) {
+    return Offer.find({_store: id}).exec();
+}
+
+/**
  * Creates a new offer in the database
  * */
 function createOffer(discount, description, imagePath, contentType, created, expiration, _store, _category) {
@@ -289,7 +296,7 @@ module.exports = {
     getCategories: getCategories,
     getCategory: getCategory,
     deleteCategory: deleteCategory,
-    getOffersWithCategory: getOffersWithCategory,
+    getCategoryOffers: getCategoryOffers,
 
     createCenter: createCenter,
     getCenters: getCenters,
@@ -300,6 +307,7 @@ module.exports = {
     getStores: getStores,
     getStore: getStore,
     deleteStore: deleteStore,
+    getStoreOffers: getStoreOffers,
 
     createOffer: createOffer,
     getOffers: getOffers,
