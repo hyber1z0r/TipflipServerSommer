@@ -150,7 +150,10 @@ function getCenterStores(id) {
  * Returns an array of offers in a specific center
  * */
 function getCenterOffers(id) {
-    return Offer.find({_center: id}).exec();
+    return Store.find({_center: id}).exec()
+        .then(function (stores) {
+            return Offer.find({_store: {$in: stores}}).exec();
+        });
 }
 
 /**
