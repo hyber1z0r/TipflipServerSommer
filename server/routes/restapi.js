@@ -98,6 +98,28 @@ router.get('/categories/:id', function (req, res) {
         });
 });
 
+
+/**
+ *  Is for getting offers in a certain category
+ * */
+
+router.get('/categories/:id/offers', function (req, res) {
+    datalayer.getOffersWithCategory(req.param('id'))
+        .then(function (offers) {
+            if (offers.length === 0) {
+                res.status(204).end();
+            } else {
+                res.json(offers);
+            }
+        }, function (error) {
+            if (error.name === 'CastError') {
+                res.status(400).json({message: req.param('id') + ' is not a valid id'});
+            } else {
+                res.status(500).json(error);
+            }
+        });
+});
+
 /**
  * For creating a new center, requires an image, name and location
  * */

@@ -69,6 +69,13 @@ function deleteCategory(id) {
 }
 
 /**
+ * Returns an array of offers in a certain category
+ * */
+function getOffersWithCategory(id) {
+    return Offer.find({_category: id}).exec();
+}
+
+/**
  * Creates a new center in the database
  * */
 function createCenter(name, imagePath, contentType, location) {
@@ -282,6 +289,7 @@ module.exports = {
     getCategories: getCategories,
     getCategory: getCategory,
     deleteCategory: deleteCategory,
+    getOffersWithCategory: getOffersWithCategory,
 
     createCenter: createCenter,
     getCenters: getCenters,
