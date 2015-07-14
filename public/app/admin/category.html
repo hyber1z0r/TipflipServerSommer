@@ -33,7 +33,7 @@
                             <img ng-src="{{category.imagePath}}" class="img-thumbnail img-circle widget-icon">
                         </td>
                         <td>{{category.name}}</td>
-                        <td>
+                        <td class="col-md-2 col-xs-2">
                             <div class="btn-group btn-group-sm" role="group">
                                 <button type="button" class="btn btn-primary">Edit</button>
                                 <button type="button" class="btn btn-danger" ng-click="deleteCenter(center._id)">
@@ -44,6 +44,34 @@
                     </tr>
                     </tbody>
                 </table>
+            </div>
+            <div class="profile-content">
+                <h1>Create new category</h1>
+                <hr>
+                <!-- The form for creating a new category -->
+                <form role="form">
+                    <div class="form-group">
+                        <label for="categoryName">Category name</label>
+                        <input type="text" class="form-control" ng-model="categoryName" id="categoryName"
+                               placeholder="Enter category name">
+                    </div>
+                    <div class="form-group">
+                        <label for="categoryImage">Category image</label>
+
+                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                            <div class="form-control" data-trigger="fileinput"><i
+                                    class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                    class="fileinput-filename"></span></div>
+                            <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span
+                                    class="fileinput-exists">Change</span>
+                                <input type="file" file-model="categoryImage" id="categoryImage"
+                                       accept='image/jpeg,image/bmp,image/png'></span>
+                            <a href="#" class="input-group-addon btn btn-default fileinput-exists"
+                               data-dismiss="fileinput">Remove</a>
+                        </div>
+                    </div>
+                    <button type="submit" ng-click="" class="btn btn-primary">Submit</button>
+                </form>
             </div>
         </div>
     </div>
