@@ -9,19 +9,19 @@ angular.module('tipflip.admin', ['ngRoute'])
             templateUrl: '/app/admin/admin.html',
             controller: 'AdminCtrl'
         })
-            .when('/admin/store', {
+            .when('/admin/stores', {
                 templateUrl: '/app/admin/store.html',
                 controller: 'AdminStoreCtrl'
             })
-            .when('/admin/category', {
+            .when('/admin/categories', {
                 templateUrl: '/app/admin/category.html',
                 controller: 'AdminCategoryCtrl'
             })
-            .when('/admin/center', {
+            .when('/admin/centers', {
                 templateUrl: '/app/admin/center.html',
                 controller: 'AdminCenterCtrl'
             })
-            .when('/admin/offer', {
+            .when('/admin/offers', {
                 templateUrl: '/app/admin/offer.html',
                 controller: 'AdminOfferCtrl'
             });
