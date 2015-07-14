@@ -43,7 +43,7 @@ app.factory('apiFactory', function ($http) {
     };
 
     var getOffers = function () {
-        return $http.get('/api/offer');
+        return $http.get('/api/offers');
     };
 
     return {

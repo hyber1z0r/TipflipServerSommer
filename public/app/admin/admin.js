@@ -140,7 +140,7 @@ angular.module('tipflip.admin', ['ngRoute'])
         };
     })
 
-    .controller('AdminOfferCtrl', function ($scope, apiFactory) {
+    .controller('AdminOfferCtrl', function ($scope, apiFactory, toastr) {
         $scope.offers = [];
 
         var getOffers = function () {

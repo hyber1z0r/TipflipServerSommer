@@ -327,7 +327,7 @@ router.get('/offers/:id', function (req, res) {
 });
 
 /**
- * Is for getting the number of a model
+ * Is for getting the count of a model
  * */
 router.get('/count/:model', function (req, res) {
     datalayer.getCount(req.param('model'))
