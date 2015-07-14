@@ -79,13 +79,6 @@ router.get('/categories', function (req, res) {
 });
 
 /**
- * Is for getting the number of categories
- * */
-router.get('/categories/count', function (req, res) {
-    res.end('10');
-});
-
-/**
  * Is for getting a single category, if it exists, by id.
  * */
 router.get('/categories/:id', function (req, res) {
@@ -333,6 +326,21 @@ router.get('/offers/:id', function (req, res) {
         });
 });
 
+/**
+ * Is for getting the number of a model
+ * */
+router.get('/count/:model', function (req, res) {
+    datalayer.getCount(req.param('model'))
+        .then(function (count) {
+            res.json({count: count});
+        }, function (err) {
+            if (err.message) {
+                res.status(400).json(err);
+            } else {
+                res.status(500).json(err);
+            }
+        });
+});
 
 // TODO: Get my offers i've received (user page) -  non-near future!
 

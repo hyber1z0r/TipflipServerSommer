@@ -238,7 +238,13 @@ describe('Datalayer', function () {
                 return datalayer.createStore(name, imagePath, contentType, _center).should.be.rejected;
             });
 
-            // TODO what if _center is provided, but not valid?
+            it('should be rejected if center is provided but not valid', function () {
+                var name = 'TestStore';
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = 'image/png';
+                var _center = 'notvalidid';
+                return datalayer.createStore(name, imagePath, contentType, _center).should.be.rejected;
+            });
 
             // it should be possible to have two of the same store in one center. This is typical for stores like 7-eleven
             // Quint is a store that already exists!
@@ -300,7 +306,7 @@ describe('Datalayer', function () {
         describe('createOffer', function () {
             it('should create an offer and return an inserted with _id property', function () {
                 var discount = '20%';
-                var description = 'I dag er der tilbud på iPhone covers fra Puro.'
+                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
                 var imagePath = 'uploads/fakeimage.png';
                 var contentType = 'image/png';
                 var created = Date.now();
@@ -316,6 +322,10 @@ describe('Datalayer', function () {
                     });
             });
             // TODO create the rest, even though i know they work.
+        });
+
+        describe('deleteOffer', function () {
+
         });
     });
 });

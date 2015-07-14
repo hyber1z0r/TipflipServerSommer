@@ -114,7 +114,7 @@ function deleteCenter(id) {
 
     getCenter(id)
         .then(function (center) {
-            if(center) {
+            if (center) {
                 center.remove(function (err) {
                     if (err) {
                         deferred.reject(err);
@@ -256,6 +256,27 @@ function deleteOffer(id) {
     return deferred.promise;
 }
 
+function getCount(model) {
+    switch (model) {
+        case 'categories':
+            return Category.count({}).exec();
+            break;
+        case 'centers':
+            return Center.count({}).exec();
+            break;
+        case 'stores':
+            return Store.count({}).exec();
+            break;
+        case 'offers':
+            return Offer.count({}).exec();
+            break;
+        default:
+            var deferred = Q.defer();
+            deferred.reject({message: 'Invalid model!'});
+            return deferred.promise;
+    }
+}
+
 module.exports = {
     createCategory: createCategory,
     getCategories: getCategories,
@@ -275,5 +296,7 @@ module.exports = {
     createOffer: createOffer,
     getOffers: getOffers,
     getOffer: getOffer,
-    deleteOffer: deleteOffer
+    deleteOffer: deleteOffer,
+
+    getCount: getCount
 };
