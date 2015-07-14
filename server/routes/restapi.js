@@ -221,6 +221,27 @@ router.get('/centers/:id/stores', function (req, res) {
         });
 });
 
+
+/**
+ * Is for getting all offers in a specific center
+ * */
+router.get('/centers/:id/offers', function (req, res) {
+    datalayer.getCenterOffers(req.param('id'))
+        .then(function (offers) {
+            if (offers.length === 0) {
+                res.status(204).end();
+            } else {
+                res.json(offers);
+            }
+        }, function (error) {
+            if (error.name === 'CastError') {
+                res.status(400).json({message: req.param('id') + ' is not a valid id'});
+            } else {
+                res.status(500).json(error);
+            }
+        });
+});
+
 /**
  * For creating a new store, requires an image, name and center
  * */

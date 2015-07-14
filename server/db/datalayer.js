@@ -147,6 +147,13 @@ function getCenterStores(id) {
 }
 
 /**
+ * Returns an array of offers in a specific center
+ * */
+function getCenterOffers(id) {
+    return Offer.find({_center: id}).exec();
+}
+
+/**
  * Creates a new store in the database
  * */
 function createStore(name, imagePath, contentType, _center) {
@@ -310,6 +317,7 @@ module.exports = {
     getCenter: getCenter,
     deleteCenter: deleteCenter,
     getCenterStores: getCenterStores,
+    getCenterOffers: getCenterOffers,
 
     createStore: createStore,
     getStores: getStores,
