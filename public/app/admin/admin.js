@@ -5,13 +5,10 @@
 
 angular.module('tipflip.admin', ['ngRoute'])
     .config(['$routeProvider', function ($routeProvider) {
-        $routeProvider.when('/admin', {
-            templateUrl: '/app/admin/admin.html',
-            controller: 'AdminCtrl'
-        })
-            .when('/admin/stores', {
-                templateUrl: '/app/admin/store.html',
-                controller: 'AdminStoreCtrl'
+        $routeProvider
+            .when('/admin', {
+                templateUrl: '/app/admin/overview.html',
+                controller: 'AdminCtrl'
             })
             .when('/admin/categories', {
                 templateUrl: '/app/admin/category.html',
@@ -20,6 +17,10 @@ angular.module('tipflip.admin', ['ngRoute'])
             .when('/admin/centers', {
                 templateUrl: '/app/admin/center.html',
                 controller: 'AdminCenterCtrl'
+            })
+            .when('/admin/stores', {
+                templateUrl: '/app/admin/store.html',
+                controller: 'AdminStoreCtrl'
             })
             .when('/admin/offers', {
                 templateUrl: '/app/admin/offer.html',
@@ -33,11 +34,35 @@ angular.module('tipflip.admin', ['ngRoute'])
         };
         $scope.hello = 'Welcome to the main overview admin dashboard page';
     })
-    .controller('AdminStoreCtrl', function ($scope) {
-        $scope.hello = 'This is where you manage and create stores';
-    })
-    .controller('AdminCategoryCtrl', function ($scope) {
-        $scope.hello = 'This is where you manage and create categories';
+    .controller('AdminCategoryCtrl', function ($scope, apiFactory) {
+        $scope.categories = [];
+
+        var getCategories = function () {
+            apiFactory.getCategories()
+                .success(function (data, status, headers, config) {
+                    if (status === 204) {
+                        toastr.info('No categories are created yet! Why don\'t you create one?', 'Information', {
+                            tapToDismiss: true,
+                            positionClass: 'toast-top-right',
+                            progressBar: true
+                        });
+                        document.getElementById('categoryName').focus();
+                    } else {
+                        $scope.categories = data;
+                    }
+                })
+                .error(function (data, status, headers, config) {
+                    // Can only be status 500
+                    toastr.error('Internal error!', 'Error!', {
+                        tapToDismiss: true,
+                        positionClass: 'toast-top-right',
+                        progressBar: true
+                    });
+                    console.log('Error in getCategories: ' + data);
+                });
+        };
+
+        getCategories();
     })
     .controller('AdminCenterCtrl', function ($scope, apiFactory, $modal, toastr) {
         $scope.centers = [];
@@ -142,7 +167,9 @@ angular.module('tipflip.admin', ['ngRoute'])
             $modalInstance.dismiss('cancel');
         };
     })
-
+    .controller('AdminStoreCtrl', function ($scope) {
+        $scope.hello = 'This is where you manage and create stores';
+    })
     .controller('AdminOfferCtrl', function ($scope, apiFactory, toastr) {
         $scope.offers = [];
 

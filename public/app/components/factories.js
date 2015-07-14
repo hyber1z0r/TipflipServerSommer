@@ -23,6 +23,10 @@ app.factory('authInterceptor', function ($rootScope, $q, $window) {
 });
 
 app.factory('apiFactory', function ($http) {
+    var getCategories = function () {
+        return $http.get('/api/categories');
+    };
+
     var getCenters = function () {
         return $http.get('/api/centers');
     };
@@ -47,6 +51,8 @@ app.factory('apiFactory', function ($http) {
     };
 
     return {
+        getCategories: getCategories,
+
         getCenters: getCenters,
         createCenter: createCenter,
         deleteCenter: deleteCenter,

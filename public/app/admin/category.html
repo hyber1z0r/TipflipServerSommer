@@ -5,7 +5,45 @@
         </div>
         <div class="col-md-9">
             <div class="profile-content">
-                {{hello}}
+                <div class="row">
+                    <div class="col-lg-4 col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-body">
+                                <img src="http://i.imgur.com/pPxHgR2.png" class="img-circle pull-left widget-icon">
+
+                                <div class="widget-title text-info" ng-bind="categories.length"></div>
+                                <div class="comment text-info">Categories</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- The table with all the categories -->
+                <table ng-show="categories.length > 0"
+                       class="table table-hover table-responsive table-condensed table-striped">
+                    <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Name</th>
+                        <th>Edit</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="category in categories">
+                        <td class="col-md-2 col-xs-2">
+                            <img ng-src="{{category.imagePath}}" class="img-thumbnail img-circle widget-icon">
+                        </td>
+                        <td>{{category.name}}</td>
+                        <td>
+                            <div class="btn-group btn-group-sm" role="group">
+                                <button type="button" class="btn btn-primary">Edit</button>
+                                <button type="button" class="btn btn-danger" ng-click="deleteCenter(center._id)">
+                                    Delete
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
