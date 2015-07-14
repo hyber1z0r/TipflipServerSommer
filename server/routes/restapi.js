@@ -202,6 +202,26 @@ router.delete('/centers/:id', function (req, res) {
 });
 
 /**
+ * Is for getting all stores in specific center
+ * */
+router.get('/centers/:id/stores', function (req, res) {
+    datalayer.getCenterStores(req.param('id'))
+        .then(function (stores) {
+            if (stores.length === 0) {
+                res.status(204).end();
+            } else {
+                res.json(stores);
+            }
+        }, function (error) {
+            if (error.name === 'CastError') {
+                res.status(400).json({message: req.param('id') + ' is not a valid id'});
+            } else {
+                res.status(500).json(error);
+            }
+        });
+});
+
+/**
  * For creating a new store, requires an image, name and center
  * */
 router.post('/stores', imageValidator, function (req, res) {
