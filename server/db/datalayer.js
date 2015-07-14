@@ -16,7 +16,7 @@ function createCategory(name, imagePath, contentType) {
     var deferred = Q.defer();
 
     var cat = new Category({
-        name: name ? name.capitalize(true) : name,
+        name: name ? name.capitalize(true).trim() : name,
         imagePath: imagePath,
         contentType: contentType
     });
@@ -163,7 +163,7 @@ function createStore(name, imagePath, contentType, _center) {
     var deferred = Q.defer();
 
     var s = new Store({
-        name: name ? name.capitalize(true) : name,
+        name: name ? name.capitalize(true).trim() : name,
         imagePath: imagePath,
         contentType: contentType,
         _center: _center
