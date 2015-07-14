@@ -77,6 +77,9 @@ angular.module('tipflip.admin', ['ngRoute'])
                         positionClass: 'toast-top-right',
                         progressBar: true
                     });
+                    $scope.centerName = '';
+                    $scope.centerLocation = '';
+                    angular.element($('.fileinput').fileinput('clear'));
                     getCenters();
                 })
                 .error(function (data, status, headers, config) {
