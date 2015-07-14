@@ -27,6 +27,16 @@ app.factory('apiFactory', function ($http) {
         return $http.get('/api/categories');
     };
 
+    var createCategory = function (name, image) {
+        var fd = new FormData();
+        fd.append('name', name);
+        fd.append('image', image);
+        return $http.post('/api/categories', fd, {
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        });
+    };
+
     var getCenters = function () {
         return $http.get('/api/centers');
     };
@@ -52,6 +62,7 @@ app.factory('apiFactory', function ($http) {
 
     return {
         getCategories: getCategories,
+        createCategory: createCategory,
 
         getCenters: getCenters,
         createCenter: createCenter,

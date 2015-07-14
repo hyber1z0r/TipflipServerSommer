@@ -34,7 +34,7 @@ angular.module('tipflip.admin', ['ngRoute'])
         };
         $scope.hello = 'Welcome to the main overview admin dashboard page';
     })
-    .controller('AdminCategoryCtrl', function ($scope, apiFactory) {
+    .controller('AdminCategoryCtrl', function ($scope, apiFactory, toastr) {
         $scope.categories = [];
 
         var getCategories = function () {
@@ -63,6 +63,40 @@ angular.module('tipflip.admin', ['ngRoute'])
         };
 
         getCategories();
+
+        $scope.createCategory = function () {
+            apiFactory.createCategory($scope.categoryName, $scope.categoryImage)
+                .success(function (data, status, headers, config) {
+                    toastr.success(data.message, 'Success!', {
+                        tapToDismiss: true,
+                        positionClass: 'toast-top-right',
+                        progressBar: true
+                    });
+                    $scope.categoryName = '';
+                    angular.element($('.fileinput').fileinput('clear'));
+                    getCategories();
+                })
+                .error(function (data, status, headers, config) {
+                    if (status === 500) {
+                        toastr.error('System failure', 'Error!', {
+                            tapToDismiss: true,
+                            positionClass: 'toast-top-right',
+                            progressBar: true
+                        });
+                        console.log('Error in createCategory: ' + data);
+                    } else {
+                        // This is triggered when 400, or 409
+                        toastr.warning(data.message, 'Warning!', {
+                            tapToDismiss: true,
+                            positionClass: 'toast-bottom-full-width',
+                            progressBar: true
+                        });
+                        document.getElementById('categoryName').focus();
+                    }
+                });
+        };
+
+
     })
     .controller('AdminCenterCtrl', function ($scope, apiFactory, $modal, toastr) {
         $scope.centers = [];
