@@ -41,11 +41,7 @@ angular.module('tipflip.admin', ['ngRoute'])
             apiFactory.getCategories()
                 .success(function (data, status, headers, config) {
                     if (status === 204) {
-                        toastr.info('No categories are created yet! Why don\'t you create one?', 'Information', {
-                            tapToDismiss: true,
-                            positionClass: 'toast-top-right',
-                            progressBar: true
-                        });
+                        toastr.info('No categories are created yet! Why don\'t you create one?', 'Information');
                         document.getElementById('categoryName').focus();
                     } else {
                         $scope.categories = data;
@@ -53,11 +49,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                 })
                 .error(function (data, status, headers, config) {
                     // Can only be status 500
-                    toastr.error('Internal error!', 'Error!', {
-                        tapToDismiss: true,
-                        positionClass: 'toast-top-right',
-                        progressBar: true
-                    });
+                    toastr.error('Internal error!', 'Error!');
                     console.log('Error in getCategories: ' + data);
                 });
         };
@@ -67,30 +59,18 @@ angular.module('tipflip.admin', ['ngRoute'])
         $scope.createCategory = function () {
             apiFactory.createCategory($scope.categoryName, $scope.categoryImage)
                 .success(function (data, status, headers, config) {
-                    toastr.success(data.message, 'Success!', {
-                        tapToDismiss: true,
-                        positionClass: 'toast-top-right',
-                        progressBar: true
-                    });
+                    toastr.success(data.message, 'Success!');
                     $scope.categoryName = '';
                     angular.element($('.fileinput').fileinput('clear'));
                     getCategories();
                 })
                 .error(function (data, status, headers, config) {
                     if (status === 500) {
-                        toastr.error('System failure', 'Error!', {
-                            tapToDismiss: true,
-                            positionClass: 'toast-top-right',
-                            progressBar: true
-                        });
+                        toastr.error('System failure', 'Error!');
                         console.log('Error in createCategory: ' + data);
                     } else {
                         // This is triggered when 400, or 409
-                        toastr.warning(data.message, 'Warning!', {
-                            tapToDismiss: true,
-                            positionClass: 'toast-bottom-full-width',
-                            progressBar: true
-                        });
+                        toastr.warning(data.message, 'Warning!');
                         document.getElementById('categoryName').focus();
                     }
                 });
@@ -105,11 +85,7 @@ angular.module('tipflip.admin', ['ngRoute'])
             apiFactory.getCenters()
                 .success(function (data, status, headers, config) {
                     if (status === 204) {
-                        toastr.info('No centers are created yet! Why don\'t you create one?', 'Information', {
-                            tapToDismiss: true,
-                            positionClass: 'toast-top-right',
-                            progressBar: true
-                        });
+                        toastr.info('No centers are created yet! Why don\'t you create one?', 'Information');
                         document.getElementById('centerName').focus();
                     } else {
                         $scope.centers = data;
@@ -117,11 +93,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                 })
                 .error(function (data, status, headers, config) {
                     // Can only be status 500
-                    toastr.error('Internal error!', 'Error!', {
-                        tapToDismiss: true,
-                        positionClass: 'toast-top-right',
-                        progressBar: true
-                    });
+                    toastr.error('Internal error!', 'Error!');
                     console.log('Error in getCenters: ' + data);
                 });
         };
@@ -131,11 +103,7 @@ angular.module('tipflip.admin', ['ngRoute'])
         $scope.createCenter = function () {
             apiFactory.createCenter($scope.centerName, $scope.centerLocation, $scope.centerImage)
                 .success(function (data, status, headers, config) {
-                    toastr.success(data.message, 'Success!', {
-                        tapToDismiss: true,
-                        positionClass: 'toast-top-right',
-                        progressBar: true
-                    });
+                    toastr.success(data.message, 'Success!');
                     $scope.centerName = '';
                     $scope.centerLocation = '';
                     angular.element($('.fileinput').fileinput('clear'));
@@ -143,19 +111,11 @@ angular.module('tipflip.admin', ['ngRoute'])
                 })
                 .error(function (data, status, headers, config) {
                     if (status === 500) {
-                        toastr.error('System failure', 'Error!', {
-                            tapToDismiss: true,
-                            positionClass: 'toast-top-right',
-                            progressBar: true
-                        });
+                        toastr.error('System failure', 'Error!');
                         console.log('Error in createCenter: ' + data);
                     } else {
                         // This is triggered when 400, or 409
-                        toastr.warning(data.message, 'Warning!', {
-                            tapToDismiss: true,
-                            positionClass: 'toast-bottom-full-width',
-                            progressBar: true
-                        });
+                        toastr.warning(data.message, 'Warning!');
                         document.getElementById('centerName').focus();
                     }
                 });
@@ -189,10 +149,8 @@ angular.module('tipflip.admin', ['ngRoute'])
                         return location;
                     }
                 }
-
             });
         };
-
     })
     .controller('CenterMapModalCtrl', function ($scope, $modalInstance, name, location) {
         $scope.name = name;
@@ -211,22 +169,14 @@ angular.module('tipflip.admin', ['ngRoute'])
             apiFactory.getOffers()
                 .success(function (data, status, headers, config) {
                     if (status === 204) {
-                        toastr.info('No offers are created yet!', 'Information', {
-                            tapToDismiss: true,
-                            positionClass: 'toast-top-right',
-                            progressBar: true
-                        });
+                        toastr.info('No offers are created yet!', 'Information');
                     } else {
                         $scope.offers = data;
                     }
                 })
                 .error(function (data, status, headers, config) {
                     // Can only be status 500
-                    toastr.error('System failure', 'Error!', {
-                        tapToDismiss: true,
-                        positionClass: 'toast-top-right',
-                        progressBar: true
-                    });
+                    toastr.error('System failure', 'Error!');
                     console.log('Error in getCenters' + data);
                 });
         };
