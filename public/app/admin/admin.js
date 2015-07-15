@@ -161,6 +161,7 @@ angular.module('tipflip.admin', ['ngRoute'])
     })
     .controller('AdminStoreCtrl', function ($scope, apiFactory, toastr) {
         $scope.stores = [];
+        $scope.centers = [];
 
         var getStores = function () {
             apiFactory.getStores()
@@ -180,6 +181,19 @@ angular.module('tipflip.admin', ['ngRoute'])
                 });
         };
         getStores();
+
+        var getCenters = function () {
+            apiFactory.getCenters()
+                .success(function (data, status, headers, config) {
+                    $scope.centers = data;
+                })
+        };
+
+        getCenters();
+
+        $scope.alertIt = function () {
+            alert($scope.storeCenter);
+        }
     })
     .controller('AdminOfferCtrl', function ($scope, apiFactory, toastr) {
         $scope.offers = [];

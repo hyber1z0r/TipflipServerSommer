@@ -49,6 +49,42 @@
                     </tbody>
                 </table>
             </div>
+            <div class="profile-content">
+                <h1>Create new store</h1>
+                <hr>
+                <!-- The form for creating a new store -->
+                <form role="form">
+                    <div class="form-group">
+                        <label for="storeName">Store name</label>
+                        <input type="text" class="form-control" ng-model="storeName" id="storeName"
+                               placeholder="Enter store name">
+                    </div>
+                    <div class="form-group">
+                        <label for="storeCenter">In center</label>
+                        <select class="form-control" ng-model="storeCenter"
+                                ng-options="center._id as center.name for center in centers" id="storeCenter">
+                        </select>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label for="storeImage">Store image</label>
+
+                        <div class="fileinput fileinput-new input-group" data-provides="fileinput">
+                            <div class="form-control" data-trigger="fileinput"><i
+                                    class="glyphicon glyphicon-file fileinput-exists"></i> <span
+                                    class="fileinput-filename"></span></div>
+                            <span class="input-group-addon btn btn-default btn-file"><span class="fileinput-new">Select file</span><span
+                                    class="fileinput-exists">Change</span>
+                                <input type="file" file-model="storeImage" id="storeImage"
+                                       accept='image/jpeg,image/bmp,image/png'></span>
+                            <a href="#" class="input-group-addon btn btn-default fileinput-exists"
+                               data-dismiss="fileinput">Remove</a>
+                        </div>
+                    </div>
+                    <button type="submit" ng-click="alertIt()" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
         </div>
     </div>
 </div>
