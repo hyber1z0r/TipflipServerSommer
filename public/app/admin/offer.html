@@ -34,7 +34,9 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="offer in offers">
-                        <td class="col-md-2 col-xs-2"><img ng-src="{{offer.imagePath}}" class="img-thumbnail img-circle widget-icon"></td>
+                        <td class="col-md-2 col-xs-2">
+                            <img ng-src="{{offer.imagePath}}" class="img-thumbnail img-circle widget-icon">
+                        </td>
                         <td class="col-md-2">{{offer._store.name}}</td>
                         <td class="col-md-4">{{offer.description}}</td>
                         <td class="col-md-1">{{offer.discount}}</td>
@@ -44,9 +46,7 @@
                         <td class="col-md-2">
                             <div class="btn-group btn-group-sm" role="group">
                                 <button type="button" class="btn btn-primary">Edit</button>
-                                <button type="button" class="btn btn-danger" ng-click="deleteCenter(center._id)">
-                                    Delete
-                                </button>
+                                <button type="button" class="btn btn-danger" ng-click="">Delete</button>
                             </div>
                         </td>
                     </tr>

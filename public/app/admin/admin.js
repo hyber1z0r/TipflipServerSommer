@@ -159,8 +159,27 @@ angular.module('tipflip.admin', ['ngRoute'])
             $modalInstance.dismiss('cancel');
         };
     })
-    .controller('AdminStoreCtrl', function ($scope) {
-        $scope.hello = 'This is where you manage and create stores';
+    .controller('AdminStoreCtrl', function ($scope, apiFactory, toastr) {
+        $scope.stores = [];
+
+        var getStores = function () {
+            apiFactory.getStores()
+                .success(function (data, status, headers, config) {
+                    if (status === 204) {
+                        toastr.info('No stores are created yet! Why don\'t you create one?', 'Information');
+                        document.getElementById('storeName').focus();
+                    } else {
+                        console.log(data);
+                        $scope.stores = data;
+                    }
+                })
+                .error(function (data, status, headers, config) {
+                    // Can only be status 500
+                    toastr.error('System failure', 'Error!');
+                    console.log('Error in getStores' + data);
+                });
+        };
+        getStores();
     })
     .controller('AdminOfferCtrl', function ($scope, apiFactory, toastr) {
         $scope.offers = [];
@@ -177,7 +196,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                 .error(function (data, status, headers, config) {
                     // Can only be status 500
                     toastr.error('System failure', 'Error!');
-                    console.log('Error in getCenters' + data);
+                    console.log('Error in getOffers' + data);
                 });
         };
         getOffers();

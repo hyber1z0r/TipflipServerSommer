@@ -56,6 +56,10 @@ app.factory('apiFactory', function ($http) {
         return $http.delete('/api/centers/' + id);
     };
 
+    var getStores = function () {
+        return $http.get('/api/stores');
+    };
+
     var getOffers = function () {
         return $http.get('/api/offers');
     };
@@ -67,6 +71,8 @@ app.factory('apiFactory', function ($http) {
         getCenters: getCenters,
         createCenter: createCenter,
         deleteCenter: deleteCenter,
+
+        getStores: getStores,
 
         getOffers: getOffers
     }

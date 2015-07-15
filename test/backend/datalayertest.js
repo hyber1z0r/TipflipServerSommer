@@ -171,7 +171,7 @@ describe('Datalayer', function () {
                 datalayer.getStores()
                     .then(function (stores) {
                         var randId = stores[0]._id;
-                        return datalayer.getStore(randId).should.eventually.have.properties(['name', 'imagePath', 'contentType', '_center']);
+                        return datalayer.getStore(randId).should.eventually.have.properties(['name', 'imagePath', 'contentType', '_center.name']);
                     });
             });
 

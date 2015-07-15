@@ -184,14 +184,14 @@ function createStore(name, imagePath, contentType, _center) {
  * Returns all stores
  * */
 function getStores() {
-    return Store.find({}).exec();
+    return Store.find({}).populate('_center', 'name').exec();
 }
 
 /**
  * Returns a store with given ObjectId.
  * */
 function getStore(id) {
-    return Store.findById(id).exec();
+    return Store.findById(id).populate('_center', 'name').exec();
 }
 
 /**
