@@ -28,11 +28,35 @@ angular.module('tipflip.admin', ['ngRoute'])
             });
     }])
 
-    .controller('AdminCtrl', function ($scope, $location) {
+    .controller('AdminCtrl', function ($scope, $location, apiFactory) {
         $scope.go = function (path) {
             $location.path(path);
         };
-        $scope.hello = 'Welcome to the main overview admin dashboard page';
+        $scope.categories = 0;
+        $scope.centers = 0;
+        $scope.stores = 0;
+        $scope.offers = 0;
+
+        var getCounts = function () {
+            apiFactory.getCount('categories')
+                .success(function (data, status, headers, config) {
+                    $scope.categories = data.count;
+                })
+            apiFactory.getCount('centers')
+                .success(function (data, status, headers, config) {
+                    $scope.centers = data.count;
+                })
+            apiFactory.getCount('stores')
+                .success(function (data, status, headers, config) {
+                    $scope.stores = data.count;
+                })
+            apiFactory.getCount('offers')
+                .success(function (data, status, headers, config) {
+                    $scope.offers = data.count;
+                })
+        };
+
+        getCounts();
     })
     .controller('AdminCategoryCtrl', function ($scope, apiFactory, toastr) {
         $scope.categories = [];
@@ -170,7 +194,6 @@ angular.module('tipflip.admin', ['ngRoute'])
                         toastr.info('No stores are created yet! Why don\'t you create one?', 'Information');
                         document.getElementById('storeName').focus();
                     } else {
-                        console.log(data);
                         $scope.stores = data;
                     }
                 })

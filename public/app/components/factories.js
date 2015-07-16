@@ -80,6 +80,10 @@ app.factory('apiFactory', function ($http, $cacheFactory) {
         return $http.get('/api/offers', {cache: true});
     };
 
+    var getCount = function (model) {
+        return $http.get('api/count/' + model);
+    };
+
     return {
         getCategories: getCategories,
         createCategory: createCategory,
@@ -91,7 +95,9 @@ app.factory('apiFactory', function ($http, $cacheFactory) {
         getStores: getStores,
         createStore: createStore,
 
-        getOffers: getOffers
+        getOffers: getOffers,
+
+        getCount: getCount
     }
 });
 
