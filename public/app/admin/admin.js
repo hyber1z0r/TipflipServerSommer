@@ -191,8 +191,26 @@ angular.module('tipflip.admin', ['ngRoute'])
 
         getCenters();
 
-        $scope.alertIt = function () {
-            alert($scope.storeCenter);
+        $scope.createStore = function () {
+            apiFactory.createStore($scope.storeName, $scope.storeCenter, $scope.storeImage)
+                .success(function (data, status, headers, config) {
+                    toastr.success(data.message, 'Success!');
+                    $scope.storeName = '';
+                    angular.element($('#storeCenter').val(''));
+                    angular.element($('.fileinput').fileinput('clear'));
+                    getStores();
+                    getCenters();
+                })
+                .error(function (data, status, headers, config) {
+                    if (status === 500) {
+                        toastr.error('System failure', 'Error!');
+                        console.log('Error in createStore: ' + data);
+                    } else {
+                        // This is triggered when 400, or 409
+                        toastr.warning(data.message, 'Warning!');
+                        document.getElementById('storeName').focus();
+                    }
+                });
         }
     })
     .controller('AdminOfferCtrl', function ($scope, apiFactory, toastr) {
