@@ -25,6 +25,10 @@ angular.module('tipflip.admin', ['ngRoute'])
             .when('/admin/offers', {
                 templateUrl: '/app/admin/offer.html',
                 controller: 'AdminOfferCtrl'
+            })
+            .when('/admin/users', {
+                templateUrl: '/app/admin/user.html',
+                controller: 'AdminUserCtrl'
             });
     }])
 
@@ -255,4 +259,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                 });
         };
         getOffers();
+    })
+    .controller('AdminUserCtrl', function ($scope, apiFactory, toastr) {
+
     });
