@@ -5,21 +5,12 @@
         </div>
         <div class="col-md-9">
             <div class="profile-content">
-                <div class="row">
-                    <div class="col-lg-4 col-md-6 col-xs-12">
-                        <div class="panel panel-default">
-                            <div class="panel-body">
-                                <img src="http://i.imgur.com/Ta8gDEQ.png" class="img-circle pull-left widget-icon">
-
-                                <div class="widget-title text-info" ng-bind="offers.length"></div>
-                                <div class="comment text-info">Offers</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <widget-panel image="http://i.imgur.com/Ta8gDEQ.png" title="{{offers.length}}"
+                              comment="Offers"></widget-panel>
 
                 <!-- The table with all the offers -->
-                <table ng-show="offers.length > 0" class="table table-hover table-responsive table-condensed table-striped">
+                <table ng-show="offers.length > 0"
+                       class="table table-hover table-responsive table-condensed table-striped">
                     <thead>
                     <tr>
                         <th>Image</th>

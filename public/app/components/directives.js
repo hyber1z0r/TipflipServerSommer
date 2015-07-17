@@ -31,4 +31,16 @@ angular.module('tipflip.directives', [])
                 });
             }
         };
+    })
+    .directive('widgetPanel', function () {
+        return {
+            restrict: 'E',
+            replace: 'true',
+            scope: {
+                image: '@image',
+                title: '@title',
+                comment: '@comment'
+            },
+            templateUrl: '/app/directives/widgetpanel.html'
+        }
     });
