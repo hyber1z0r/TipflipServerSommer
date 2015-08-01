@@ -12,7 +12,6 @@ var imageValidator = require('../modules/imageValidator');
  *  For creating a new category. Requires a name and an image for the category.
  * */
 router.post('/categories', imageValidator, function (req, res) {
-    // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.name) {
         if (req.files.image) {
             // delete image
@@ -106,7 +105,6 @@ router.get('/categories/:id/offers', function (req, res) {
  * For creating a new center, requires an image, name and location
  * */
 router.post('/centers', imageValidator, function (req, res) {
-    // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.name || !req.body.location) {
         if (req.files.image) {
             // delete image
@@ -229,7 +227,6 @@ router.get('/centers/:id/offers', function (req, res) {
  * For creating a new store, requires an image, name and center
  * */
 router.post('/stores', imageValidator, function (req, res) {
-    // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.name || !req.body._center) {
         if (req.files.image) {
             // delete image
@@ -324,7 +321,6 @@ router.get('/stores/:id/offers', function (req, res) {
  * For creating a new offer, requires an image, discount, description, expiration date, store and a category
  * */
 router.post('/offers', imageValidator, function (req, res) {
-    // get args and validate, also validate if image is an image!!
     if (!req.files.image || !req.body.discount || !req.body.description
         || !req.body.expiration || !req.body.store || !req.body.category) {
         if (req.files.image) {

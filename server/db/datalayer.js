@@ -82,7 +82,7 @@ function createCenter(name, imagePath, contentType, location) {
     var deferred = Q.defer();
 
     var c = new Center({
-        name: name ? name.capitalize(true) : name,
+        name: name ? name.capitalize(true).trim() : name,
         imagePath: imagePath,
         contentType: contentType,
         location: location
