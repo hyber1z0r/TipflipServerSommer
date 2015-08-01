@@ -265,10 +265,13 @@ router.post('/stores', imageValidator, function (req, res) {
                 res.status(201).json({message: 'Successfully created new store ' + store.name});
             }, function (error) {
                 // the document already exists or some weird error happened
+                console.log(error);
                 fs.unlinkSync(req.files.image.path);
                 if (error.code === 11000) {
                     // 409 indicates that there was a conflict in creating the resource
                     res.status(409).json({message: 'The store \'' + name + '\' already exists!'})
+                } else if (error.name === 'ValidationError') {
+                    res.status(400).json({message: 'Center is not valid'});
                 } else {
                     res.status(500).json(error);
                 }

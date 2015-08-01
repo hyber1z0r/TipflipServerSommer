@@ -45,19 +45,19 @@ angular.module('tipflip.admin', ['ngRoute'])
             apiFactory.getCount('categories')
                 .success(function (data, status, headers, config) {
                     $scope.categories = data.count;
-                })
+                });
             apiFactory.getCount('centers')
                 .success(function (data, status, headers, config) {
                     $scope.centers = data.count;
-                })
+                });
             apiFactory.getCount('stores')
                 .success(function (data, status, headers, config) {
                     $scope.stores = data.count;
-                })
+                });
             apiFactory.getCount('offers')
                 .success(function (data, status, headers, config) {
                     $scope.offers = data.count;
-                })
+                });
         };
 
         getCounts();
