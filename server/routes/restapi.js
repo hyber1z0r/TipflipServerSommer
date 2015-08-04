@@ -251,7 +251,7 @@ router.post('/stores', imageValidator, function (req, res) {
                     // 409 indicates that there was a conflict in creating the resource
                     res.status(409).json({message: 'The store \'' + name + '\' already exists!'})
                 } else if (error.name === 'ValidationError') {
-                    res.status(400).json({message: 'Center is not valid'});
+                    res.status(400).json({message: error.errors.name.message});
                 } else {
                     res.status(500).json(error);
                 }

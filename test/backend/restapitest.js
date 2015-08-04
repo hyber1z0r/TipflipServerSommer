@@ -2,9 +2,7 @@
  * Created by jakobgaardandersen on 23/06/15.
  */
 global.TEST_DATABASE = "mongodb://localhost/TipflipDB_test";
-var chai = require('chai');
-chai.use(require('chai-as-promised'));
-var should = chai.should();
+var should = require('should');
 var request = require('supertest');
 var app = require('../../server/app');
 var insertScript = require('../sampledata/insertscript');
