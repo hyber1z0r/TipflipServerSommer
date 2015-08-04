@@ -12,7 +12,7 @@
 </head>
 <body>
 <!-- Static navbar -->
-<nav class="navbar navbar-trans navbar-static-top no-bottom-margin" role="navigation">
+<nav class="navbar navbar-trans navbar-static-top no-bottom-margin" role="navigation" bs-navbar>
     <div class="container">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-collapsible">
@@ -25,17 +25,15 @@
         </div>
         <div id="navbar-collapsible" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-left">
-                <li ng-class="{active: isActive('/')}"><a href="#/">Home</a></li>
-                <li ng-class="{active: isActive('/admin') ||
-                 isActive('/admin/categories') || isActive('/admin/centers') ||
-                 isActive('/admin/stores') || isActive('/admin/offers')}"><a href="#/admin">Admin dashboard</a></li>
+                <li data-match-route="/$"><a href="#/">Home</a></li>
+                <li data-match-route="/admin"><a href="#/admin">Admin dashboard</a></li>
                 <li><a href="#/">Then</a></li>
                 <li><a href="#/">Form</a></li>
                 <li><a href="#/">More</a></li>
                 <li><a href="#/">Last</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li ng-class="{active: isActive('/login')}"><a href="#/login">Log in</a></li>
+                <li data-match-route="/login"><a href="#/login">Log in</a></li>
             </ul>
         </div>
     </div>
@@ -57,6 +55,8 @@
 <script type="text/javascript" src="vendor/ngmap/build/scripts/ng-map.js"></script>
 <script type="text/javascript" src="vendor/jasny-bootstrap/dist/js/jasny-bootstrap.js"></script>
 <script type="text/javascript" src="vendor/angular-toastr/dist/angular-toastr.tpls.js"></script>
+<script type="text/javascript" src="vendor/angular-strap/dist/angular-strap.js"></script>
+<script type="text/javascript" src="vendor/angular-strap/dist/angular-strap.tpl.js"></script>
 <script type="text/javascript" src="app/app.js"></script>
 <script type="text/javascript" src="app/home/home.js"></script>
 <script type="text/javascript" src="app/login/login.js"></script>

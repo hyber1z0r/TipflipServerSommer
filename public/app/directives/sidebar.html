@@ -15,29 +15,29 @@
     </div>
     <!-- END SIDEBAR USER TITLE -->
     <!-- SIDEBAR MENU -->
-    <div class="profile-usermenu">
+    <div class="profile-usermenu" bs-navbar>
         <ul class="nav">
-            <li ng-class="{active: isActive('/admin')}">
+            <li data-match-route="/admin$">
                 <a href="#/admin">
                     <i class="fa fa-home fa-fw"></i>Overview</a>
             </li>
-            <li ng-class="{active: isActive('/admin/categories')}">
+            <li data-match-route="/admin/categories">
                 <a href="#/admin/categories">
                     <i class="fa fa-tags fa-fw"></i>Categories</a>
             </li>
-            <li ng-class="{active: isActive('/admin/centers')}">
+            <li data-match-route="/admin/centers">
                 <a href="#/admin/centers">
                     <i class="fa fa-building fa-fw"></i>Centers</a>
             </li>
-            <li ng-class="{active: isActive('/admin/stores')}">
+            <li data-match-route="/admin/stores">
                 <a href="#/admin/stores">
                     <i class="fa fa-shopping-cart fa-fw"></i>Stores</a>
             </li>
-            <li ng-class="{active: isActive('/admin/offers')}">
+            <li data-match-route="/admin/offers">
                 <a href="#/admin/offers">
                     <i class="fa fa-newspaper-o fa-fw"></i>Offers</a>
             </li>
-            <li ng-class="{active: isActive('/admin/users')}">
+            <li data-match-route="/admin/users">
                 <a href="#/admin/users">
                     <i class="fa fa-users fa-fw"></i>Users</a>
             </li>

@@ -7,6 +7,7 @@ angular.module('tipflip', [
     'ui.bootstrap',
     'ngMap',
     'toastr',
+    'mgcrea.ngStrap',
     'tipflip.controllers',
     'tipflip.directives',
     'tipflip.factories',
