@@ -172,15 +172,14 @@ router.get('/centers/:id', function (req, res) {
         });
 });
 
-// TODO make this!
-router.delete('/centers/:id', function (req, res) {
-    datalayer.deleteCenter(req.param('id'))
-        .then(function () {
-            res.json({message: 'Success in deleting ' + id})
-        }, function (error) {
-            res.status(500).json({message: 'Server error'})
-        });
-});
+//router.delete('/centers/:id', function (req, res) {
+//    datalayer.deleteCenter(req.param('id'))
+//        .then(function () {
+//            res.json({message: 'Success in deleting ' + id})
+//        }, function (error) {
+//            res.status(500).json({message: 'Server error'})
+//        });
+//});
 
 /**
  * Is for getting all stores in specific center
@@ -408,6 +407,5 @@ router.get('/count/:model', function (req, res) {
 });
 
 // TODO: Get my offers i've received (user page) -  non-near future!
-// TODO: mark offer as active and non-active (admin "delete" the offer)
 
 module.exports = router;
