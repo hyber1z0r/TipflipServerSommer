@@ -1,7 +1,7 @@
 /**
  * Created by jakobgaardandersen on 12/06/15.
  */
-global.TEST_DATABASE = "mongodb://localhost/TipflipDB_test";
+global.TEST_DATABASE = 'mongodb://localhost/TipflipDB_test';
 var db = require('../../server/db/db');
 var datalayer = require('../../server/db/datalayer');
 var chai = require('chai');

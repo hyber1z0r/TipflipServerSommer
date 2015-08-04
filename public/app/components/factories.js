@@ -80,6 +80,11 @@ app.factory('apiFactory', function ($http, $cacheFactory) {
         return $http.get('/api/offers', {cache: true});
     };
 
+    // TODO when someone updates an offer, we should invalidate cache
+    var getOffer = function (offerID) {
+        return $http.get('/api/offers/' + offerID);
+    };
+
     var getCount = function (model) {
         return $http.get('api/count/' + model);
     };
@@ -96,6 +101,7 @@ app.factory('apiFactory', function ($http, $cacheFactory) {
         createStore: createStore,
 
         getOffers: getOffers,
+        getOffer: getOffer,
 
         getCount: getCount
     }

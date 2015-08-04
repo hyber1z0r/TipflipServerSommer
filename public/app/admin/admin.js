@@ -26,6 +26,10 @@ angular.module('tipflip.admin', ['ngRoute'])
                 templateUrl: '/app/admin/offer.html',
                 controller: 'AdminOfferCtrl'
             })
+            .when('/admin/offers/:id', {
+                templateUrl: '/app/admin/offerdetail.html',
+                controller: 'AdminOfferDetailCtrl'
+            })
             .when('/admin/users', {
                 templateUrl: '/app/admin/user.html',
                 controller: 'AdminUserCtrl'
@@ -259,6 +263,24 @@ angular.module('tipflip.admin', ['ngRoute'])
                 });
         };
         getOffers();
+    })
+    .controller('AdminOfferDetailCtrl', function ($scope, apiFactory, toastr, $routeParams) {
+        $scope.offerID = $routeParams.id;
+        var offerID = $routeParams.id;
+
+        apiFactory.getOffer(offerID)
+            .success(function (data, status, headers, config) {
+                $scope.offer = data;
+                var expiration = Date.parse($scope.offer.expiration);
+                $scope.isExpired = expiration < Date.now();
+            })
+            .error(function (data, status, headers, config) {
+                if (status === 500) {
+                    toastr.error('System failure', 'Error!');
+                } else {
+                    toastr.warning(data.message, 'Warning!');
+                }
+            });
     })
     .controller('AdminUserCtrl', function ($scope, apiFactory, toastr) {
 

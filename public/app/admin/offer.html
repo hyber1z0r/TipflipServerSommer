@@ -26,7 +26,9 @@
                     <tbody>
                     <tr ng-repeat="offer in offers">
                         <td class="col-md-2 col-xs-2">
+                            <a ng-href="#/admin/offers/{{offer._id}}">
                             <img ng-src="{{offer.imagePath}}" class="img-thumbnail img-circle widget-icon">
+                            </a>
                         </td>
                         <td class="col-md-2">{{offer._store.name}}</td>
                         <td class="col-md-4">{{offer.description}}</td>

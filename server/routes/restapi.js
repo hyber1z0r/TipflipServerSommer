@@ -408,5 +408,6 @@ router.get('/count/:model', function (req, res) {
 });
 
 // TODO: Get my offers i've received (user page) -  non-near future!
+// TODO: mark offer as active and non-active (admin "delete" the offer)
 
 module.exports = router;

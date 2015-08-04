@@ -1,0 +1,18 @@
+<div class="container">
+    <div class="row profile">
+        <div class="col-md-3">
+            <side-bar></side-bar>
+        </div>
+        <div class="col-md-9">
+            <div class="profile-content">
+                <h2><span ng-bind="offer.discount"></span>
+                    <span class="text-primary" ng-bind="offer._store.name"></span>
+                 in <span>CENTER</span></h2>
+                <b><p ng-bind="offer.description"></p></b>
+                <p><span class="text-danger" ng-show="isExpired">expired</span>
+                    <span class="text-success" ng-show="!isExpired">active</span>
+                     • <span ng-bind="offer.expiration | date"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
