@@ -75,8 +75,7 @@ describe('Datalayer', function () {
                 var imagePath = 'uploads/fakeimage.png';
                 var contentType = 'image/png';
                 datalayer.createCategory(name, imagePath, contentType)
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         should.exist(err);
                         err.code.should.equal(11000);
                         done();
@@ -88,8 +87,7 @@ describe('Datalayer', function () {
                 var imagePath = 'uploads/fakeimage.png';
                 var contentType = 'image/png';
                 datalayer.createCategory(name, imagePath, contentType)
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         err.name.should.equal('ValidationError');
                         err.errors.name.message.should.equal('Category name required!');
                         done();
@@ -101,8 +99,7 @@ describe('Datalayer', function () {
                 var imagePath = undefined;
                 var contentType = 'image/png';
                 datalayer.createCategory(name, imagePath, contentType)
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         err.name.should.equal('ValidationError');
                         err.errors.imagePath.message.should.equal('An imagepath for the category is required!');
                         done();
@@ -114,8 +111,7 @@ describe('Datalayer', function () {
                 var imagePath = 'uploads/fakeimage.png';
                 var contentType = undefined;
                 datalayer.createCategory(name, imagePath, contentType)
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         err.name.should.equal('ValidationError');
                         err.errors.contentType.message.should.equal('No contenttype provided!');
                         done();
@@ -163,7 +159,6 @@ describe('Datalayer', function () {
                         should.not.exist(center);
                         done();
                     });
-
             });
         });
 
@@ -186,8 +181,7 @@ describe('Datalayer', function () {
                 var contentType = 'image/png';
                 var location = '23.323213,45.3123131';
                 datalayer.createCenter(name, imagePath, contentType, location)
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         should.exist(err);
                         err.code.should.equal(11000);
                         done();
@@ -200,8 +194,7 @@ describe('Datalayer', function () {
                 var contentType = 'image/png';
                 var location = '23.323213,45.3123131';
                 datalayer.createCenter(name, imagePath, contentType, location)
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         should.exist(err);
                         err.errors.name.message.should.equal('Center must have a name!');
                         done();
@@ -214,8 +207,7 @@ describe('Datalayer', function () {
                 var contentType = 'image/png';
                 var location = '23.323213,45.3123131';
                 datalayer.createCenter(name, imagePath, contentType, location)
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         should.exist(err);
                         err.errors.imagePath.message.should.equal('An imagepath for the center is required!');
                         done();
@@ -228,8 +220,7 @@ describe('Datalayer', function () {
                 var contentType = undefined;
                 var location = '23.323213,45.3123131';
                 datalayer.createCenter(name, imagePath, contentType, location)
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         should.exist(err);
                         err.errors.contentType.message.should.equal('No contenttype provided!');
                         done();
@@ -242,8 +233,7 @@ describe('Datalayer', function () {
                 var contentType = 'image/png';
                 var location = undefined;
                 datalayer.createCenter(name, imagePath, contentType, location)
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         should.exist(err);
                         err.errors.location.message.should.equal('A location is required!');
                         done();
@@ -320,8 +310,7 @@ describe('Datalayer', function () {
                     .then(function (center) {
                         return datalayer.createStore(undefined, imagePath, contentType, center._id)
                     })
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
                         err.errors.name.message.should.equal('Name for store is required!');
@@ -338,8 +327,7 @@ describe('Datalayer', function () {
                     .then(function (center) {
                         return datalayer.createStore('TestStore', undefined, contentType, center._id)
                     })
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
                         err.errors.imagePath.message.should.equal('An imagepath for the store is required!');
@@ -356,8 +344,7 @@ describe('Datalayer', function () {
                     .then(function (center) {
                         return datalayer.createStore('TestStore', imagePath, undefined, center._id)
                     })
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
                         err.errors.contentType.message.should.equal('No contenttype provided!');
@@ -371,8 +358,7 @@ describe('Datalayer', function () {
                 var contentType = 'image/png';
                 var _center = undefined;
                 datalayer.createStore(name, imagePath, contentType, _center)
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
                         err.errors._center.message.should.equal('A store must belong to a center!');
@@ -386,8 +372,7 @@ describe('Datalayer', function () {
                 var contentType = 'image/png';
                 var _center = 'notvalidid';
                 datalayer.createStore(name, imagePath, contentType, _center)
-                    .then(function () {
-                    }, function (err) {
+                    .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
                         err.errors._center.name.should.equal('CastError');
