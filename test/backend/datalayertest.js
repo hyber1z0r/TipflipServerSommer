@@ -31,11 +31,11 @@ describe('Datalayer', function () {
             it('should return a category object and be fulfilled if exists', function (done) {
                 datalayer.getCategories()
                     .then(function (categories) {
-                        datalayer.getCategory(categories[0]._id)
-                            .then(function (category) {
-                                category.should.have.properties(['name', 'imagePath', 'contentType']);
-                                done();
-                            });
+                        return datalayer.getCategory(categories[0]._id)
+                    })
+                    .then(function (category) {
+                        category.should.have.properties(['name', 'imagePath', 'contentType']);
+                        done();
                     });
             });
 
@@ -139,11 +139,11 @@ describe('Datalayer', function () {
             it('should return a center object and be fulfilled if exists', function (done) {
                 datalayer.getCenters()
                     .then(function (centers) {
-                        datalayer.getCenter(centers[0]._id)
-                            .then(function (center) {
-                                center.should.have.properties(['name', 'imagePath', 'contentType', 'location']);
-                                done();
-                            });
+                        return datalayer.getCenter(centers[0]._id)
+                    })
+                    .then(function (center) {
+                        center.should.have.properties(['name', 'imagePath', 'contentType', 'location']);
+                        done();
                     });
             });
 
@@ -267,11 +267,11 @@ describe('Datalayer', function () {
             it('should return a store object and be fulfilled if exists', function (done) {
                 datalayer.getStores()
                     .then(function (stores) {
-                        datalayer.getStore(stores[0]._id)
-                            .then(function (store) {
-                                store.should.have.properties(['name', 'imagePath', 'contentType', '_center']);
-                                done();
-                            })
+                        return datalayer.getStore(stores[0]._id)
+                    })
+                    .then(function (store) {
+                        store.should.have.properties(['name', 'imagePath', 'contentType', '_center']);
+                        done();
                     });
             });
 
@@ -303,11 +303,11 @@ describe('Datalayer', function () {
                 var location = '23.3231231,32.3232332';
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .then(function (center) {
-                        datalayer.createStore('TestStore', imagePath, contentType, center._id)
-                            .then(function (store) {
-                                store.should.have.property('_id');
-                                done();
-                            });
+                        return datalayer.createStore('TestStore', imagePath, contentType, center._id)
+                    })
+                    .then(function (store) {
+                        store.should.have.property('_id');
+                        done();
                     });
             });
 
@@ -318,14 +318,14 @@ describe('Datalayer', function () {
                 var location = '23.3231231,32.3232332';
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .then(function (center) {
-                        datalayer.createStore(undefined, imagePath, contentType, center._id)
-                            .then(function () {
-                            }, function (err) {
-                                should.exist(err);
-                                err.name.should.equal('ValidationError');
-                                err.errors.name.message.should.equal('Name for store is required!');
-                                done();
-                            });
+                        return datalayer.createStore(undefined, imagePath, contentType, center._id)
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors.name.message.should.equal('Name for store is required!');
+                        done();
                     });
             });
 
@@ -336,14 +336,14 @@ describe('Datalayer', function () {
                 var location = '23.3231231,32.3232332';
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .then(function (center) {
-                        datalayer.createStore('TestStore', undefined, contentType, center._id)
-                            .then(function () {
-                            }, function (err) {
-                                should.exist(err);
-                                err.name.should.equal('ValidationError');
-                                err.errors.imagePath.message.should.equal('An imagepath for the store is required!');
-                                done();
-                            });
+                        return datalayer.createStore('TestStore', undefined, contentType, center._id)
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors.imagePath.message.should.equal('An imagepath for the store is required!');
+                        done();
                     });
             });
 
@@ -354,14 +354,14 @@ describe('Datalayer', function () {
                 var location = '23.3231231,32.3232332';
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .then(function (center) {
-                        datalayer.createStore('TestStore', imagePath, undefined, center._id)
-                            .then(function () {
-                            }, function (err) {
-                                should.exist(err);
-                                err.name.should.equal('ValidationError');
-                                err.errors.contentType.message.should.equal('No contenttype provided!');
-                                done();
-                            });
+                        return datalayer.createStore('TestStore', imagePath, undefined, center._id)
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors.contentType.message.should.equal('No contenttype provided!');
+                        done();
                     });
             });
 
@@ -404,11 +404,11 @@ describe('Datalayer', function () {
                 var location = '23.3231231,32.3232332';
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .then(function (center) {
-                        datalayer.createStore('Quint', imagePath, contentType, center._id)
-                            .then(function (store) {
-                                store.should.have.property('_id')
-                                done();
-                            });
+                        return datalayer.createStore('Quint', imagePath, contentType, center._id)
+                    })
+                    .then(function (store) {
+                        store.should.have.property('_id');
+                        done();
                     });
             });
         });
@@ -418,14 +418,14 @@ describe('Datalayer', function () {
                 datalayer.getStores()
                     .then(function (stores) {
                         stores.length.should.equal(8);
-                        datalayer.deleteStore(stores[0]._id)
-                            .then(function () {
-                                datalayer.getStores()
-                                    .then(function (storesUpdate) {
-                                        storesUpdate.length.should.equal(7);
-                                        done();
-                                    });
-                            });
+                        return datalayer.deleteStore(stores[0]._id)
+                    })
+                    .then(function () {
+                        return datalayer.getStores()
+                    })
+                    .then(function (storesUpdate) {
+                        storesUpdate.length.should.equal(7);
+                        done();
                     });
             });
         });
@@ -446,11 +446,11 @@ describe('Datalayer', function () {
             it('should return an offer with given id', function (done) {
                 datalayer.getOffers()
                     .then(function (offers) {
-                        datalayer.getOffer(offers[0]._id)
-                            .then(function (offer) {
-                                offer.should.have.properties(['_id', '_store', '_category']);
-                                done();
-                            });
+                        return datalayer.getOffer(offers[0]._id)
+                    })
+                    .then(function (offer) {
+                        offer.should.have.properties(['_id', '_store', '_category']);
+                        done();
                     });
             });
 
@@ -481,17 +481,19 @@ describe('Datalayer', function () {
                 var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
+                var stores;
                 datalayer.getStores()
-                    .then(function (stores) {
-                        datalayer.getCategories()
-                            .then(function (categories) {
-                                datalayer.createOffer(discount, description, imagePath,
-                                    contentType, created, expiration, stores[0]._id, categories[0]._id)
-                                    .then(function (offer) {
-                                        offer.should.have.property('_id');
-                                        done();
-                                    });
-                            });
+                    .then(function (data) {
+                        stores = data;
+                        return datalayer.getCategories()
+                    })
+                    .then(function (categories) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, stores[0]._id, categories[0]._id)
+                    })
+                    .then(function (offer) {
+                        offer.should.have.property('_id');
+                        done();
                     });
             });
             // TODO create the rest, even though i know they work.
