@@ -4,14 +4,35 @@
             <side-bar></side-bar>
         </div>
         <div class="col-md-9">
-            <div class="profile-content">
-                <h2><span ng-bind="offer.discount"></span>
-                    <span class="text-primary" ng-bind="offer._store.name"></span>
-                 in <span>CENTER</span></h2>
-                <b><p ng-bind="offer.description"></p></b>
-                <p><span class="text-danger" ng-show="isExpired">expired</span>
-                    <span class="text-success" ng-show="!isExpired">active</span>
-                     • <span ng-bind="offer.expiration | date"></span></p>
+            <div class="profile-content wrap-content">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="page-header">
+                            <h1>
+                                <span ng-bind="offer._store.name"></span> <small>Center</small>
+                            </h1>
+                        </div>
+                        <dl class="dl-horizontal">
+                            <dt>Discount</dt>
+                            <dd ng-bind="offer.discount"></dd>
+                            <dt>Category</dt>
+                            <dd ng-bind="offer._category.name"></dd>
+                            <dt>Description</dt>
+                            <dd ng-bind="offer.description"></dd>
+                            <dt>Created</dt>
+                            <dd ng-bind="offer.created | date:'MMM d, y HH:mm:ss'"></dd>
+                            <dt>Expiration</dt>
+                            <dd ng-bind="offer.expiration | date:'MMM d, y HH:mm:ss'"></dd>
+                        </dl>
+                        <span class="label label-danger" ng-show="isExpired">Expired</span>
+                        <span class="label label-success" ng-show="!isExpired">Active</span>
+                    </div>
+                    <div class="col-md-4">
+                        <img ng-src="{{offer.imagePath}}" class="img-responsive img-circle center-block" />
+                    </div>
+                </div>
+
+
             </div>
         </div>
     </div>
