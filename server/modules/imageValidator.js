@@ -12,6 +12,9 @@ function isImage(path) {
     return magic.indexOf(magicNumber) !== -1;
 }
 
+/**
+ * The middleware that checks if the file that was uploaded was actually an image
+ * */
 module.exports = function (req, res, next) {
     if (req.files.image) {
         if (!isImage(req.files.image.path)) {

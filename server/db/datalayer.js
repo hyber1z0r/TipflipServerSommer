@@ -11,6 +11,7 @@ require('sugar');
 
 /**
  * Creates a new category in the database
+ * Returns a promise with the created category if fulfilled
  * */
 function createCategory(name, imagePath, contentType) {
     var deferred = Q.defer();
@@ -33,14 +34,14 @@ function createCategory(name, imagePath, contentType) {
 }
 
 /**
- * Returns all categories
+ * Returns promise for all categories
  * */
 function getCategories() {
     return Category.find({}).exec();
 }
 
 /**
- * Returns a category with given ObjectId
+ * Returns promise for a category with given ObjectId
  * */
 function getCategory(id) {
     return Category.findById(id).exec();
@@ -48,19 +49,25 @@ function getCategory(id) {
 
 /**
  * Deletes a category with given ObjectId
+ * Returns a promise
+ * TODO: Replace with findByIdAndRemove
  * */
 function deleteCategory(id) {
     var deferred = Q.defer();
 
     getCategory(id)
         .then(function (category) {
-            category.remove(function (err) {
-                if (err) {
-                    deferred.reject(err);
-                } else {
-                    deferred.resolve();
-                }
-            });
+            if (category) {
+                category.remove(function (err) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve();
+                    }
+                });
+            } else {
+                deferred.reject();
+            }
         }, function (error) {
             deferred.reject(error);
         });
@@ -69,7 +76,7 @@ function deleteCategory(id) {
 }
 
 /**
- * Returns an array of offers in a certain category
+ * Returns promise with an array of offers in a certain category
  * */
 function getCategoryOffers(id) {
     return Offer.find({_category: id}).exec();
@@ -77,6 +84,7 @@ function getCategoryOffers(id) {
 
 /**
  * Creates a new center in the database
+ * Returns a promise with the created center if fulfilled
  * */
 function createCenter(name, imagePath, contentType, location) {
     var deferred = Q.defer();
@@ -100,14 +108,14 @@ function createCenter(name, imagePath, contentType, location) {
 }
 
 /**
- * Returns all centers
+ * Returns promise for all centers
  * */
 function getCenters() {
     return Center.find({}).exec();
 }
 
 /**
- * Returns a center with given ObjectId.
+ * Returns promise for a center with given ObjectId
  * */
 function getCenter(id) {
     return Center.findById(id).exec();
@@ -115,6 +123,7 @@ function getCenter(id) {
 
 /**
  * Deletes a center with given ObjectId
+ * TODO: Replace with findByIdAndRemove
  * */
 function deleteCenter(id) {
     var deferred = Q.defer();
@@ -158,6 +167,7 @@ function getCenterOffers(id) {
 
 /**
  * Creates a new store in the database
+ * Returns a promise for the created store if fulfilled
  * */
 function createStore(name, imagePath, contentType, _center) {
     var deferred = Q.defer();
@@ -181,14 +191,14 @@ function createStore(name, imagePath, contentType, _center) {
 }
 
 /**
- * Returns all stores
+ * Returns a promise for all stores, with populated _center.name property
  * */
 function getStores() {
     return Store.find({}).populate('_center', 'name').exec();
 }
 
 /**
- * Returns a store with given ObjectId.
+ * Returns a promise for a store with given ObjectId, with populated _center.name property
  * */
 function getStore(id) {
     return Store.findById(id).populate('_center', 'name').exec();
@@ -196,6 +206,7 @@ function getStore(id) {
 
 /**
  * Deletes a store with given ObjectId
+ * TODO: replace with findByIdAndRemove
  * */
 function deleteStore(id) {
     var deferred = Q.defer();
@@ -217,7 +228,7 @@ function deleteStore(id) {
 }
 
 /**
- * Returns an array of offers in a certain store
+ * Returns a promise for an array of offers in a certain store
  * */
 function getStoreOffers(id) {
     return Offer.find({_store: id}).exec();
@@ -225,6 +236,7 @@ function getStoreOffers(id) {
 
 /**
  * Creates a new offer in the database
+ * Returns a promise for the created offer if fulfilled
  * */
 function createOffer(discount, description, imagePath, contentType, created, expiration, _store, _category) {
     var deferred = Q.defer();
@@ -252,14 +264,14 @@ function createOffer(discount, description, imagePath, contentType, created, exp
 }
 
 /**
- * Returns all offers
+ * Returns a promise all offers, with populated _store.name and _category.name properties
  * */
 function getOffers() {
     return Offer.find({}).populate('_store', 'name').populate('_category', 'name').exec();
 }
 
 /**
- * Returns an offer with given ObjectId
+ * Returns a promise for an offer with given ObjectId, with populated _store.name and _category.name properties
  * */
 function getOffer(id) {
     return Offer.findById(id).populate('_store', 'name').populate('_category', 'name').exec();
@@ -267,6 +279,7 @@ function getOffer(id) {
 
 /**
  * Deletes an offer with given ObjectId
+ * TODO: replace with findByIdAndRemove
  * */
 function deleteOffer(id) {
     var deferred = Q.defer();
@@ -287,6 +300,9 @@ function deleteOffer(id) {
     return deferred.promise;
 }
 
+/**
+ * Returns a promise for the number of documents in a given model
+ * */
 function getCount(model) {
     switch (model) {
         case 'categories':

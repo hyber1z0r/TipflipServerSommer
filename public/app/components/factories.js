@@ -80,7 +80,7 @@ app.factory('apiFactory', function ($http, $cacheFactory) {
         return $http.get('/api/offers', {cache: true});
     };
 
-    // TODO when someone updates an offer, we should invalidate cache
+    // TODO when someone updates or deletes the same offer, we should invalidate cache
     var getOffer = function (offerID) {
         return $http.get('/api/offers/' + offerID);
     };

@@ -9,7 +9,11 @@ var imageValidator = require('../modules/imageValidator');
 
 
 /**
- *  For creating a new category. Requires a name and an image for the category.
+ * For creating a new category. Requires a name and an image for the category.
+ * Responds with 400 if required fields were not provided
+ * Responds with 201 if the document is created successfully
+ * Responds with 409 if the document is not unique
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.post('/categories', imageValidator, function (req, res) {
     if (!req.files.image || !req.body.name) {
@@ -46,6 +50,9 @@ router.post('/categories', imageValidator, function (req, res) {
 
 /**
  * Is for getting all the categories
+ * Responds with 200 if there are categories
+ * Responds with 204 if there is no categories
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/categories', function (req, res) {
     datalayer.getCategories()
@@ -62,6 +69,10 @@ router.get('/categories', function (req, res) {
 
 /**
  * Is for getting a single category, if it exists, by id.
+ * Responds with 200 if the category exists
+ * Responds with 404 if the category doesn't exist
+ * Responds with 400 if the id provided is invalid
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/categories/:id', function (req, res) {
     datalayer.getCategory(req.param('id'))
@@ -82,7 +93,12 @@ router.get('/categories/:id', function (req, res) {
 
 
 /**
- *  Is for getting offers in a certain category
+ * Is for getting offers in a certain category
+ * Responds with 200 if the offers exists
+ * Responds with 204 if there is no offers for the valid id provided
+ * (Note, that it doesn't respond with 404 even though there is no such category, but 204 instead)
+ * Responds with 400 if the id provided is invalid
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/categories/:id/offers', function (req, res) {
     datalayer.getCategoryOffers(req.param('id'))
@@ -103,6 +119,10 @@ router.get('/categories/:id/offers', function (req, res) {
 
 /**
  * For creating a new center, requires an image, name and location
+ * Responds with 400 if required fields were not provided
+ * Responds with 201 if the document is created successfully
+ * Responds with 409 if the document is not unique
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.post('/centers', imageValidator, function (req, res) {
     if (!req.files.image || !req.body.name || !req.body.location) {
@@ -136,6 +156,9 @@ router.post('/centers', imageValidator, function (req, res) {
 
 /**
  * Is for getting all centers.
+ * Responds with 200 if there are centers
+ * Responds with 204 if there is no centers
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/centers', function (req, res) {
     datalayer.getCenters()
@@ -151,9 +174,11 @@ router.get('/centers', function (req, res) {
 });
 
 /**
- * Is for getting a specific center, if the id is parsable by mongo, it'll return the center if found
- * or an appropriate message if not found
- * If the id is unparsable or the mongo is down, the error callback will be called with an appropriate message
+ * Is for getting a single center, if it exists, by id.
+ * Responds with 200 if the center exists
+ * Responds with 404 if the center doesn't exist
+ * Responds with 400 if the id provided is invalid
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/centers/:id', function (req, res) {
     datalayer.getCenter(req.param('id'))
@@ -182,7 +207,12 @@ router.get('/centers/:id', function (req, res) {
 //});
 
 /**
- * Is for getting all stores in specific center
+ * Is for getting all stores in a specific center
+ * Responds with 200 if the stores exists
+ * Responds with 204 if there is no stores for the valid id provided
+ * (Note, that it doesn't respond with 404 even though there is no such center, but 204 instead)
+ * Responds with 400 if the id provided is invalid
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/centers/:id/stores', function (req, res) {
     datalayer.getCenterStores(req.param('id'))
@@ -203,7 +233,12 @@ router.get('/centers/:id/stores', function (req, res) {
 
 
 /**
- * Is for getting all offers in a specific center
+ * Is for getting offers in a specific center
+ * Responds with 200 if the offers exists
+ * Responds with 204 if there is no offers for the valid id provided
+ * (Note, that it doesn't respond with 404 even though there is no such center, but 204 instead)
+ * Responds with 400 if the id provided is invalid
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/centers/:id/offers', function (req, res) {
     datalayer.getCenterOffers(req.param('id'))
@@ -224,6 +259,11 @@ router.get('/centers/:id/offers', function (req, res) {
 
 /**
  * For creating a new store, requires an image, name and center
+ * Responds with 400 if required fields were not provided
+ * Responds with 201 if the document is created successfully
+ * Responds with 409 if the document is not unique
+ * Responds with 400 if the _center attribute is not valid
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.post('/stores', imageValidator, function (req, res) {
     if (!req.files.image || !req.body.name || !req.body._center) {
@@ -260,6 +300,9 @@ router.post('/stores', imageValidator, function (req, res) {
 
 /**
  * Is for getting all stores.
+ * Responds with 200 if there are stores
+ * Responds with 204 if there is no stores
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/stores', function (req, res) {
     datalayer.getStores()
@@ -275,9 +318,11 @@ router.get('/stores', function (req, res) {
 });
 
 /**
- * Is for getting a specific store, if the id is parsable by mongo, it'll return the store if found
- * or an appropriate message if not found
- * If the id is unparsable or the mongo is down, the error callback will be called with an appropriate message
+ * Is for getting a single store, if it exists, by id.
+ * Responds with 200 if the store exists
+ * Responds with 404 if the store doesn't exist
+ * Responds with 400 if the id provided is invalid
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/stores/:id', function (req, res) {
     datalayer.getStore(req.param('id'))
@@ -297,7 +342,11 @@ router.get('/stores/:id', function (req, res) {
 });
 
 /**
- *  Is for getting offers in a certain store
+ * Is for getting offers in a certain store
+ * Responds with 204 if there are no documents
+ * Responds with 200 if there are documents
+ * Responds with 400 if id is invalid
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/stores/:id/offers', function (req, res) {
     datalayer.getStoreOffers(req.param('id'))
@@ -318,6 +367,11 @@ router.get('/stores/:id/offers', function (req, res) {
 
 /**
  * For creating a new offer, requires an image, discount, description, expiration date, store and a category
+ * Responds with 400 if required fields were not provided
+ * Responds with 201 if the document is created successfully
+ * Responds with 409 if the document is not unique
+ * Responds with 400 if the _store or _category attribute is not valid TODO: test this
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.post('/offers', imageValidator, function (req, res) {
     if (!req.files.image || !req.body.discount || !req.body.description
@@ -345,6 +399,8 @@ router.post('/offers', imageValidator, function (req, res) {
                 if (error.code === 11000) {
                     // 409 indicates that there was a conflict in creating the resource
                     res.status(409).json({message: 'The offer \'' + name + '\' already exists!'})
+                } else if (error.name === 'ValidationError') {
+                    res.status(400).json({message: error.errors._store.message || error.errors._category.message});
                 } else {
                     res.status(500).json(error);
                 }
@@ -354,6 +410,9 @@ router.post('/offers', imageValidator, function (req, res) {
 
 /**
  * Is for getting all offers.
+ * Responds with 200 if there are offers
+ * Responds with 204 if there is no offers
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/offers', function (req, res) {
     datalayer.getOffers()
@@ -369,9 +428,11 @@ router.get('/offers', function (req, res) {
 });
 
 /**
- * Is for getting a specific offer, if the id is parsable by mongo, it'll return the store if found
- * or an appropriate message if not found
- * If the id is unparsable or the mongo is down, the error callback will be called with an appropriate message
+ * IIs for getting a single offer, if it exists, by id.
+ * Responds with 200 if the store exists
+ * Responds with 404 if the store doesn't exist
+ * Responds with 400 if the id provided is invalid
+ * Responds with 500 if there is a problem with the MongoDB
  * */
 router.get('/offers/:id', function (req, res) {
     datalayer.getOffer(req.param('id'))
@@ -392,6 +453,9 @@ router.get('/offers/:id', function (req, res) {
 
 /**
  * Is for getting the count of a model
+ * Responds with 200 if model exists
+ * Responds with 404 if the model doesn't exists
+ * Responds with 500 if there is a problem with MongoDB
  * */
 router.get('/count/:model', function (req, res) {
     datalayer.getCount(req.param('model'))
@@ -399,13 +463,11 @@ router.get('/count/:model', function (req, res) {
             res.json({count: count});
         }, function (err) {
             if (err.message) {
-                res.status(400).json(err);
+                res.status(404).json(err);
             } else {
                 res.status(500).json(err);
             }
         });
 });
-
-// TODO: Get my offers i've received (user page) -  non-near future!
 
 module.exports = router;

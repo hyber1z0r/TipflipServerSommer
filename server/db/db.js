@@ -52,6 +52,7 @@ var centerSchema = new Schema({
 centerSchema.pre('remove', function (next, done) {
     deletePhoto(path.resolve(__dirname, '../public/' + this.imagePath));
     var store = mongoose.model('Store');
+    //TODO: Replace with findByIdAndRemove
     store.find({_center: this._id}).exec()
         .then(function (stores) {
             var len = stores.length;
@@ -75,6 +76,7 @@ var storeSchema = new Schema({
 storeSchema.pre('remove', function (next, done) {
     deletePhoto(path.resolve(__dirname, '../public/' + this.imagePath));
     var offer = mongoose.model('Offer');
+    //TODO: Replace with findByIdAndRemove
     offer.find({_store: this._id}).exec()
         .then(function (offers) {
             var len = offers.length;
@@ -98,6 +100,7 @@ categorySchema.pre('remove', function (next) {
     deletePhoto(path.resolve(__dirname, '../public/' + this.imagePath));
     var offer = mongoose.model('Offer');
     var profile = mongoose.model('Profile');
+    //TODO: Replace with findByIdAndRemove
     offer.find({_category: this._id}).exec()
         .then(function (offers) {
             var len = offers.length;
