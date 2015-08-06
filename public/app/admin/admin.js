@@ -264,10 +264,8 @@ angular.module('tipflip.admin', ['ngRoute'])
         };
         getOffers();
     })
-    .controller('AdminOfferDetailCtrl', function ($scope, apiFactory, toastr, $routeParams) {
-        $scope.offerID = $routeParams.id;
+    .controller('AdminOfferDetailCtrl', function ($scope, apiFactory, toastr, $routeParams, $location) {
         var offerID = $routeParams.id;
-
         apiFactory.getOffer(offerID)
             .success(function (data, status, headers, config) {
                 $scope.offer = data;
@@ -280,6 +278,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                 } else {
                     toastr.warning(data.message, 'Warning!');
                 }
+                $location.path('/admin/offers');
             });
     })
     .controller('AdminUserCtrl', function ($scope, apiFactory, toastr) {
