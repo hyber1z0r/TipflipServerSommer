@@ -4,7 +4,7 @@
 
 var app = angular.module('tipflip.factories', []);
 
-app.factory('authInterceptor', function ($rootScope, $q, $window) {
+app.factory('authInterceptor', ['$rootScope', '$q', '$window', function ($rootScope, $q, $window) {
     return {
         request: function (config) {
             config.headers = config.headers || {};
@@ -20,9 +20,9 @@ app.factory('authInterceptor', function ($rootScope, $q, $window) {
             return $q.reject(rejection);
         }
     };
-});
+}]);
 
-app.factory('apiFactory', function ($http, $cacheFactory) {
+app.factory('apiFactory', ['$http', '$cacheFactory', function ($http, $cacheFactory) {
     var getCategories = function () {
         return $http.get('/api/categories', {cache: true});
     };
@@ -105,6 +105,6 @@ app.factory('apiFactory', function ($http, $cacheFactory) {
 
         getCount: getCount
     }
-});
+}]);
 
 

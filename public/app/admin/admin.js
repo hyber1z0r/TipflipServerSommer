@@ -36,7 +36,7 @@ angular.module('tipflip.admin', ['ngRoute'])
             });
     }])
 
-    .controller('AdminCtrl', function ($scope, $location, apiFactory) {
+    .controller('AdminCtrl', ['$scope', '$location', 'apiFactory', function ($scope, $location, apiFactory) {
         $scope.go = function (path) {
             $location.path(path);
         };
@@ -65,8 +65,8 @@ angular.module('tipflip.admin', ['ngRoute'])
         };
 
         getCounts();
-    })
-    .controller('AdminCategoryCtrl', function ($scope, apiFactory, toastr) {
+    }])
+    .controller('AdminCategoryCtrl', ['$scope', 'apiFactory', 'toastr', function ($scope, apiFactory, toastr) {
         $scope.categories = [];
 
         var getCategories = function () {
@@ -107,10 +107,8 @@ angular.module('tipflip.admin', ['ngRoute'])
                     }
                 });
         };
-
-
-    })
-    .controller('AdminCenterCtrl', function ($scope, apiFactory, $modal, toastr) {
+    }])
+    .controller('AdminCenterCtrl', ['$scope', 'apiFactory', '$modal', 'toastr', function ($scope, apiFactory, $modal, toastr) {
         $scope.centers = [];
 
         var getCenters = function () {
@@ -183,15 +181,16 @@ angular.module('tipflip.admin', ['ngRoute'])
                 }
             });
         };
-    })
-    .controller('CenterMapModalCtrl', function ($scope, $modalInstance, name, location) {
-        $scope.name = name;
-        $scope.location = location;
-        $scope.cancel = function () {
-            $modalInstance.dismiss('cancel');
-        };
-    })
-    .controller('AdminStoreCtrl', function ($scope, apiFactory, toastr) {
+    }])
+    .controller('CenterMapModalCtrl', ['$scope', '$modalInstance', 'name', 'location',
+        function ($scope, $modalInstance, name, location) {
+            $scope.name = name;
+            $scope.location = location;
+            $scope.cancel = function () {
+                $modalInstance.dismiss('cancel');
+            };
+        }])
+    .controller('AdminStoreCtrl', ['$scope', 'apiFactory', 'toastr', function ($scope, apiFactory, toastr) {
         $scope.stores = [];
         $scope.centers = [];
 
@@ -243,8 +242,8 @@ angular.module('tipflip.admin', ['ngRoute'])
                     }
                 });
         }
-    })
-    .controller('AdminOfferCtrl', function ($scope, apiFactory, toastr) {
+    }])
+    .controller('AdminOfferCtrl', ['$scope', 'apiFactory', 'toastr', function ($scope, apiFactory, toastr) {
         $scope.offers = [];
 
         var getOffers = function () {
@@ -263,24 +262,25 @@ angular.module('tipflip.admin', ['ngRoute'])
                 });
         };
         getOffers();
-    })
-    .controller('AdminOfferDetailCtrl', function ($scope, apiFactory, toastr, $routeParams, $location) {
-        var offerID = $routeParams.id;
-        apiFactory.getOffer(offerID)
-            .success(function (data, status, headers, config) {
-                $scope.offer = data;
-                var expiration = Date.parse($scope.offer.expiration);
-                $scope.isExpired = expiration < Date.now();
-            })
-            .error(function (data, status, headers, config) {
-                if (status === 500) {
-                    toastr.error('System failure', 'Error!');
-                } else {
-                    toastr.warning(data.message, 'Warning!');
-                }
-                $location.path('/admin/offers');
-            });
-    })
-    .controller('AdminUserCtrl', function ($scope, apiFactory, toastr) {
+    }])
+    .controller('AdminOfferDetailCtrl', ['$scope', 'apiFactory', 'toastr', '$routeParams', '$location',
+        function ($scope, apiFactory, toastr, $routeParams, $location) {
+            var offerID = $routeParams.id;
+            apiFactory.getOffer(offerID)
+                .success(function (data, status, headers, config) {
+                    $scope.offer = data;
+                    var expiration = Date.parse($scope.offer.expiration);
+                    $scope.isExpired = expiration < Date.now();
+                })
+                .error(function (data, status, headers, config) {
+                    if (status === 500) {
+                        toastr.error('System failure', 'Error!');
+                    } else {
+                        toastr.warning(data.message, 'Warning!');
+                    }
+                    $location.path('/admin/offers');
+                });
+        }])
+    .controller('AdminUserCtrl', ['$scope', 'apiFactory', 'toastr', function ($scope, apiFactory, toastr) {
 
-    });
+    }]);

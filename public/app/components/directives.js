@@ -17,7 +17,7 @@ angular.module('tipflip.directives', [])
             templateUrl: '/app/directives/sidebar.html'
         }
     })
-    .directive('fileModel', function ($parse) {
+    .directive('fileModel', ['$parse', function ($parse) {
         return {
             restrict: 'A',
             link: function (scope, element, attrs) {
@@ -31,7 +31,7 @@ angular.module('tipflip.directives', [])
                 });
             }
         };
-    })
+    }])
     .directive('widgetPanel', function () {
         return {
             restrict: 'E',

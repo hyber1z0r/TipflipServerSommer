@@ -10,7 +10,5 @@ angular.module('tipflip.home', ['ngRoute'])
             controller: 'HomeCtrl'
         });
     }])
-
-    .controller('HomeCtrl', function ($scope) {
-        $scope.hello = 'Hello from homeCtrl'
-    });
+    .controller('HomeCtrl', ['$scope', function ($scope) {
+    }]);

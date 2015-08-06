@@ -1,5 +1,5 @@
 'use strict';
 
 angular.module('tipflip.controllers', [])
-    .controller('AppCtrl', function ($scope) {
-    });
+    .controller('AppCtrl', ['$scope', function ($scope) {
+    }]);

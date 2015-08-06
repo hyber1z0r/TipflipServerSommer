@@ -21,6 +21,6 @@ angular.module('tipflip', [
         $routeProvider.otherwise({redirectTo: '/'});
     }])
 
-    .config(function ($httpProvider) {
+    .config(['$httpProvider', function ($httpProvider) {
         $httpProvider.interceptors.push('authInterceptor');
-    });
+    }]);

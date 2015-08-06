@@ -10,7 +10,5 @@ angular.module('tipflip.login', ['ngRoute'])
             controller: 'LoginCtrl'
         });
     }])
-
-    .controller('LoginCtrl', function ($scope) {
-        $scope.hello = 'Hello from loginCtrl'
-    });
+    .controller('LoginCtrl', ['$scope', function ($scope) {
+    }]);
