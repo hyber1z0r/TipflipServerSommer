@@ -4,6 +4,7 @@
 var mongoose = require('mongoose');
 var fs = require('fs');
 var path = require('path');
+var idvalidator = require('mongoose-id-validator');
 var Schema = mongoose.Schema;
 global.TEST_DATABASE = 'mongodb://localhost/TipflipDB_test';
 // global test database is set by the tests.
@@ -43,10 +44,10 @@ function deletePhoto(path) {
 }
 
 var centerSchema = new Schema({
-    name: {type: String, required: 'Center must have a name!', unique: true},
-    imagePath: {type: String, required: 'An imagepath for the center is required!'},
-    contentType: {type: String, required: 'No contenttype provided!'},
-    location: {type: String, required: 'A location is required!'}
+    name: {type: String, required: 'Name required!', unique: true},
+    imagePath: {type: String, required: 'Imagepath required!'},
+    contentType: {type: String, required: 'Contenttype required!'},
+    location: {type: String, required: 'Location required!'}
 });
 
 centerSchema.pre('remove', function (next, done) {
@@ -67,11 +68,12 @@ centerSchema.pre('remove', function (next, done) {
 mongoose.model('Center', centerSchema, 'centers');
 
 var storeSchema = new Schema({
-    name: {type: String, required: 'Name for store is required!'},
-    imagePath: {type: String, required: 'An imagepath for the store is required!'},
-    contentType: {type: String, required: 'No contenttype provided!'},
-    _center: {type: mongoose.Schema.Types.ObjectId, ref: 'Center', required: 'A store must belong to a center!'}
+    name: {type: String, required: 'Name required!'},
+    imagePath: {type: String, required: 'Imagepath required!'},
+    contentType: {type: String, required: 'Contenttype required!'},
+    _center: {type: mongoose.Schema.Types.ObjectId, ref: 'Center', required: 'Center required!'}
 });
+storeSchema.plugin(idvalidator);
 
 storeSchema.pre('remove', function (next, done) {
     deletePhoto(path.resolve(__dirname, '../public/' + this.imagePath));
@@ -91,9 +93,9 @@ storeSchema.pre('remove', function (next, done) {
 mongoose.model('Store', storeSchema, 'stores');
 
 var categorySchema = new Schema({
-    name: {type: String, required: 'Category name required!', unique: true},
-    imagePath: {type: String, required: 'An imagepath for the category is required!'},
-    contentType: {type: String, required: 'No contenttype provided!'}
+    name: {type: String, required: 'Name required!', unique: true},
+    imagePath: {type: String, required: 'Imagepath required!'},
+    contentType: {type: String, required: 'Contenttype required!'}
 });
 
 categorySchema.pre('remove', function (next) {
@@ -115,15 +117,16 @@ categorySchema.pre('remove', function (next) {
 mongoose.model('Category', categorySchema, 'categories');
 
 var offersSchema = new Schema({
-    discount: {type: String, required: 'Discount required'},
-    description: {type: String, required: 'Offer desc required'},
-    imagePath: {type: String, required: 'An imagepath for the offer is required!'},
-    contentType: {type: String, required: 'No contenttype provided!'},
+    discount: {type: String, required: 'Discount required!'},
+    description: {type: String, required: 'Description required!'},
+    imagePath: {type: String, required: 'Imagepath required!'},
+    contentType: {type: String, required: 'Contenttype required!'},
     created: {type: Date, default: Date.now()},
-    expiration: {type: Date, required: 'Expiration date required'},
-    _store: {type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: 'Store ref required'},
-    _category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category'}
+    expiration: {type: Date, required: 'Expiration date required!'},
+    _store: {type: mongoose.Schema.Types.ObjectId, ref: 'Store', required: 'Store required!'},
+    _category: {type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: 'Category required!'}
 });
+offersSchema.plugin(idvalidator);
 
 offersSchema.pre('remove', function (next) {
     deletePhoto(path.resolve(__dirname, '../public/' + this.imagePath));
@@ -141,4 +144,5 @@ var profileSchema = new Schema({
     _categories: [{type: mongoose.Schema.Types.ObjectId, ref: 'Category'}],
     _offers: [{type: mongoose.Schema.Types.ObjectId, ref: 'Offer'}]
 });
+profileSchema.plugin(idvalidator);
 mongoose.model('Profile', profileSchema, 'profiles');

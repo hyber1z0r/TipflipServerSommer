@@ -7,8 +7,6 @@ var datalayer = require('../../server/db/datalayer');
 var should = require('should');
 var insertScript = require('../sampledata/insertscript');
 
-// TODO: WRITE SOME MORE TESTS!!!
-
 describe('Datalayer', function () {
     beforeEach(function (done) {
         insertScript.insert(function () {
@@ -31,7 +29,7 @@ describe('Datalayer', function () {
             it('should return a category object and be fulfilled if exists', function (done) {
                 datalayer.getCategories()
                     .then(function (categories) {
-                        return datalayer.getCategory(categories[0]._id)
+                        return datalayer.getCategory(categories[0]._id);
                     })
                     .then(function (category) {
                         category.should.have.properties(['name', 'imagePath', 'contentType']);
@@ -89,7 +87,7 @@ describe('Datalayer', function () {
                 datalayer.createCategory(name, imagePath, contentType)
                     .catch(function (err) {
                         err.name.should.equal('ValidationError');
-                        err.errors.name.message.should.equal('Category name required!');
+                        err.errors.name.message.should.equal('Name required!');
                         done();
                     });
             });
@@ -101,7 +99,7 @@ describe('Datalayer', function () {
                 datalayer.createCategory(name, imagePath, contentType)
                     .catch(function (err) {
                         err.name.should.equal('ValidationError');
-                        err.errors.imagePath.message.should.equal('An imagepath for the category is required!');
+                        err.errors.imagePath.message.should.equal('Imagepath required!');
                         done();
                     });
             });
@@ -113,7 +111,7 @@ describe('Datalayer', function () {
                 datalayer.createCategory(name, imagePath, contentType)
                     .catch(function (err) {
                         err.name.should.equal('ValidationError');
-                        err.errors.contentType.message.should.equal('No contenttype provided!');
+                        err.errors.contentType.message.should.equal('Contenttype required!');
                         done();
                     });
             });
@@ -135,7 +133,7 @@ describe('Datalayer', function () {
             it('should return a center object and be fulfilled if exists', function (done) {
                 datalayer.getCenters()
                     .then(function (centers) {
-                        return datalayer.getCenter(centers[0]._id)
+                        return datalayer.getCenter(centers[0]._id);
                     })
                     .then(function (center) {
                         center.should.have.properties(['name', 'imagePath', 'contentType', 'location']);
@@ -196,7 +194,7 @@ describe('Datalayer', function () {
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .catch(function (err) {
                         should.exist(err);
-                        err.errors.name.message.should.equal('Center must have a name!');
+                        err.errors.name.message.should.equal('Name required!');
                         done();
                     });
             });
@@ -209,7 +207,7 @@ describe('Datalayer', function () {
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .catch(function (err) {
                         should.exist(err);
-                        err.errors.imagePath.message.should.equal('An imagepath for the center is required!');
+                        err.errors.imagePath.message.should.equal('Imagepath required!');
                         done();
                     });
             });
@@ -222,7 +220,7 @@ describe('Datalayer', function () {
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .catch(function (err) {
                         should.exist(err);
-                        err.errors.contentType.message.should.equal('No contenttype provided!');
+                        err.errors.contentType.message.should.equal('Contenttype required!');
                         done();
                     });
             });
@@ -235,7 +233,7 @@ describe('Datalayer', function () {
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .catch(function (err) {
                         should.exist(err);
-                        err.errors.location.message.should.equal('A location is required!');
+                        err.errors.location.message.should.equal('Location required!');
                         done();
                     });
             });
@@ -257,14 +255,13 @@ describe('Datalayer', function () {
             it('should return a store object and be fulfilled if exists', function (done) {
                 datalayer.getStores()
                     .then(function (stores) {
-                        return datalayer.getStore(stores[0]._id)
+                        return datalayer.getStore(stores[0]._id);
                     })
                     .then(function (store) {
                         store.should.have.properties(['name', 'imagePath', 'contentType', '_center']);
                         done();
                     });
             });
-
 
             it('should be rejected if id is not valid', function (done) {
                 datalayer.getStore('blabla')
@@ -293,7 +290,7 @@ describe('Datalayer', function () {
                 var location = '23.3231231,32.3232332';
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .then(function (center) {
-                        return datalayer.createStore('TestStore', imagePath, contentType, center._id)
+                        return datalayer.createStore('TestStore', imagePath, contentType, center._id);
                     })
                     .then(function (store) {
                         store.should.have.property('_id');
@@ -308,12 +305,12 @@ describe('Datalayer', function () {
                 var location = '23.3231231,32.3232332';
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .then(function (center) {
-                        return datalayer.createStore(undefined, imagePath, contentType, center._id)
+                        return datalayer.createStore(undefined, imagePath, contentType, center._id);
                     })
                     .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
-                        err.errors.name.message.should.equal('Name for store is required!');
+                        err.errors.name.message.should.equal('Name required!');
                         done();
                     });
             });
@@ -325,12 +322,12 @@ describe('Datalayer', function () {
                 var location = '23.3231231,32.3232332';
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .then(function (center) {
-                        return datalayer.createStore('TestStore', undefined, contentType, center._id)
+                        return datalayer.createStore('TestStore', undefined, contentType, center._id);
                     })
                     .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
-                        err.errors.imagePath.message.should.equal('An imagepath for the store is required!');
+                        err.errors.imagePath.message.should.equal('Imagepath required!');
                         done();
                     });
             });
@@ -342,12 +339,12 @@ describe('Datalayer', function () {
                 var location = '23.3231231,32.3232332';
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .then(function (center) {
-                        return datalayer.createStore('TestStore', imagePath, undefined, center._id)
+                        return datalayer.createStore('TestStore', imagePath, undefined, center._id);
                     })
                     .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
-                        err.errors.contentType.message.should.equal('No contenttype provided!');
+                        err.errors.contentType.message.should.equal('Contenttype required!');
                         done();
                     });
             });
@@ -361,7 +358,7 @@ describe('Datalayer', function () {
                     .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
-                        err.errors._center.message.should.equal('A store must belong to a center!');
+                        err.errors._center.message.should.equal('Center required!');
                         done();
                     });
             });
@@ -380,6 +377,20 @@ describe('Datalayer', function () {
                     });
             });
 
+            it('should be rejected if center is provided, valid but does not exists', function (done) {
+                var name = 'TestStore';
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = 'image/png';
+                var _center = '558d2555fc9ea7751f9ad23c';
+                datalayer.createStore(name, imagePath, contentType, _center)
+                    .catch(function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors._center.message.should.equal('_center references a non existing ID');
+                        done();
+                    });
+            });
+
             // it should be possible to have two of the same store in one center. This is typical for stores like 7-eleven
             // Quint is a store that already exists!
             it('should be fulfilled if store name and center already exists', function (done) {
@@ -389,7 +400,7 @@ describe('Datalayer', function () {
                 var location = '23.3231231,32.3232332';
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .then(function (center) {
-                        return datalayer.createStore('Quint', imagePath, contentType, center._id)
+                        return datalayer.createStore('Quint', imagePath, contentType, center._id);
                     })
                     .then(function (store) {
                         store.should.have.property('_id');
@@ -403,10 +414,10 @@ describe('Datalayer', function () {
                 datalayer.getStores()
                     .then(function (stores) {
                         stores.length.should.equal(8);
-                        return datalayer.deleteStore(stores[0]._id)
+                        return datalayer.deleteStore(stores[0]._id);
                     })
                     .then(function () {
-                        return datalayer.getStores()
+                        return datalayer.getStores();
                     })
                     .then(function (storesUpdate) {
                         storesUpdate.length.should.equal(7);
@@ -431,7 +442,7 @@ describe('Datalayer', function () {
             it('should return an offer with given id', function (done) {
                 datalayer.getOffers()
                     .then(function (offers) {
-                        return datalayer.getOffer(offers[0]._id)
+                        return datalayer.getOffer(offers[0]._id);
                     })
                     .then(function (offer) {
                         offer.should.have.properties(['_id', '_store', '_category']);
@@ -470,22 +481,273 @@ describe('Datalayer', function () {
                 datalayer.getStores()
                     .then(function (data) {
                         stores = data;
-                        return datalayer.getCategories()
+                        return datalayer.getCategories();
                     })
                     .then(function (categories) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, stores[0]._id, categories[0]._id)
+                            contentType, created, expiration, stores[0]._id, categories[0]._id);
                     })
                     .then(function (offer) {
                         offer.should.have.property('_id');
                         done();
                     });
             });
-            // TODO create the rest, even though i know they work.
-        });
 
-        describe('deleteOffer', function () {
+            it('should be rejected if discount is not provided', function (done) {
+                var discount = undefined;
+                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = 'image/png';
+                var created = Date.now();
+                var expiration = new Date('October 13, 2015 11:13:00');
+                var stores;
+                datalayer.getStores()
+                    .then(function (data) {
+                        stores = data;
+                        return datalayer.getCategories();
+                    })
+                    .then(function (categories) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, stores[0]._id, categories[0]._id);
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors.discount.message.should.equal('Discount required!');
+                        done();
+                    });
+            });
 
+            it('should be rejected if description is not provided', function (done) {
+                var discount = '20%';
+                var description = undefined;
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = 'image/png';
+                var created = Date.now();
+                var expiration = new Date('October 13, 2015 11:13:00');
+                var stores;
+                datalayer.getStores()
+                    .then(function (data) {
+                        stores = data;
+                        return datalayer.getCategories();
+                    })
+                    .then(function (categories) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, stores[0]._id, categories[0]._id);
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors.description.message.should.equal('Description required!');
+                        done();
+                    });
+            });
+
+            it('should be rejected if imagePath is not provided', function (done) {
+                var discount = '20%';
+                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
+                var imagePath = undefined;
+                var contentType = 'image/png';
+                var created = Date.now();
+                var expiration = new Date('October 13, 2015 11:13:00');
+                var stores;
+                datalayer.getStores()
+                    .then(function (data) {
+                        stores = data;
+                        return datalayer.getCategories();
+                    })
+                    .then(function (categories) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, stores[0]._id, categories[0]._id);
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors.imagePath.message.should.equal('Imagepath required!');
+                        done();
+                    });
+            });
+
+            it('should be rejected if contentType is not provided', function (done) {
+                var discount = '20%';
+                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = undefined;
+                var created = Date.now();
+                var expiration = new Date('October 13, 2015 11:13:00');
+                var stores;
+                datalayer.getStores()
+                    .then(function (data) {
+                        stores = data;
+                        return datalayer.getCategories();
+                    })
+                    .then(function (categories) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, stores[0]._id, categories[0]._id);
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors.contentType.message.should.equal('Contenttype required!');
+                        done();
+                    });
+            });
+
+            it('should be rejected if expiration date is not provided', function (done) {
+                var discount = '20%';
+                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = 'image/png';
+                var created = Date.now();
+                var expiration = undefined;
+                var stores;
+                datalayer.getStores()
+                    .then(function (data) {
+                        stores = data;
+                        return datalayer.getCategories();
+                    })
+                    .then(function (categories) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, stores[0]._id, categories[0]._id);
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors.expiration.message.should.equal('Expiration date required!');
+                        done();
+                    });
+            });
+
+            it('should be rejected if store is not provided', function (done) {
+                var discount = '20%';
+                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = 'image/png';
+                var created = Date.now();
+                var expiration = new Date('October 13, 2015 11:13:00');
+                datalayer.getCategories()
+                    .then(function (categories) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, undefined, categories[0]._id);
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors._store.message.should.equal('Store required!');
+                        done();
+                    });
+            });
+
+            it('should be rejected if category is not provided', function (done) {
+                var discount = '20%';
+                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = 'image/png';
+                var created = Date.now();
+                var expiration = new Date('October 13, 2015 11:13:00');
+                datalayer.getStores()
+                    .then(function (stores) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, stores[0]._id, undefined);
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors._category.message.should.equal('Category required!');
+                        done();
+                    });
+            });
+
+            it('should be rejected if store is provided but does not exists', function (done) {
+                var discount = '20%';
+                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = 'image/png';
+                var created = Date.now();
+                var expiration = new Date('October 13, 2015 11:13:00');
+                datalayer.getCategories()
+                    .then(function (categories) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, '558d2555fc9ea7751f9ad23c', categories[0]._id);
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors._store.message.should.equal('_store references a non existing ID');
+                        done();
+                    });
+            });
+
+            it('should be rejected if store is invalid', function (done) {
+                var discount = '20%';
+                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = 'image/png';
+                var created = Date.now();
+                var expiration = new Date('October 13, 2015 11:13:00');
+                datalayer.getCategories()
+                    .then(function (categories) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, 'notvalidid', categories[0]._id);
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors._store.name.should.equal('CastError');
+                        done();
+                    });
+            });
+
+            it('should be rejected if category is provided but does not exists', function (done) {
+                var discount = '20%';
+                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = 'image/png';
+                var created = Date.now();
+                var expiration = new Date('October 13, 2015 11:13:00');
+                datalayer.getStores()
+                    .then(function (stores) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, stores[0]._id, '558d2555fc9ea7751f9ad23c');
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors._category.message.should.equal('_category references a non existing ID');
+                        done();
+                    });
+            });
+
+            it('should be rejected if store is invalid', function (done) {
+                var discount = '20%';
+                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
+                var imagePath = 'uploads/fakeimage.png';
+                var contentType = 'image/png';
+                var created = Date.now();
+                var expiration = new Date('October 13, 2015 11:13:00');
+                datalayer.getStores()
+                    .then(function (stores) {
+                        return datalayer.createOffer(discount, description, imagePath,
+                            contentType, created, expiration, stores[0]._id, 'notvalidid');
+                    })
+                    .then(function () {
+                    }, function (err) {
+                        should.exist(err);
+                        err.name.should.equal('ValidationError');
+                        err.errors._category.name.should.equal('CastError');
+                        done();
+                    });
+            });
         });
     });
 });
