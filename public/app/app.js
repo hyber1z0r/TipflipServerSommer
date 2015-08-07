@@ -4,10 +4,10 @@
 angular.module('tipflip', [
     'ngRoute',
     'ngAnimate',
+    'mgcrea.ngStrap',
     'ui.bootstrap',
     'ngMap',
     'toastr',
-    'mgcrea.ngStrap',
     'tipflip.controllers',
     'tipflip.directives',
     'tipflip.factories',
