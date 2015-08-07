@@ -6,9 +6,8 @@ var fs = require('fs');
 var path = require('path');
 var idvalidator = require('mongoose-id-validator');
 var Schema = mongoose.Schema;
-global.TEST_DATABASE = 'mongodb://localhost/TipflipDB_test';
 // global test database is set by the tests.
-var dbURI = global.TEST_DATABASE ? global.TEST_DATABASE : process.env.MONGODB_URI;
+var dbURI = process.env.MONGODB_URI;
 
 mongoose.connect(dbURI, {server: {auto_reconnect: true}});
 
