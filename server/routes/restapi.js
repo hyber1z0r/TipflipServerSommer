@@ -7,7 +7,6 @@ var fs = require('fs');
 var datalayer = require('../db/datalayer');
 var imageValidator = require('../modules/imageValidator');
 
-
 /**
  * For creating a new category. Requires a name and an image for the category.
  * Responds with 400 if required fields were not provided
@@ -29,9 +28,6 @@ router.post('/categories', imageValidator, function (req, res) {
         datalayer.createCategory(name, imagePath, contentType)
             .then(function (category) {
                 // 201 indicates that a POST request created a new document
-                if (req.body.test === 'true') {
-                    fs.unlinkSync(req.files.image.path);
-                }
                 // location for new category in response
                 res.location('/api/categories/' + category._id);
                 res.status(201).json({message: 'Successfully created new category ' + category.name});

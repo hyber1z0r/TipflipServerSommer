@@ -6,7 +6,7 @@ var fs = require('fs');
 var path = require('path');
 var idvalidator = require('mongoose-id-validator');
 var Schema = mongoose.Schema;
-// global test database is set by the tests.
+// MONGODB_URI is set by the different enviroments, Mocha sets to the test_database, while node sets to production db
 var dbURI = process.env.MONGODB_URI;
 
 mongoose.connect(dbURI, {server: {auto_reconnect: true}});

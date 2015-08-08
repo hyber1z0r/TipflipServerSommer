@@ -26,10 +26,12 @@ app.locals.pretty = true;
 // defaults includeEmptyFields to false
 // TODO also check what happens when i upload more than 1 file, and files in another name than 'image'
 // TODO implement socket.io for emitting upload progress to the client. (but how???)
-app.use(multer({dest: './server/public/uploads/', limits: {
-    files: 1,
-    fields: 10
-}}));
+app.use(multer({
+    dest: './server/public/uploads/', limits: {
+        files: 1,
+        fields: 10
+    }
+}));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false, limit: '16384kb'}));
