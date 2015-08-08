@@ -7,7 +7,17 @@ var request = require('supertest');
 var app = require('../../server/app');
 var insertScript = require('../sampledata/insertscript');
 var path = require('path');
+var fs = require('fs');
 
+function cleanUpImg(url, callback) {
+    request(app)
+        .get(url)
+        .end(function (err, res) {
+            var item = JSON.parse(res.text);
+            fs.unlinkSync(path.resolve(__dirname, '../../server/public/' + item.imagePath));
+            callback();
+        });
+}
 
 describe('RestAPI', function () {
     beforeEach(function (done) {
@@ -60,25 +70,24 @@ describe('RestAPI', function () {
         });
 
         it('should create a new category', function (done) {
-            // Test field is a field i added, that deletes the photo from the server when we're testing
             request(app)
                 .post('/api/categories')
                 .field('name', 'shoes')
-                .field('test', 'true')
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
                 .end(function (err, res) {
                     res.status.should.equal(201);
                     should.exist(res.headers.location);
                     // notice capitalized Category name
                     JSON.parse(res.text).message.should.equal('Successfully created new category Shoes');
-                    done();
+                    cleanUpImg(res.headers.location, function () {
+                        done();
+                    });
                 });
         });
 
         it('should return 400 when name field is missing', function (done) {
             request(app)
                 .post('/api/categories')
-                .field('test', 'true')
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
                 .end(function (err, res) {
                     res.status.should.equal(400);
@@ -91,7 +100,6 @@ describe('RestAPI', function () {
             request(app)
                 .post('/api/categories')
                 .field('name', 'shoes')
-                .field('test', 'true')
                 .end(function (err, res) {
                     res.status.should.equal(400);
                     JSON.parse(res.text).message.should.equal('No image or name provided.');
@@ -105,7 +113,6 @@ describe('RestAPI', function () {
                 .post('/api/categories')
                 .field('name', 'Elektronik')
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
-                .field('test', 'true')
                 .end(function (err, res) {
                     res.status.should.equal(409);
                     JSON.parse(res.text).message.should.equal('The category \'Elektronik\' already exists!');
@@ -119,7 +126,6 @@ describe('RestAPI', function () {
                 .post('/api/categories')
                 .field('name', 'eLeKTRoNik')
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
-                .field('test', 'true')
                 .end(function (err, res) {
                     res.status.should.equal(409);
                     JSON.parse(res.text).message.should.equal('The category \'eLeKTRoNik\' already exists!');
