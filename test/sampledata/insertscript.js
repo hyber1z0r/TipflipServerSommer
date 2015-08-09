@@ -10,6 +10,7 @@ var centers = require('./center.json');
 var stores = require('./store.json');
 var categories = require('./category.json');
 var offers = require('./offer.json');
+var _ = require('lodash');
 
 function insertCenters(callback) {
     Center.remove({}, function () {
@@ -25,8 +26,7 @@ function insertCenters(callback) {
 
 function insertStores(insertedCenters, callback) {
     for (var i = 0; i < stores.length; i++) {
-        var rand = Math.floor(Math.random() * insertedCenters.length);
-        stores[i]._center = insertedCenters[rand]._id;
+        stores[i]._center = _.sample(insertedCenters)._id;
     }
     Store.remove({}, function () {
         Store.create(stores, function (err, insertedStores) {
@@ -45,10 +45,8 @@ function insertCategories(callback) {
 
 function insertOffers(categories, stores, callback) {
     for (var i = 0; i < offers.length; i++) {
-        var randCat = Math.floor(Math.random() * categories.length);
-        var randSt = Math.floor(Math.random() * stores.length);
-        offers[i]._category = categories[randCat]._id;
-        offers[i]._store = stores[randSt]._id;
+        offers[i]._category = _.sample(categories)._id;
+        offers[i]._store = _.sample(stores)._id;
         offers[i].created = Date.now();
     }
     Offer.remove({}, function () {
