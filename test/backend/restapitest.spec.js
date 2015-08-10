@@ -1,7 +1,6 @@
 /**
  * Created by jakobgaardandersen on 23/06/15.
  */
-global.TEST_DATABASE = "mongodb://localhost/TipflipDB_test";
 var should = require('should');
 var request = require('supertest');
 var app = require('../../server/app');

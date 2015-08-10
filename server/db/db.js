@@ -37,7 +37,7 @@ process.on('SIGINT', function () {
 
 // only if we're not testing, as we don't want to delete the test photo
 function deletePhoto(path) {
-    if (!global.TEST_DATABASE) {
+    if (!process.env.TEST) {
         fs.unlinkSync(path);
     }
 }
