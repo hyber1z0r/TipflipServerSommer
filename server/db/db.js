@@ -44,7 +44,7 @@ function deletePhoto(path) {
 
 var centerSchema = new Schema({
     name: {type: String, required: 'Name required!', unique: true},
-    imagePath: {type: String, required: 'Imagepath required!'},
+    imagePath: {type: String, required: 'Image required!'},
     contentType: {type: String, required: 'Contenttype required!'},
     location: {type: String, required: 'Location required!'}
 });
@@ -68,7 +68,7 @@ mongoose.model('Center', centerSchema, 'centers');
 
 var storeSchema = new Schema({
     name: {type: String, required: 'Name required!'},
-    imagePath: {type: String, required: 'Imagepath required!'},
+    imagePath: {type: String, required: 'Image required!'},
     contentType: {type: String, required: 'Contenttype required!'},
     _center: {type: mongoose.Schema.Types.ObjectId, ref: 'Center', required: 'Center required!'}
 });
@@ -93,7 +93,7 @@ mongoose.model('Store', storeSchema, 'stores');
 
 var categorySchema = new Schema({
     name: {type: String, required: 'Name required!', unique: true},
-    imagePath: {type: String, required: 'Imagepath required!'},
+    imagePath: {type: String, required: 'Image required!'},
     contentType: {type: String, required: 'Contenttype required!'}
 });
 
@@ -118,7 +118,7 @@ mongoose.model('Category', categorySchema, 'categories');
 var offersSchema = new Schema({
     discount: {type: String, required: 'Discount required!'},
     description: {type: String, required: 'Description required!'},
-    imagePath: {type: String, required: 'Imagepath required!'},
+    imagePath: {type: String, required: 'Image required!'},
     contentType: {type: String, required: 'Contenttype required!'},
     created: {type: Date, default: Date.now()},
     expiration: {type: Date, required: 'Expiration date required!'},

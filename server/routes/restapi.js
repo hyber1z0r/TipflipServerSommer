@@ -6,7 +6,6 @@ var router = express.Router();
 var fs = require('fs');
 var datalayer = require('../db/datalayer');
 var imageValidator = require('../modules/imageValidator');
-
 /**
  * For creating a new category. Requires a name and an image for the category.
  * Responds with 400 if required fields were not provided
@@ -15,33 +14,35 @@ var imageValidator = require('../modules/imageValidator');
  * Responds with 500 if there is a problem with the MongoDB
  * */
 router.post('/categories', imageValidator, function (req, res) {
-    if (!req.files.image || !req.body.name) {
-        if (req.files.image) {
-            // delete image
-            fs.unlinkSync(req.files.image.path);
-        }
-        res.status(400).json({message: 'No image or name provided.'});
-    } else {
-        var name = req.body.name;
-        var imagePath = req.files.image.path.replace('server/public/', '');
-        var contentType = req.files.image.mimetype;
-        datalayer.createCategory(name, imagePath, contentType)
-            .then(function (category) {
-                // 201 indicates that a POST request created a new document
-                // location for new category in response
-                res.location('/api/categories/' + category._id);
-                res.status(201).json({message: 'Successfully created new category ' + category.name});
-            }, function (error) {
-                // the document already exists or some weird error happened
+    var name = req.body.name;
+    var imagePath = req.files.image ? req.files.image.path.replace('server/public/', '') : null;
+    var contentType = imagePath ? req.files.image.mimetype : null;
+    datalayer.createCategory(name, imagePath, contentType)
+        .then(function (category) {
+            // 201 indicates that a POST request created a new document
+            // location for new category in response
+            res.location('/api/categories/' + category._id);
+            res.status(201).json({message: 'Successfully created new category ' + category.name});
+        }, function (error) {
+            if (req.files.image) {
                 fs.unlinkSync(req.files.image.path);
-                if (error.code === 11000) {
-                    // 409 indicates that there was a conflict in creating the resource
-                    res.status(409).json({message: 'The category \'' + name + '\' already exists!'})
-                } else {
-                    res.status(500).json(error);
+            }
+            if (error.name === 'ValidationError') {
+                // I'll hardcode it for now, until i find a better way to do it
+                var message;
+                if (error.errors.name) {
+                    message = error.errors.name.message;
+                } else if (error.errors.imagePath) {
+                    message = error.errors.imagePath.message;
                 }
-            });
-    }
+                res.status(400).json({message: message});
+            } else if (error.code === 11000) {
+                // 409 indicates that there was a conflict in creating the resource
+                res.status(409).json({message: 'The category \'' + name + '\' already exists!'})
+            } else {
+                res.status(500).json(error);
+            }
+        });
 });
 
 /**

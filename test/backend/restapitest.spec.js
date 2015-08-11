@@ -90,7 +90,7 @@ describe('RestAPI', function () {
                 .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
                 .end(function (err, res) {
                     res.status.should.equal(400);
-                    JSON.parse(res.text).message.should.equal('No image or name provided.');
+                    JSON.parse(res.text).message.should.equal('Name required!');
                     done();
                 });
         });
@@ -101,7 +101,7 @@ describe('RestAPI', function () {
                 .field('name', 'shoes')
                 .end(function (err, res) {
                     res.status.should.equal(400);
-                    JSON.parse(res.text).message.should.equal('No image or name provided.');
+                    JSON.parse(res.text).message.should.equal('Image required!');
                     done();
                 });
         });

@@ -98,7 +98,7 @@ describe('Datalayer', function () {
                 datalayer.createCategory(name, imagePath, contentType)
                     .catch(function (err) {
                         err.name.should.equal('ValidationError');
-                        err.errors.imagePath.message.should.equal('Imagepath required!');
+                        err.errors.imagePath.message.should.equal('Image required!');
                         done();
                     });
             });
@@ -206,7 +206,7 @@ describe('Datalayer', function () {
                 datalayer.createCenter(name, imagePath, contentType, location)
                     .catch(function (err) {
                         should.exist(err);
-                        err.errors.imagePath.message.should.equal('Imagepath required!');
+                        err.errors.imagePath.message.should.equal('Image required!');
                         done();
                     });
             });
@@ -326,7 +326,7 @@ describe('Datalayer', function () {
                     .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
-                        err.errors.imagePath.message.should.equal('Imagepath required!');
+                        err.errors.imagePath.message.should.equal('Image required!');
                         done();
                     });
             });
@@ -565,7 +565,7 @@ describe('Datalayer', function () {
                     }, function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
-                        err.errors.imagePath.message.should.equal('Imagepath required!');
+                        err.errors.imagePath.message.should.equal('Image required!');
                         done();
                     });
             });
