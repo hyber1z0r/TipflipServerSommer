@@ -14,7 +14,7 @@ var imageValidator = require('../modules/imageValidator');
  * Responds with 500 if there is a problem with the MongoDB
  * */
 router.post('/categories', imageValidator, function (req, res) {
-    var name = req.body.name;
+    var name = req.body.name !== 'undefined' ? req.body.name : null;
     var imagePath = req.files.image ? req.files.image.path.replace('server/public/', '') : null;
     var contentType = imagePath ? req.files.image.mimetype : null;
     datalayer.createCategory(name, imagePath, contentType)
@@ -122,33 +122,37 @@ router.get('/categories/:id/offers', function (req, res) {
  * Responds with 500 if there is a problem with the MongoDB
  * */
 router.post('/centers', imageValidator, function (req, res) {
-    if (!req.files.image || !req.body.name || !req.body.location) {
-        if (req.files.image) {
-            // delete image
-            fs.unlinkSync(req.files.image.path);
-        }
-        res.status(400).json({message: 'No image, name or location provided.'});
-    } else {
-        var name = req.body.name;
-        var imagePath = req.files.image.path.replace('server/public/', '');
-        var contentType = req.files.image.mimetype;
-        var location = req.body.location;
-        datalayer.createCenter(name, imagePath, contentType, location)
-            .then(function (center) {
-                // 201 indicates that a POST request created a new document
-                res.location('/api/centers/' + center._id);
-                res.status(201).json({message: 'Successfully created new center ' + center.name});
-            }, function (error) {
-                // the document already exists or some weird error happened
+    var name = req.body.name !== 'undefined' ? req.body.name : null;
+    var imagePath = req.files.image ? req.files.image.path.replace('server/public/', '') : null;
+    var contentType = imagePath ? req.files.image.mimetype : null;
+    var location = req.body.location !== 'undefined' ? req.body.location : null;
+    datalayer.createCenter(name, imagePath, contentType, location)
+        .then(function (center) {
+            // 201 indicates that a POST request created a new document
+            res.location('/api/centers/' + center._id);
+            res.status(201).json({message: 'Successfully created new center ' + center.name});
+        }, function (error) {
+            if (req.files.image) {
                 fs.unlinkSync(req.files.image.path);
-                if (error.code === 11000) {
-                    // 409 indicates that there was a conflict in creating the resource
-                    res.status(409).json({message: 'The center \'' + name + '\' already exists!'})
-                } else {
-                    res.status(500).json(error);
+            }
+            if (error.name === 'ValidationError') {
+                // I'll hardcode it for now, until i find a better way to do it
+                var message;
+                if (error.errors.name) {
+                    message = error.errors.name.message;
+                } else if (error.errors.imagePath) {
+                    message = error.errors.imagePath.message;
+                } else if (error.errors.location) {
+                    message = error.errors.location.message;
                 }
-            });
-    }
+                res.status(400).json({message: message});
+            } else if (error.code === 11000) {
+                // 409 indicates that there was a conflict in creating the resource
+                res.status(409).json({message: 'The center \'' + name + '\' already exists!'})
+            } else {
+                res.status(500).json(error);
+            }
+        });
 });
 
 /**
@@ -263,36 +267,38 @@ router.get('/centers/:id/offers', function (req, res) {
  * Responds with 500 if there is a problem with the MongoDB
  * */
 router.post('/stores', imageValidator, function (req, res) {
-    if (!req.files.image || !req.body.name || !req.body._center) {
-        if (req.files.image) {
-            // delete image
-            fs.unlinkSync(req.files.image.path);
-        }
-        res.status(400).json({message: 'No image, name or center provided.'});
-    } else {
-        var name = req.body.name;
-        var imagePath = req.files.image.path.replace('server/public/', '');
-        var contentType = req.files.image.mimetype;
-        var _center = req.body._center;
-        datalayer.createStore(name, imagePath, contentType, _center)
-            .then(function (store) {
-                // 201 indicates that a POST request created a new document
-                res.location('/api/stores/' + store._id);
-                res.status(201).json({message: 'Successfully created new store ' + store.name});
-            }, function (error) {
-                // the document already exists or some weird error happened
-                console.log(error);
+    var name = req.body.name !== 'undefined' ? req.body.name : null;
+    var imagePath = req.files.image ? req.files.image.path.replace('server/public/', '') : null;
+    var contentType = imagePath ? req.files.image.mimetype : null;
+    var _center = req.body._center !== 'undefined' ? req.body._center : null;
+    datalayer.createStore(name, imagePath, contentType, _center)
+        .then(function (store) {
+            // 201 indicates that a POST request created a new document
+            res.location('/api/stores/' + store._id);
+            res.status(201).json({message: 'Successfully created new store ' + store.name});
+        }, function (error) {
+            if (req.files.image) {
                 fs.unlinkSync(req.files.image.path);
-                if (error.code === 11000) {
-                    // 409 indicates that there was a conflict in creating the resource
-                    res.status(409).json({message: 'The store \'' + name + '\' already exists!'})
-                } else if (error.name === 'ValidationError') {
-                    res.status(400).json({message: error.errors.name.message});
-                } else {
-                    res.status(500).json(error);
+            }
+            if (error.name === 'ValidationError') {
+                // I'll hardcode it for now, until i find a better way to do it
+                var message;
+                if (error.errors.name) {
+                    message = error.errors.name.message;
+                } else if (error.errors.imagePath) {
+                    message = error.errors.imagePath.message;
+                } else if (error.errors._center) {
+                    message = error.errors._center.message;
                 }
-            });
-    }
+                res.status(400).json({message: message});
+            } else if (error.code === 11000) {
+                // 409 indicates that there was a conflict in creating the resource
+                res.status(409).json({message: 'The store \'' + name + '\' already exists!'})
+            } else {
+                res.status(500).json(error);
+            }
+        });
+
 });
 
 /**
@@ -371,38 +377,45 @@ router.get('/stores/:id/offers', function (req, res) {
  * Responds with 500 if there is a problem with the MongoDB
  * */
 router.post('/offers', imageValidator, function (req, res) {
-    if (!req.files.image || !req.body.discount || !req.body.description
-        || !req.body.expiration || !req.body.store || !req.body.category) {
-        if (req.files.image) {
-            // delete image
-            fs.unlinkSync(req.files.image.path);
-        }
-        res.status(400).json({message: 'No image, discount, description, expiration date, store or category provided.'});
-    } else {
-        var imagePath = req.files.image.path.replace('server/public/', '');
-        var contentType = req.files.image.mimetype;
-        var discount = req.body.discount;
-        var description = req.body.description;
-        var expiration = req.body.expiration;
-        var _store = req.body._store;
-        var _category = req.body._category;
-        datalayer.createOffer(discount, description, imagePath, contentType, new Date(), expiration, _store, _category)
-            .then(function (offer) {
-                // 201 indicates that a POST request created a new document
-                res.status(201).json({message: 'Successfully created new offer ' + offer.name});
-            }, function (error) {
-                // the document already exists or some weird error happened
+    var imagePath = req.files.image ? req.files.image.path.replace('server/public/', '') : null;
+    var contentType = imagePath ? req.files.image.mimetype : null;
+    var discount = req.body.discount !== 'undefined' ? req.body.discount : null;
+    var description = req.body.description !== 'undefined' ? req.body.description : null;
+    var expiration = req.body.expiration !== 'undefined' ? req.body.expiration : null;
+    var _store = req.body._store !== 'undefined' ? req.body._store : null;
+    var _category = req.body._category !== 'undefined' ? req.body._category : null;
+    datalayer.createOffer(discount, description, imagePath, contentType, new Date(), expiration, _store, _category)
+        .then(function (offer) {
+            // 201 indicates that a POST request created a new document
+            res.status(201).json({message: 'Successfully created new offer ' + offer.name});
+        }, function (error) {
+            if (req.files.image) {
                 fs.unlinkSync(req.files.image.path);
-                if (error.code === 11000) {
-                    // 409 indicates that there was a conflict in creating the resource
-                    res.status(409).json({message: 'The offer \'' + name + '\' already exists!'})
-                } else if (error.name === 'ValidationError') {
-                    res.status(400).json({message: error.errors._store.message || error.errors._category.message});
-                } else {
-                    res.status(500).json(error);
+            }
+            if (error.name === 'ValidationError') {
+                // I'll hardcode it for now, until i find a better way to do it
+                var message;
+                if (error.errors.imagePath) {
+                    message = error.errors.imagePath.message;
+                } else if (error.errors.discount) {
+                    message = error.errors.discount.message;
+                } else if (error.errors.description) {
+                    message = error.errors.description.message;
+                } else if (error.errors.expiration) {
+                    message = error.errors.expiration.message;
+                } else if (error.errors._store) {
+                    message = error.errors._store.message;
+                } else if (error.errors._category) {
+                    message = error.errors._category.message;
                 }
-            });
-    }
+                res.status(400).json({message: message});
+            } else if (error.code === 11000) {
+                // 409 indicates that there was a conflict in creating the resource
+                res.status(409).json({message: 'The offer \'' + name + '\' already exists!'})
+            } else {
+                res.status(500).json(error);
+            }
+        });
 });
 
 /**
