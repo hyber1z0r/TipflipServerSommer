@@ -7,7 +7,7 @@ var Center = mongoose.model('Center');
 var Store = mongoose.model('Store');
 var Offer = mongoose.model('Offer');
 var Q = require('q');
-require('sugar');
+var _ = require('lodash');
 
 /**
  * Creates a new category in the database
@@ -17,7 +17,7 @@ function createCategory(name, imagePath, contentType) {
     var deferred = Q.defer();
 
     var cat = new Category({
-        name: name ? name.capitalize(true).trim() : name,
+        name: name ? _.trim(_.startCase(name.toLowerCase())) : name,
         imagePath: imagePath,
         contentType: contentType
     });
@@ -90,7 +90,7 @@ function createCenter(name, imagePath, contentType, location) {
     var deferred = Q.defer();
 
     var c = new Center({
-        name: name ? name.capitalize(true).trim() : name,
+        name: name ? _.trim(_.startCase(name.toLowerCase())) : name,
         imagePath: imagePath,
         contentType: contentType,
         location: location
@@ -173,7 +173,7 @@ function createStore(name, imagePath, contentType, _center) {
     var deferred = Q.defer();
 
     var s = new Store({
-        name: name ? name.capitalize(true).trim() : name,
+        name: name ? _.trim(_.startCase(name.toLowerCase())) : name,
         imagePath: imagePath,
         contentType: contentType,
         _center: _center
