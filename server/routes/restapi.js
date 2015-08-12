@@ -6,6 +6,8 @@ var router = express.Router();
 var fs = require('fs');
 var datalayer = require('../db/datalayer');
 var imageValidator = require('../modules/imageValidator');
+var _ = require('lodash');
+
 /**
  * For creating a new category. Requires a name and an image for the category.
  * Responds with 400 if required fields were not provided
@@ -28,14 +30,7 @@ router.post('/categories', imageValidator, function (req, res) {
                 fs.unlinkSync(req.files.image.path);
             }
             if (error.name === 'ValidationError') {
-                // I'll hardcode it for now, until i find a better way to do it
-                var message;
-                if (error.errors.name) {
-                    message = error.errors.name.message;
-                } else if (error.errors.imagePath) {
-                    message = error.errors.imagePath.message;
-                }
-                res.status(400).json({message: message});
+                res.status(400).json({message: _.values(_.get(error, 'errors'))[0].message});
             } else if (error.code === 11000) {
                 // 409 indicates that there was a conflict in creating the resource
                 res.status(409).json({message: 'The category \'' + name + '\' already exists!'})
@@ -136,16 +131,7 @@ router.post('/centers', imageValidator, function (req, res) {
                 fs.unlinkSync(req.files.image.path);
             }
             if (error.name === 'ValidationError') {
-                // I'll hardcode it for now, until i find a better way to do it
-                var message;
-                if (error.errors.name) {
-                    message = error.errors.name.message;
-                } else if (error.errors.imagePath) {
-                    message = error.errors.imagePath.message;
-                } else if (error.errors.location) {
-                    message = error.errors.location.message;
-                }
-                res.status(400).json({message: message});
+                res.status(400).json({message: _.values(_.get(error, 'errors'))[0].message});
             } else if (error.code === 11000) {
                 // 409 indicates that there was a conflict in creating the resource
                 res.status(409).json({message: 'The center \'' + name + '\' already exists!'})
@@ -281,16 +267,7 @@ router.post('/stores', imageValidator, function (req, res) {
                 fs.unlinkSync(req.files.image.path);
             }
             if (error.name === 'ValidationError') {
-                // I'll hardcode it for now, until i find a better way to do it
-                var message;
-                if (error.errors.name) {
-                    message = error.errors.name.message;
-                } else if (error.errors.imagePath) {
-                    message = error.errors.imagePath.message;
-                } else if (error.errors._center) {
-                    message = error.errors._center.message;
-                }
-                res.status(400).json({message: message});
+                res.status(400).json({message: _.values(_.get(error, 'errors'))[0].message});
             } else if (error.code === 11000) {
                 // 409 indicates that there was a conflict in creating the resource
                 res.status(409).json({message: 'The store \'' + name + '\' already exists!'})
@@ -393,22 +370,7 @@ router.post('/offers', imageValidator, function (req, res) {
                 fs.unlinkSync(req.files.image.path);
             }
             if (error.name === 'ValidationError') {
-                // I'll hardcode it for now, until i find a better way to do it
-                var message;
-                if (error.errors.imagePath) {
-                    message = error.errors.imagePath.message;
-                } else if (error.errors.discount) {
-                    message = error.errors.discount.message;
-                } else if (error.errors.description) {
-                    message = error.errors.description.message;
-                } else if (error.errors.expiration) {
-                    message = error.errors.expiration.message;
-                } else if (error.errors._store) {
-                    message = error.errors._store.message;
-                } else if (error.errors._category) {
-                    message = error.errors._category.message;
-                }
-                res.status(400).json({message: message});
+                res.status(400).json({message: _.values(_.get(error, 'errors'))[0].message});
             } else if (error.code === 11000) {
                 // 409 indicates that there was a conflict in creating the resource
                 res.status(409).json({message: 'The offer \'' + name + '\' already exists!'})
