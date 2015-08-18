@@ -13,13 +13,12 @@ var _ = require('lodash');
  * Creates a new category in the database
  * Returns a promise with the created category if fulfilled
  * */
-function createCategory(name, imagePath, contentType) {
+function createCategory(name, imagePath) {
     var deferred = Q.defer();
 
     var cat = new Category({
         name: name ? _.trim(_.startCase(name.toLowerCase())) : name,
-        imagePath: imagePath,
-        contentType: contentType
+        imagePath: imagePath
     });
 
     cat.save(function (err, category) {
@@ -86,13 +85,12 @@ function getCategoryOffers(id) {
  * Creates a new center in the database
  * Returns a promise with the created center if fulfilled
  * */
-function createCenter(name, imagePath, contentType, location) {
+function createCenter(name, imagePath, location) {
     var deferred = Q.defer();
 
     var c = new Center({
         name: name ? _.trim(_.startCase(name.toLowerCase())) : name,
         imagePath: imagePath,
-        contentType: contentType,
         location: location
     });
 
@@ -169,13 +167,12 @@ function getCenterOffers(id) {
  * Creates a new store in the database
  * Returns a promise for the created store if fulfilled
  * */
-function createStore(name, imagePath, contentType, _center) {
+function createStore(name, imagePath, _center) {
     var deferred = Q.defer();
 
     var s = new Store({
         name: name ? _.trim(_.startCase(name.toLowerCase())) : name,
         imagePath: imagePath,
-        contentType: contentType,
         _center: _center
     });
 
@@ -238,14 +235,13 @@ function getStoreOffers(id) {
  * Creates a new offer in the database
  * Returns a promise for the created offer if fulfilled
  * */
-function createOffer(discount, description, imagePath, contentType, created, expiration, _store, _category) {
+function createOffer(discount, description, imagePath, created, expiration, _store, _category) {
     var deferred = Q.defer();
 
     var offer = new Offer({
         discount: discount,
         description: description,
         imagePath: imagePath,
-        contentType: contentType,
         created: created,
         expiration: expiration,
         _store: _store,

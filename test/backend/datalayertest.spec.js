@@ -31,7 +31,7 @@ describe('Datalayer', function () {
                         return datalayer.getCategory(categories[0]._id);
                     })
                     .then(function (category) {
-                        category.should.have.properties(['name', 'imagePath', 'contentType']);
+                        category.should.have.properties(['name', 'imagePath']);
                         done();
                     });
             });
@@ -59,8 +59,7 @@ describe('Datalayer', function () {
             it('should create a category and return an inserted with _id property', function (done) {
                 var name = 'TestCat';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
-                datalayer.createCategory(name, imagePath, contentType)
+                datalayer.createCategory(name, imagePath)
                     .then(function (category) {
                         category.should.have.property('_id');
                         done();
@@ -70,8 +69,7 @@ describe('Datalayer', function () {
             it('should be rejected if category already exists', function (done) {
                 var name = 'Elektronik'; // already exists
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
-                datalayer.createCategory(name, imagePath, contentType)
+                datalayer.createCategory(name, imagePath)
                     .catch(function (err) {
                         should.exist(err);
                         err.code.should.equal(11000);
@@ -82,8 +80,7 @@ describe('Datalayer', function () {
             it('should be rejected if name is not provided', function (done) {
                 var name = undefined;
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
-                datalayer.createCategory(name, imagePath, contentType)
+                datalayer.createCategory(name, imagePath)
                     .catch(function (err) {
                         err.name.should.equal('ValidationError');
                         err.errors.name.message.should.equal('Name required!');
@@ -94,23 +91,10 @@ describe('Datalayer', function () {
             it('should be rejected if imagePath is not provided', function (done) {
                 var name = 'TestCat';
                 var imagePath = undefined;
-                var contentType = 'image/png';
-                datalayer.createCategory(name, imagePath, contentType)
+                datalayer.createCategory(name, imagePath)
                     .catch(function (err) {
                         err.name.should.equal('ValidationError');
                         err.errors.imagePath.message.should.equal('Image required!');
-                        done();
-                    });
-            });
-
-            it('should be rejected if contentType is not provided', function (done) {
-                var name = 'TestCat';
-                var imagePath = 'uploads/fakeimage.png';
-                var contentType = undefined;
-                datalayer.createCategory(name, imagePath, contentType)
-                    .catch(function (err) {
-                        err.name.should.equal('ValidationError');
-                        err.errors.contentType.message.should.equal('Contenttype required!');
                         done();
                     });
             });
@@ -135,7 +119,7 @@ describe('Datalayer', function () {
                         return datalayer.getCenter(centers[0]._id);
                     })
                     .then(function (center) {
-                        center.should.have.properties(['name', 'imagePath', 'contentType', 'location']);
+                        center.should.have.properties(['name', 'imagePath', 'location']);
                         done();
                     });
             });
@@ -163,9 +147,8 @@ describe('Datalayer', function () {
             it('should create a center and return an inserted with _id property', function (done) {
                 var name = 'TestCenter';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var location = '23.323213,45.3123131';
-                datalayer.createCenter(name, imagePath, contentType, location)
+                datalayer.createCenter(name, imagePath, location)
                     .then(function (center) {
                         center.should.have.property('_id');
                         done();
@@ -175,9 +158,8 @@ describe('Datalayer', function () {
             it('should be rejected if center already exists', function (done) {
                 var name = 'Lyngby Storcenter'; // already exists
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var location = '23.323213,45.3123131';
-                datalayer.createCenter(name, imagePath, contentType, location)
+                datalayer.createCenter(name, imagePath, location)
                     .catch(function (err) {
                         should.exist(err);
                         err.code.should.equal(11000);
@@ -188,9 +170,8 @@ describe('Datalayer', function () {
             it('should be rejected if name is not provided', function (done) {
                 var name = undefined;
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var location = '23.323213,45.3123131';
-                datalayer.createCenter(name, imagePath, contentType, location)
+                datalayer.createCenter(name, imagePath, location)
                     .catch(function (err) {
                         should.exist(err);
                         err.errors.name.message.should.equal('Name required!');
@@ -201,9 +182,8 @@ describe('Datalayer', function () {
             it('should be rejected if imagePath is not provided', function (done) {
                 var name = 'TestCenter';
                 var imagePath = undefined;
-                var contentType = 'image/png';
                 var location = '23.323213,45.3123131';
-                datalayer.createCenter(name, imagePath, contentType, location)
+                datalayer.createCenter(name, imagePath, location)
                     .catch(function (err) {
                         should.exist(err);
                         err.errors.imagePath.message.should.equal('Image required!');
@@ -211,25 +191,11 @@ describe('Datalayer', function () {
                     });
             });
 
-            it('should be rejected if contentType is not provided', function (done) {
-                var name = 'TestCenter';
-                var imagePath = 'uploads/fakeimage.png';
-                var contentType = undefined;
-                var location = '23.323213,45.3123131';
-                datalayer.createCenter(name, imagePath, contentType, location)
-                    .catch(function (err) {
-                        should.exist(err);
-                        err.errors.contentType.message.should.equal('Contenttype required!');
-                        done();
-                    });
-            });
-
             it('should be rejected if location is not provided', function (done) {
                 var name = 'TestCenter';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var location = undefined;
-                datalayer.createCenter(name, imagePath, contentType, location)
+                datalayer.createCenter(name, imagePath, location)
                     .catch(function (err) {
                         should.exist(err);
                         err.errors.location.message.should.equal('Location required!');
@@ -257,7 +223,7 @@ describe('Datalayer', function () {
                         return datalayer.getStore(stores[0]._id);
                     })
                     .then(function (store) {
-                        store.should.have.properties(['name', 'imagePath', 'contentType', '_center']);
+                        store.should.have.properties(['name', 'imagePath', '_center']);
                         done();
                     });
             });
@@ -285,11 +251,10 @@ describe('Datalayer', function () {
             it('should create a store and return an inserted with _id property', function (done) {
                 var name = 'TestCenter';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var location = '23.3231231,32.3232332';
-                datalayer.createCenter(name, imagePath, contentType, location)
+                datalayer.createCenter(name, imagePath, location)
                     .then(function (center) {
-                        return datalayer.createStore('TestStore', imagePath, contentType, center._id);
+                        return datalayer.createStore('TestStore', imagePath, center._id);
                     })
                     .then(function (store) {
                         store.should.have.property('_id');
@@ -300,11 +265,10 @@ describe('Datalayer', function () {
             it('should be rejected if name is not provided', function (done) {
                 var name = 'TestCenter';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var location = '23.3231231,32.3232332';
-                datalayer.createCenter(name, imagePath, contentType, location)
+                datalayer.createCenter(name, imagePath, location)
                     .then(function (center) {
-                        return datalayer.createStore(undefined, imagePath, contentType, center._id);
+                        return datalayer.createStore(undefined, imagePath, center._id);
                     })
                     .catch(function (err) {
                         should.exist(err);
@@ -317,11 +281,10 @@ describe('Datalayer', function () {
             it('should be rejected if imagePath is not provided', function (done) {
                 var name = 'TestCenter';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var location = '23.3231231,32.3232332';
-                datalayer.createCenter(name, imagePath, contentType, location)
+                datalayer.createCenter(name, imagePath, location)
                     .then(function (center) {
-                        return datalayer.createStore('TestStore', undefined, contentType, center._id);
+                        return datalayer.createStore('TestStore', undefined, center._id);
                     })
                     .catch(function (err) {
                         should.exist(err);
@@ -331,29 +294,11 @@ describe('Datalayer', function () {
                     });
             });
 
-            it('should be rejected if contentType is not provided', function (done) {
-                var name = 'TestCenter';
-                var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
-                var location = '23.3231231,32.3232332';
-                datalayer.createCenter(name, imagePath, contentType, location)
-                    .then(function (center) {
-                        return datalayer.createStore('TestStore', imagePath, undefined, center._id);
-                    })
-                    .catch(function (err) {
-                        should.exist(err);
-                        err.name.should.equal('ValidationError');
-                        err.errors.contentType.message.should.equal('Contenttype required!');
-                        done();
-                    });
-            });
-
             it('should be rejected if center is not provided', function (done) {
                 var name = 'TestStore';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var _center = undefined;
-                datalayer.createStore(name, imagePath, contentType, _center)
+                datalayer.createStore(name, imagePath, _center)
                     .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
@@ -365,9 +310,8 @@ describe('Datalayer', function () {
             it('should be rejected if center is provided but not valid', function (done) {
                 var name = 'TestStore';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var _center = 'notvalidid';
-                datalayer.createStore(name, imagePath, contentType, _center)
+                datalayer.createStore(name, imagePath, _center)
                     .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
@@ -379,9 +323,8 @@ describe('Datalayer', function () {
             it('should be rejected if center is provided, valid but does not exists', function (done) {
                 var name = 'TestStore';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var _center = '558d2555fc9ea7751f9ad23c';
-                datalayer.createStore(name, imagePath, contentType, _center)
+                datalayer.createStore(name, imagePath, _center)
                     .catch(function (err) {
                         should.exist(err);
                         err.name.should.equal('ValidationError');
@@ -395,11 +338,10 @@ describe('Datalayer', function () {
             it('should be fulfilled if store name and center already exists', function (done) {
                 var name = 'TestCenter';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var location = '23.3231231,32.3232332';
-                datalayer.createCenter(name, imagePath, contentType, location)
+                datalayer.createCenter(name, imagePath, location)
                     .then(function (center) {
-                        return datalayer.createStore('Quint', imagePath, contentType, center._id);
+                        return datalayer.createStore('Quint', imagePath, center._id);
                     })
                     .then(function (store) {
                         store.should.have.property('_id');
@@ -473,7 +415,6 @@ describe('Datalayer', function () {
                 var discount = '20%';
                 var description = 'I dag er der tilbud på iPhone covers fra Puro.';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
                 var stores;
@@ -484,7 +425,7 @@ describe('Datalayer', function () {
                     })
                     .then(function (categories) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, stores[0]._id, categories[0]._id);
+                            created, expiration, stores[0]._id, categories[0]._id);
                     })
                     .then(function (offer) {
                         offer.should.have.property('_id');
@@ -496,7 +437,6 @@ describe('Datalayer', function () {
                 var discount = undefined;
                 var description = 'I dag er der tilbud på iPhone covers fra Puro.';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
                 var stores;
@@ -507,7 +447,7 @@ describe('Datalayer', function () {
                     })
                     .then(function (categories) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, stores[0]._id, categories[0]._id);
+                            created, expiration, stores[0]._id, categories[0]._id);
                     })
                     .then(function () {
                     }, function (err) {
@@ -522,7 +462,6 @@ describe('Datalayer', function () {
                 var discount = '20%';
                 var description = undefined;
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
                 var stores;
@@ -533,7 +472,7 @@ describe('Datalayer', function () {
                     })
                     .then(function (categories) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, stores[0]._id, categories[0]._id);
+                            created, expiration, stores[0]._id, categories[0]._id);
                     })
                     .then(function () {
                     }, function (err) {
@@ -548,7 +487,6 @@ describe('Datalayer', function () {
                 var discount = '20%';
                 var description = 'I dag er der tilbud på iPhone covers fra Puro.';
                 var imagePath = undefined;
-                var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
                 var stores;
@@ -559,7 +497,7 @@ describe('Datalayer', function () {
                     })
                     .then(function (categories) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, stores[0]._id, categories[0]._id);
+                            created, expiration, stores[0]._id, categories[0]._id);
                     })
                     .then(function () {
                     }, function (err) {
@@ -570,37 +508,10 @@ describe('Datalayer', function () {
                     });
             });
 
-            it('should be rejected if contentType is not provided', function (done) {
-                var discount = '20%';
-                var description = 'I dag er der tilbud på iPhone covers fra Puro.';
-                var imagePath = 'uploads/fakeimage.png';
-                var contentType = undefined;
-                var created = Date.now();
-                var expiration = new Date('October 13, 2015 11:13:00');
-                var stores;
-                datalayer.getStores()
-                    .then(function (data) {
-                        stores = data;
-                        return datalayer.getCategories();
-                    })
-                    .then(function (categories) {
-                        return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, stores[0]._id, categories[0]._id);
-                    })
-                    .then(function () {
-                    }, function (err) {
-                        should.exist(err);
-                        err.name.should.equal('ValidationError');
-                        err.errors.contentType.message.should.equal('Contenttype required!');
-                        done();
-                    });
-            });
-
             it('should be rejected if expiration date is not provided', function (done) {
                 var discount = '20%';
                 var description = 'I dag er der tilbud på iPhone covers fra Puro.';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = undefined;
                 var stores;
@@ -611,7 +522,7 @@ describe('Datalayer', function () {
                     })
                     .then(function (categories) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, stores[0]._id, categories[0]._id);
+                            created, expiration, stores[0]._id, categories[0]._id);
                     })
                     .then(function () {
                     }, function (err) {
@@ -626,13 +537,12 @@ describe('Datalayer', function () {
                 var discount = '20%';
                 var description = 'I dag er der tilbud på iPhone covers fra Puro.';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
                 datalayer.getCategories()
                     .then(function (categories) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, undefined, categories[0]._id);
+                            created, expiration, undefined, categories[0]._id);
                     })
                     .then(function () {
                     }, function (err) {
@@ -647,13 +557,12 @@ describe('Datalayer', function () {
                 var discount = '20%';
                 var description = 'I dag er der tilbud på iPhone covers fra Puro.';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
                 datalayer.getStores()
                     .then(function (stores) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, stores[0]._id, undefined);
+                            created, expiration, stores[0]._id, undefined);
                     })
                     .then(function () {
                     }, function (err) {
@@ -668,13 +577,12 @@ describe('Datalayer', function () {
                 var discount = '20%';
                 var description = 'I dag er der tilbud på iPhone covers fra Puro.';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
                 datalayer.getCategories()
                     .then(function (categories) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, '558d2555fc9ea7751f9ad23c', categories[0]._id);
+                            created, expiration, '558d2555fc9ea7751f9ad23c', categories[0]._id);
                     })
                     .then(function () {
                     }, function (err) {
@@ -689,13 +597,12 @@ describe('Datalayer', function () {
                 var discount = '20%';
                 var description = 'I dag er der tilbud på iPhone covers fra Puro.';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
                 datalayer.getCategories()
                     .then(function (categories) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, 'notvalidid', categories[0]._id);
+                            created, expiration, 'notvalidid', categories[0]._id);
                     })
                     .then(function () {
                     }, function (err) {
@@ -710,13 +617,12 @@ describe('Datalayer', function () {
                 var discount = '20%';
                 var description = 'I dag er der tilbud på iPhone covers fra Puro.';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
                 datalayer.getStores()
                     .then(function (stores) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, stores[0]._id, '558d2555fc9ea7751f9ad23c');
+                            created, expiration, stores[0]._id, '558d2555fc9ea7751f9ad23c');
                     })
                     .then(function () {
                     }, function (err) {
@@ -731,13 +637,12 @@ describe('Datalayer', function () {
                 var discount = '20%';
                 var description = 'I dag er der tilbud på iPhone covers fra Puro.';
                 var imagePath = 'uploads/fakeimage.png';
-                var contentType = 'image/png';
                 var created = Date.now();
                 var expiration = new Date('October 13, 2015 11:13:00');
                 datalayer.getStores()
                     .then(function (stores) {
                         return datalayer.createOffer(discount, description, imagePath,
-                            contentType, created, expiration, stores[0]._id, 'notvalidid');
+                            created, expiration, stores[0]._id, 'notvalidid');
                     })
                     .then(function () {
                     }, function (err) {

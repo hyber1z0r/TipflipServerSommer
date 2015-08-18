@@ -18,8 +18,7 @@ var _ = require('lodash');
 router.post('/categories', imageValidator, function (req, res) {
     var name = req.body.name !== 'undefined' ? req.body.name : null;
     var imagePath = req.files.image ? req.files.image.path.replace('server/public/', '') : null;
-    var contentType = imagePath ? req.files.image.mimetype : null;
-    datalayer.createCategory(name, imagePath, contentType)
+    datalayer.createCategory(name, imagePath)
         .then(function (category) {
             // 201 indicates that a POST request created a new document
             // location for new category in response
@@ -119,9 +118,8 @@ router.get('/categories/:id/offers', function (req, res) {
 router.post('/centers', imageValidator, function (req, res) {
     var name = req.body.name !== 'undefined' ? req.body.name : null;
     var imagePath = req.files.image ? req.files.image.path.replace('server/public/', '') : null;
-    var contentType = imagePath ? req.files.image.mimetype : null;
     var location = req.body.location !== 'undefined' ? req.body.location : null;
-    datalayer.createCenter(name, imagePath, contentType, location)
+    datalayer.createCenter(name, imagePath, location)
         .then(function (center) {
             // 201 indicates that a POST request created a new document
             res.location('/api/centers/' + center._id);
@@ -255,9 +253,8 @@ router.get('/centers/:id/offers', function (req, res) {
 router.post('/stores', imageValidator, function (req, res) {
     var name = req.body.name !== 'undefined' ? req.body.name : null;
     var imagePath = req.files.image ? req.files.image.path.replace('server/public/', '') : null;
-    var contentType = imagePath ? req.files.image.mimetype : null;
     var _center = req.body._center !== 'undefined' ? req.body._center : null;
-    datalayer.createStore(name, imagePath, contentType, _center)
+    datalayer.createStore(name, imagePath, _center)
         .then(function (store) {
             // 201 indicates that a POST request created a new document
             res.location('/api/stores/' + store._id);
@@ -355,13 +352,12 @@ router.get('/stores/:id/offers', function (req, res) {
  * */
 router.post('/offers', imageValidator, function (req, res) {
     var imagePath = req.files.image ? req.files.image.path.replace('server/public/', '') : null;
-    var contentType = imagePath ? req.files.image.mimetype : null;
     var discount = req.body.discount !== 'undefined' ? req.body.discount : null;
     var description = req.body.description !== 'undefined' ? req.body.description : null;
     var expiration = req.body.expiration !== 'undefined' ? req.body.expiration : null;
     var _store = req.body._store !== 'undefined' ? req.body._store : null;
     var _category = req.body._category !== 'undefined' ? req.body._category : null;
-    datalayer.createOffer(discount, description, imagePath, contentType, new Date(), expiration, _store, _category)
+    datalayer.createOffer(discount, description, imagePath, new Date(), expiration, _store, _category)
         .then(function (offer) {
             // 201 indicates that a POST request created a new document
             res.status(201).json({message: 'Successfully created new offer ' + offer.name});

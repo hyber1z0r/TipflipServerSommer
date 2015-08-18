@@ -49,7 +49,6 @@ describe('RestAPI', function () {
                             category._id.should.equal(fetchedCategory._id);
                             category.name.should.equal(fetchedCategory.name);
                             category.imagePath.should.equal(fetchedCategory.imagePath);
-                            category.contentType.should.equal(fetchedCategory.contentType);
                             should.not.exist(error);
                             done();
                         });

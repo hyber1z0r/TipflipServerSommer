@@ -1,27 +1,22 @@
 [
   {
     "name": "Parfume",
-    "imagePath": "uploads/no-photo-grey_1x.png",
-    "contentType": "image/png"
+    "imagePath": "uploads/no-photo-grey_1x.png"
   },
   {
     "name": "Elektronik",
-    "imagePath": "uploads/no-photo-grey_1x.png",
-    "contentType": "image/png"
+    "imagePath": "uploads/no-photo-grey_1x.png"
   },
   {
     "name": "Tøj",
-    "imagePath": "uploads/no-photo-grey_1x.png",
-    "contentType": "image/png"
+    "imagePath": "uploads/no-photo-grey_1x.png"
   },
   {
     "name": "Legetøj",
-    "imagePath": "uploads/no-photo-grey_1x.png",
-    "contentType": "image/png"
+    "imagePath": "uploads/no-photo-grey_1x.png"
   },
   {
     "name": "Mad",
-    "imagePath": "uploads/no-photo-grey_1x.png",
-    "contentType": "image/png"
+    "imagePath": "uploads/no-photo-grey_1x.png"
   }
 ]
