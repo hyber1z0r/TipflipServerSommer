@@ -69,24 +69,36 @@ angular.module('tipflip.admin', ['ngRoute'])
     .controller('AdminCategoryCtrl', ['$scope', 'apiFactory', 'toastr', function ($scope, apiFactory, toastr) {
         $scope.categories = [];
 
-        var getCategories = function () {
-            apiFactory.getCategories()
+        apiFactory.getCategories()
+            .success(function (data, status, headers, config) {
+                if (status === 204) {
+                    toastr.info('No categories are created yet! Why don\'t you create one?', 'Information');
+                    document.getElementById('categoryName').focus();
+                } else {
+                    $scope.categories = data;
+                }
+            })
+            .error(function (data, status, headers, config) {
+                // Can only be status 500
+                toastr.error('Internal error!', 'Error!');
+                console.log('Error in getCategories: ' + data);
+            });
+
+        var getNewCategory = function (url) {
+            apiFactory.getNewEntity(url)
                 .success(function (data, status, headers, config) {
-                    if (status === 204) {
-                        toastr.info('No categories are created yet! Why don\'t you create one?', 'Information');
-                        document.getElementById('categoryName').focus();
-                    } else {
-                        $scope.categories = data;
-                    }
+                    $scope.categories.push(data);
                 })
                 .error(function (data, status, headers, config) {
-                    // Can only be status 500
-                    toastr.error('Internal error!', 'Error!');
-                    console.log('Error in getCategories: ' + data);
+                    if (status === 500) {
+                        toastr.error('System failure', 'Error!');
+                        console.log('Error in getNewCategory: ' + data);
+                    } else {
+                        // This is triggered when 400, or 404
+                        toastr.warning(data.message, 'Warning!');
+                    }
                 });
         };
-
-        getCategories();
 
         $scope.createCategory = function () {
             apiFactory.createCategory($scope.categoryName, $scope.categoryImage)
@@ -94,7 +106,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                     toastr.success(data.message, 'Success!');
                     $scope.categoryName = '';
                     angular.element($('.fileinput').fileinput('clear'));
-                    getCategories();
+                    getNewCategory(headers('Location'));
                 })
                 .error(function (data, status, headers, config) {
                     if (status === 500) {
@@ -111,24 +123,37 @@ angular.module('tipflip.admin', ['ngRoute'])
     .controller('AdminCenterCtrl', ['$scope', 'apiFactory', '$modal', 'toastr', function ($scope, apiFactory, $modal, toastr) {
         $scope.centers = [];
 
-        var getCenters = function () {
-            apiFactory.getCenters()
+        apiFactory.getCenters()
+            .success(function (data, status, headers, config) {
+                if (status === 204) {
+                    toastr.info('No centers are created yet! Why don\'t you create one?', 'Information');
+                    document.getElementById('centerName').focus();
+                } else {
+                    $scope.centers = data;
+                }
+            })
+            .error(function (data, status, headers, config) {
+                // Can only be status 500
+                toastr.error('Internal error!', 'Error!');
+                console.log('Error in getCenters: ' + data);
+            });
+
+
+        var getNewCenter = function (url) {
+            apiFactory.getNewEntity(url)
                 .success(function (data, status, headers, config) {
-                    if (status === 204) {
-                        toastr.info('No centers are created yet! Why don\'t you create one?', 'Information');
-                        document.getElementById('centerName').focus();
-                    } else {
-                        $scope.centers = data;
-                    }
+                    $scope.centers.push(data);
                 })
                 .error(function (data, status, headers, config) {
-                    // Can only be status 500
-                    toastr.error('Internal error!', 'Error!');
-                    console.log('Error in getCenters: ' + data);
+                    if (status === 500) {
+                        toastr.error('System failure', 'Error!');
+                        console.log('Error in getNewCenter: ' + data);
+                    } else {
+                        // This is triggered when 400, or 404
+                        toastr.warning(data.message, 'Warning!');
+                    }
                 });
         };
-
-        getCenters();
 
         $scope.createCenter = function () {
             apiFactory.createCenter($scope.centerName, $scope.centerLocation, $scope.centerImage)
@@ -137,7 +162,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                     $scope.centerName = '';
                     $scope.centerLocation = '';
                     angular.element($('.fileinput').fileinput('clear'));
-                    getCenters();
+                    getNewCenter(headers('Location'));
                 })
                 .error(function (data, status, headers, config) {
                     if (status === 500) {
@@ -151,6 +176,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                 });
         };
 
+        // TODO pass whole center object, if possible, to splice from the array instead of refetching.
         $scope.deleteCenter = function (id) {
             alert('Function not implemented yet!');
             //apiFactory.deleteCenter(id)

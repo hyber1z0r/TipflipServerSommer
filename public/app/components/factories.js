@@ -89,6 +89,11 @@ app.factory('apiFactory', ['$http', '$cacheFactory', function ($http, $cacheFact
         return $http.get('api/count/' + model);
     };
 
+    // Used for the location header, to fetch the newly created object
+    var getNewEntity = function (url) {
+        return $http.get(url);
+    };
+
     return {
         getCategories: getCategories,
         createCategory: createCategory,
@@ -103,7 +108,8 @@ app.factory('apiFactory', ['$http', '$cacheFactory', function ($http, $cacheFact
         getOffers: getOffers,
         getOffer: getOffer,
 
-        getCount: getCount
+        getCount: getCount,
+        getNewEntity: getNewEntity
     }
 }]);
 

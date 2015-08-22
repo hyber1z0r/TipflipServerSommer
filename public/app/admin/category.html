@@ -22,7 +22,7 @@
                         <td class="col-md-2 col-xs-2">
                             <img ng-src="{{category.imagePath}}" class="img-thumbnail img-circle widget-icon">
                         </td>
-                        <td>{{category.name}}</td>
+                        <td ng-bind="category.name"></td>
                         <td class="col-md-2 col-xs-2">
                             <div class="btn-group btn-group-sm" role="group">
                                 <button type="button" class="btn btn-primary">Edit</button>

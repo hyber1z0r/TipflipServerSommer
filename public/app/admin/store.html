@@ -24,8 +24,8 @@
                         <td class="col-md-2 col-xs-2">
                             <img ng-src="{{store.imagePath}}" class="img-thumbnail img-circle widget-icon">
                         </td>
-                        <td>{{store.name}}</td>
-                        <td>{{store._center.name}}</td>
+                        <td ng-bind="store.name"></td>
+                        <td ng-bind="store._center.name"></td>
                         <td class="col-md-2 col-xs-2">
                             <div class="btn-group btn-group-sm" role="group">
                                 <button type="button" class="btn btn-primary">Edit</button>
