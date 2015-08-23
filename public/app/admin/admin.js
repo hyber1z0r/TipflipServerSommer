@@ -73,7 +73,7 @@ angular.module('tipflip.admin', ['ngRoute'])
             .success(function (data, status, headers, config) {
                 if (status === 204) {
                     toastr.info('No categories are created yet! Why don\'t you create one?', 'Information');
-                    document.getElementById('categoryName').focus();
+                    angular.element($('#categoryName').focus());
                 } else {
                     $scope.categories = data;
                 }
@@ -115,7 +115,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                     } else {
                         // This is triggered when 400, or 409
                         toastr.warning(data.message, 'Warning!');
-                        document.getElementById('categoryName').focus();
+                        angular.element($('#categoryName').focus());
                     }
                 });
         };
@@ -127,7 +127,7 @@ angular.module('tipflip.admin', ['ngRoute'])
             .success(function (data, status, headers, config) {
                 if (status === 204) {
                     toastr.info('No centers are created yet! Why don\'t you create one?', 'Information');
-                    document.getElementById('centerName').focus();
+                    angular.element($('#centerName').focus());
                 } else {
                     $scope.centers = data;
                 }
@@ -171,7 +171,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                     } else {
                         // This is triggered when 400, or 409
                         toastr.warning(data.message, 'Warning!');
-                        document.getElementById('centerName').focus();
+                        angular.element($('#centerName').focus());
                     }
                 });
         };
@@ -220,32 +220,50 @@ angular.module('tipflip.admin', ['ngRoute'])
         $scope.stores = [];
         $scope.centers = [];
 
-        var getStores = function () {
-            apiFactory.getStores()
+        apiFactory.getStores()
+            .success(function (data, status, headers, config) {
+                if (status === 204) {
+                    toastr.info('No stores are created yet! Why don\'t you create one?', 'Information');
+                    angular.element($('#storeName').focus());
+                } else {
+                    $scope.stores = data;
+                }
+            })
+            .error(function (data, status, headers, config) {
+                // Can only be status 500
+                toastr.error('System failure', 'Error!');
+                console.log('Error in getStores' + data);
+            });
+
+        var getNewStore = function (url) {
+            apiFactory.getNewEntity(url)
                 .success(function (data, status, headers, config) {
-                    if (status === 204) {
-                        toastr.info('No stores are created yet! Why don\'t you create one?', 'Information');
-                        document.getElementById('storeName').focus();
-                    } else {
-                        $scope.stores = data;
-                    }
+                    $scope.stores.push(data);
                 })
                 .error(function (data, status, headers, config) {
-                    // Can only be status 500
-                    toastr.error('System failure', 'Error!');
-                    console.log('Error in getStores' + data);
+                    if (status === 500) {
+                        toastr.error('System failure', 'Error!');
+                        console.log('Error in getNewStore: ' + data);
+                    } else {
+                        // This is triggered when 400, or 404
+                        toastr.warning(data.message, 'Warning!');
+                    }
                 });
         };
-        getStores();
 
-        var getCenters = function () {
-            apiFactory.getCenters()
-                .success(function (data, status, headers, config) {
+        apiFactory.getCenters()
+            .success(function (data, status, headers, config) {
+                if (status === 204) {
+                    toastr.info('No centers are created yet! You need to create one to proceed!', 'Information');
+                } else {
                     $scope.centers = data;
-                })
-        };
-
-        getCenters();
+                }
+            })
+            .error(function (data, status, headers, config) {
+                // Can only be status 500
+                toastr.error('Internal error!', 'Error!');
+                console.log('Error in getCenters: ' + data);
+            });
 
         $scope.createStore = function () {
             apiFactory.createStore($scope.storeName, $scope.storeCenter, $scope.storeImage)
@@ -254,8 +272,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                     $scope.storeName = '';
                     angular.element($('#storeCenter').val(''));
                     angular.element($('.fileinput').fileinput('clear'));
-                    getStores();
-                    getCenters();
+                    getNewStore(headers('Location'));
                 })
                 .error(function (data, status, headers, config) {
                     if (status === 500) {
@@ -264,7 +281,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                     } else {
                         // This is triggered when 400, or 409
                         toastr.warning(data.message, 'Warning!');
-                        document.getElementById('storeName').focus();
+                        angular.element($('#storeName').focus());
                     }
                 });
         }
@@ -272,22 +289,20 @@ angular.module('tipflip.admin', ['ngRoute'])
     .controller('AdminOfferCtrl', ['$scope', 'apiFactory', 'toastr', function ($scope, apiFactory, toastr) {
         $scope.offers = [];
 
-        var getOffers = function () {
-            apiFactory.getOffers()
-                .success(function (data, status, headers, config) {
-                    if (status === 204) {
-                        toastr.info('No offers are created yet!', 'Information');
-                    } else {
-                        $scope.offers = data;
-                    }
-                })
-                .error(function (data, status, headers, config) {
-                    // Can only be status 500
-                    toastr.error('System failure', 'Error!');
-                    console.log('Error in getOffers' + data);
-                });
-        };
-        getOffers();
+        apiFactory.getOffers()
+            .success(function (data, status, headers, config) {
+                if (status === 204) {
+                    toastr.info('No offers are created yet!', 'Information');
+                } else {
+                    $scope.offers = data;
+                }
+            })
+            .error(function (data, status, headers, config) {
+                // Can only be status 500
+                toastr.error('System failure', 'Error!');
+                console.log('Error in getOffers' + data);
+            });
+
     }])
     .controller('AdminOfferDetailCtrl', ['$scope', 'apiFactory', 'toastr', '$routeParams', '$location',
         function ($scope, apiFactory, toastr, $routeParams, $location) {
