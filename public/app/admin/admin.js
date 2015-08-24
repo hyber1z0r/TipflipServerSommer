@@ -73,7 +73,7 @@ angular.module('tipflip.admin', ['ngRoute'])
             .success(function (data, status, headers, config) {
                 if (status === 204) {
                     toastr.info('No categories are created yet! Why don\'t you create one?', 'Information');
-                    angular.element($('#categoryName').focus());
+                    $('#categoryName').focus();
                 } else {
                     $scope.categories = data;
                 }
@@ -105,7 +105,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                 .success(function (data, status, headers, config) {
                     toastr.success(data.message, 'Success!');
                     $scope.categoryName = '';
-                    angular.element($('.fileinput').fileinput('clear'));
+                    $('.fileinput').fileinput('clear');
                     getNewCategory(headers('Location'));
                 })
                 .error(function (data, status, headers, config) {
@@ -115,7 +115,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                     } else {
                         // This is triggered when 400, or 409
                         toastr.warning(data.message, 'Warning!');
-                        angular.element($('#categoryName').focus());
+                        $('#categoryName').focus()
                     }
                 });
         };
@@ -127,7 +127,7 @@ angular.module('tipflip.admin', ['ngRoute'])
             .success(function (data, status, headers, config) {
                 if (status === 204) {
                     toastr.info('No centers are created yet! Why don\'t you create one?', 'Information');
-                    angular.element($('#centerName').focus());
+                    $('#centerName').focus();
                 } else {
                     $scope.centers = data;
                 }
@@ -161,7 +161,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                     toastr.success(data.message, 'Success!');
                     $scope.centerName = '';
                     $scope.centerLocation = '';
-                    angular.element($('.fileinput').fileinput('clear'));
+                    $('.fileinput').fileinput('clear');
                     getNewCenter(headers('Location'));
                 })
                 .error(function (data, status, headers, config) {
@@ -171,7 +171,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                     } else {
                         // This is triggered when 400, or 409
                         toastr.warning(data.message, 'Warning!');
-                        angular.element($('#centerName').focus());
+                        $('#centerName').focus();
                     }
                 });
         };
@@ -224,7 +224,7 @@ angular.module('tipflip.admin', ['ngRoute'])
             .success(function (data, status, headers, config) {
                 if (status === 204) {
                     toastr.info('No stores are created yet! Why don\'t you create one?', 'Information');
-                    angular.element($('#storeName').focus());
+                    $('#storeName').focus();
                 } else {
                     $scope.stores = data;
                 }
@@ -270,8 +270,8 @@ angular.module('tipflip.admin', ['ngRoute'])
                 .success(function (data, status, headers, config) {
                     toastr.success(data.message, 'Success!');
                     $scope.storeName = '';
-                    angular.element($('#storeCenter').val(''));
-                    angular.element($('.fileinput').fileinput('clear'));
+                    $('#storeCenter').val('');
+                    $('.fileinput').fileinput('clear');
                     getNewStore(headers('Location'));
                 })
                 .error(function (data, status, headers, config) {
@@ -281,7 +281,7 @@ angular.module('tipflip.admin', ['ngRoute'])
                     } else {
                         // This is triggered when 400, or 409
                         toastr.warning(data.message, 'Warning!');
-                        angular.element($('#storeName').focus());
+                        $('#storeName').focus();
                     }
                 });
         }
