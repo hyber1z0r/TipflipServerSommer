@@ -2,4 +2,4 @@
 All files should end with ".spec.js"
 Run this command from root of project.
 
-istanbul cover _mocha -- test/backend -R spec
+MONGODB_URI=mongodb://localhost/TipflipDB_test istanbul cover _mocha -- test/backend -R spec

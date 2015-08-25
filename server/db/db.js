@@ -91,7 +91,7 @@ mongoose.model('Store', storeSchema, 'stores');
 
 var categorySchema = new Schema({
     name: {type: String, required: 'Name required!', unique: true},
-    imagePath: {type: String, required: 'Image required!'},
+    imagePath: {type: String, required: 'Image required!'}
 });
 
 categorySchema.pre('remove', function (next) {

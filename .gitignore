@@ -1,5 +1,5 @@
 node_modules/
 .idea/
-public/vendor
+public/vendor/
 npm-debug.log
-coverage
+coverage/
