@@ -348,6 +348,171 @@ describe('RestAPI', function () {
                     done();
                 });
         });
+
+        it('should get 1 store', function (done) {
+            var req = request(app);
+            req.get('/api/stores')
+                .end(function (err, res) {
+                    var stores = JSON.parse(res.text);
+                    var store = stores[0];
+                    req.get('/api/stores/' + store._id)
+                        .end(function (error, result) {
+                            var fecthedStore = JSON.parse(result.text);
+                            store._id.should.equal(fecthedStore._id);
+                            store.name.should.equal(fecthedStore.name);
+                            store.imagePath.should.equal(fecthedStore.imagePath);
+                            should.not.exist(error);
+                            done();
+                        });
+                });
+        });
+
+        it('should return 400 when id is invalid', function (done) {
+            var id = 'blalblal';
+            request(app)
+                .get('/api/stores/' + id)
+                .end(function (err, res) {
+                    should.exist(err);
+                    res.status.should.equal(400);
+                    var message = JSON.parse(res.text).message;
+                    message.should.equal(id + ' is not a valid id');
+                    done();
+                });
+        });
+
+        it('should return 404 when id is valid but do not exist', function (done) {
+            // Valid objectId, but doesn't exist
+            var id = '558d2555fc9ea7751f9ad23c';
+            request(app)
+                .get('/api/stores/' + id)
+                .end(function (err, res) {
+                    should.exist(err);
+                    res.status.should.equal(404);
+                    var message = JSON.parse(res.text).message;
+                    message.should.equal('No store with id ' + id);
+                    done();
+                });
+        });
+
+        it('should return 204 (No Content) when no stores added yet', function (done) {
+            insertScript.removeAll(function () {
+                request(app)
+                    .get('/api/stores')
+                    .expect(204)
+                    .end(function (err, res) {
+                        should.not.exist(err);
+                        done();
+                    });
+            });
+        });
+
+        it('should create a new store', function (done) {
+            var req = request(app);
+            req.get('/api/centers')
+                .end(function (error, response) {
+                    var centers = JSON.parse(response.text);
+                    var center = centers[0];
+                    req.post('/api/stores')
+                        .field('name', 'Fætter BR')
+                        .field('_center', center._id)
+                        .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+                        .end(function (err, res) {
+                            res.status.should.equal(201);
+                            should.exist(res.headers.location);
+                            // notice capitalized Store name
+                            JSON.parse(res.text).message.should.equal('Successfully created new store Fætter Br');
+                            cleanUpImg(res.headers.location, function () {
+                                done();
+                            });
+                        });
+                });
+        });
+
+        it('should return 400 when name field is missing', function (done) {
+            var req = request(app);
+            req.get('/api/centers')
+                .end(function (error, response) {
+                    var centers = JSON.parse(response.text);
+                    var center = centers[0];
+                    req.post('/api/stores')
+                        .field('_center', center._id)
+                        .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+                        .end(function (err, res) {
+                            res.status.should.equal(400);
+                            JSON.parse(res.text).message.should.equal('Name required!');
+                            done();
+                        });
+                });
+        });
+
+        it('should return 400 when _center field is missing', function (done) {
+            request(app)
+                .post('/api/stores')
+                .field('name', 'Fætter BR')
+                .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+                .end(function (err, res) {
+                    res.status.should.equal(400);
+                    JSON.parse(res.text).message.should.equal('Center required!');
+                    done();
+                });
+        });
+
+        //it('should return 400 when image field is missing', function (done) {
+        //    request(app)
+        //        .post('/api/categories')
+        //        .field('name', 'Fields')
+        //        .field('location', '55.6303988,12.5805021')
+        //        .end(function (err, res) {
+        //            res.status.should.equal(400);
+        //            JSON.parse(res.text).message.should.equal('Image required!');
+        //            done();
+        //        });
+        //});
+        // because two stores can have same name, they can even be in same center
+        //it('should return 201 when the center already exists', function (done) {
+        //    // the center 'Lyngby Storcenter' already exists!
+        //    request(app)
+        //        .post('/api/centers')
+        //        .field('name', 'Lyngby Storcenter')
+        //        .field('location', '55.6303988,12.5805021')
+        //        .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+        //        .end(function (err, res) {
+        //            res.status.should.equal(409);
+        //            JSON.parse(res.text).message.should.equal('The center \'Lyngby Storcenter\' already exists!');
+        //            done();
+        //        });
+        //});
+
+        //it('should return 409 when the center already exists, padded with spaces', function (done) {
+        //    // the category 'Lyngby Storcenter' already exists!
+        //    request(app)
+        //        .post('/api/centers')
+        //        .field('name', 'Lyngby Storcenter ')
+        //        .field('location', '55.6303988,12.5805021')
+        //        .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+        //        .end(function (err, res) {
+        //            res.status.should.equal(409);
+        //            JSON.parse(res.text).message.should.equal('The center \'Lyngby Storcenter \' already exists!');
+        //            done();
+        //        });
+        //});
+
+        //it('should return 409 when the center already exists, CASE INSENSITIVE', function (done) {
+        //    // the category 'Lyngby Storcenter' already exists!
+        //    request(app)
+        //        .post('/api/centers')
+        //        .field('name', 'LynGbY stoRCEntEr')
+        //        .field('location', '55.6303988,12.5805021')
+        //        .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+        //        .end(function (err, res) {
+        //            res.status.should.equal(409);
+        //            JSON.parse(res.text).message.should.equal('The center \'LynGbY stoRCEntEr\' already exists!');
+        //            done();
+        //        });
+        //});
+
+
+
     });
 
     describe('Offer', function () {
