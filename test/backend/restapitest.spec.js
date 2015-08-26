@@ -457,62 +457,94 @@ describe('RestAPI', function () {
                 });
         });
 
-        //it('should return 400 when image field is missing', function (done) {
-        //    request(app)
-        //        .post('/api/categories')
-        //        .field('name', 'Fields')
-        //        .field('location', '55.6303988,12.5805021')
-        //        .end(function (err, res) {
-        //            res.status.should.equal(400);
-        //            JSON.parse(res.text).message.should.equal('Image required!');
-        //            done();
-        //        });
-        //});
+        it('should return 400 when image field is missing', function (done) {
+            var req = request(app);
+            req.get('/api/centers')
+                .end(function (error, response) {
+                    var centers = JSON.parse(response.text);
+                    var center = centers[0];
+                    req.post('/api/stores')
+                        .field('name', 'Fætter BR')
+                        .field('_center', center._id)
+                        .end(function (err, res) {
+                            res.status.should.equal(400);
+                            JSON.parse(res.text).message.should.equal('Image required!');
+                            done();
+                        });
+                });
+        });
+
         // because two stores can have same name, they can even be in same center
-        //it('should return 201 when the center already exists', function (done) {
-        //    // the center 'Lyngby Storcenter' already exists!
-        //    request(app)
-        //        .post('/api/centers')
-        //        .field('name', 'Lyngby Storcenter')
-        //        .field('location', '55.6303988,12.5805021')
-        //        .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
-        //        .end(function (err, res) {
-        //            res.status.should.equal(409);
-        //            JSON.parse(res.text).message.should.equal('The center \'Lyngby Storcenter\' already exists!');
-        //            done();
-        //        });
-        //});
+        it('should return 201 when the store already exists', function (done) {
+            // the store 'Only' already exists!
+            var req = request(app);
+            req.get('/api/centers')
+                .end(function (error, response) {
+                    var centers = JSON.parse(response.text);
+                    var center = centers[0];
+                    req.post('/api/stores')
+                        .field('name', 'Only')
+                        .field('_center', center._id)
+                        .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+                        .end(function (err, res) {
+                            res.status.should.equal(201);
+                            should.exist(res.headers.location);
+                            // notice capitalized Store name
+                            JSON.parse(res.text).message.should.equal('Successfully created new store Only');
+                            cleanUpImg(res.headers.location, function () {
+                                done();
+                            });
+                        });
+                });
+        });
 
-        //it('should return 409 when the center already exists, padded with spaces', function (done) {
-        //    // the category 'Lyngby Storcenter' already exists!
-        //    request(app)
-        //        .post('/api/centers')
-        //        .field('name', 'Lyngby Storcenter ')
-        //        .field('location', '55.6303988,12.5805021')
-        //        .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
-        //        .end(function (err, res) {
-        //            res.status.should.equal(409);
-        //            JSON.parse(res.text).message.should.equal('The center \'Lyngby Storcenter \' already exists!');
-        //            done();
-        //        });
-        //});
+        // because two stores can have same name, they can even be in same center
+        it('should return 201 when the store already exists, padded with spaces', function (done) {
+            // the store 'Only' already exists!
+            var req = request(app);
+            req.get('/api/centers')
+                .end(function (error, response) {
+                    var centers = JSON.parse(response.text);
+                    var center = centers[0];
+                    req.post('/api/stores')
+                        .field('name', '   Only  ')
+                        .field('_center', center._id)
+                        .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+                        .end(function (err, res) {
+                            res.status.should.equal(201);
+                            should.exist(res.headers.location);
+                            // notice capitalized Store name
+                            JSON.parse(res.text).message.should.equal('Successfully created new store Only');
+                            cleanUpImg(res.headers.location, function () {
+                                done();
+                            });
+                        });
+                });
+        });
 
-        //it('should return 409 when the center already exists, CASE INSENSITIVE', function (done) {
-        //    // the category 'Lyngby Storcenter' already exists!
-        //    request(app)
-        //        .post('/api/centers')
-        //        .field('name', 'LynGbY stoRCEntEr')
-        //        .field('location', '55.6303988,12.5805021')
-        //        .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
-        //        .end(function (err, res) {
-        //            res.status.should.equal(409);
-        //            JSON.parse(res.text).message.should.equal('The center \'LynGbY stoRCEntEr\' already exists!');
-        //            done();
-        //        });
-        //});
-
-
-
+        // because two stores can have same name, they can even be in same center
+        it('should return 201 when the store already exists, CASE INSENSITIVE', function (done) {
+            // the store 'Only' already exists!
+            var req = request(app);
+            req.get('/api/centers')
+                .end(function (error, response) {
+                    var centers = JSON.parse(response.text);
+                    var center = centers[0];
+                    req.post('/api/stores')
+                        .field('name', 'onLY')
+                        .field('_center', center._id)
+                        .attach('image', path.resolve(__dirname, '../../server/public/uploads/no-photo-grey_1x.png'))
+                        .end(function (err, res) {
+                            res.status.should.equal(201);
+                            should.exist(res.headers.location);
+                            // notice capitalized Store name
+                            JSON.parse(res.text).message.should.equal('Successfully created new store Only');
+                            cleanUpImg(res.headers.location, function () {
+                                done();
+                            });
+                        });
+                });
+        });
     });
 
     describe('Offer', function () {
