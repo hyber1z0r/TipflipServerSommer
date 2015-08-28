@@ -558,5 +558,66 @@ describe('RestAPI', function () {
                     done();
                 });
         });
+
+        it('should get 1 offer', function (done) {
+            var req = request(app);
+            req.get('/api/offers')
+                .end(function (err, res) {
+                    var offers = JSON.parse(res.text);
+                    var offer = offers[0];
+                    req.get('/api/offers/' + offer._id)
+                        .end(function (error, result) {
+                            var fecthedOffer = JSON.parse(result.text);
+                            offer._id.should.equal(fecthedOffer._id);
+                            offer.description.should.equal(fecthedOffer.description);
+                            offer.imagePath.should.equal(fecthedOffer.imagePath);
+                            offer.discount.should.equal(fecthedOffer.discount);
+                            offer.created.should.equal(fecthedOffer.created);
+                            offer.expiration.should.equal(fecthedOffer.expiration);
+                            should.not.exist(error);
+                            done();
+                        });
+                });
+        });
+
+        it('should return 400 when id is invalid', function (done) {
+            var id = 'blalblal';
+            request(app)
+                .get('/api/offers/' + id)
+                .end(function (err, res) {
+                    should.exist(err);
+                    res.status.should.equal(400);
+                    var message = JSON.parse(res.text).message;
+                    message.should.equal(id + ' is not a valid id');
+                    done();
+                });
+        });
+
+        it('should return 404 when id is valid but do not exist', function (done) {
+            // Valid objectId, but doesn't exist
+            var id = '558d2555fc9ea7751f9ad23c';
+            request(app)
+                .get('/api/offers/' + id)
+                .end(function (err, res) {
+                    should.exist(err);
+                    res.status.should.equal(404);
+                    var message = JSON.parse(res.text).message;
+                    message.should.equal('No offer with id ' + id);
+                    done();
+                });
+        });
+
+        it('should return 204 (No Content) when no offers added yet', function (done) {
+            insertScript.removeAll(function () {
+                request(app)
+                    .get('/api/offers')
+                    .expect(204)
+                    .end(function (err, res) {
+                        should.not.exist(err);
+                        done();
+                    });
+            });
+        });
+
     });
 });
