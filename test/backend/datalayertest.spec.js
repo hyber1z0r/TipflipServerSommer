@@ -99,6 +99,101 @@ describe('Datalayer', function () {
                     });
             });
         });
+
+        describe('deleteCategory', function () {
+            it('should return the deleted category when id is valid', function (done) {
+                var _id;
+                datalayer.getCategories()
+                    .then(function (categories) {
+                        var category = categories[0];
+                        _id = category._id;
+                        return datalayer.deleteCategory(_id);
+                    })
+                    .then(function (cat) {
+                        cat.should.have.properties(['_id', 'name', 'imagePath']);
+                        done();
+                    });
+            });
+
+            it('should delete the category with given id', function (done) {
+                var _id;
+                datalayer.getCategories()
+                    .then(function (categories) {
+                        var category = categories[0];
+                        _id = category._id;
+                        return datalayer.deleteCategory(_id);
+                    })
+                    .then(function () {
+                        return datalayer.getCategory(_id);
+                    })
+                    .then(function (cat) {
+                        should.not.exist(cat);
+                        done();
+                    });
+            });
+
+            it('should return null when id is valid but doesn\'t exist', function (done) {
+                datalayer.deleteCategory('558d2555fc9ea7751f9ad23c')
+                    .then(function (cat) {
+                        should.not.exist(cat);
+                        done();
+                    });
+            });
+
+            it('should return casterror when id is invalid', function (done) {
+                datalayer.deleteCategory('blalbla')
+                    .then(function () {
+                    }, function (err) {
+                        err.name.should.equal('CastError');
+                        done();
+                    });
+            });
+            // TODO add hooks and test those
+
+        });
+
+        describe('updateCategory', function () {
+            it('should return the updated category', function (done) {
+                datalayer.getCategories()
+                    .then(function (categories) {
+                        var category = categories[0];
+                        var name = category.name;
+                        category.name = 'Some new name';
+                        return datalayer.updateCategory(category);
+                    })
+                    .then(function (cat) {
+                        cat.name.should.equal('Some new name');
+                        done();
+                    });
+            });
+
+            it('should return null when id is valid but doesn\'t exists', function (done) {
+                var category = {
+                    _id: '558d2555fc9ea7751f9ad23c',
+                    name: 'New name',
+                    imagePath: 'uploads/no-photo-grey_1x.png'
+                };
+                datalayer.updateCategory(category)
+                    .then(function (cat) {
+                        should.not.exist(cat);
+                        done();
+                    });
+            });
+
+            it('should return casterror when id is invalid', function (done) {
+                var category = {
+                    _id: 'blabla',
+                    name: 'New name',
+                    imagePath: 'uploads/no-photo-grey_1x.png'
+                };
+                datalayer.updateCategory(category)
+                    .then(function (cat) {
+                    }, function (err) {
+                        err.name.should.equal('CastError');
+                        done();
+                    });
+            });
+        });
     });
 
     describe('Center', function () {

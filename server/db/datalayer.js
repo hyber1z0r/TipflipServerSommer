@@ -49,29 +49,19 @@ function getCategory(id) {
 /**
  * Deletes a category with given ObjectId
  * Returns a promise
- * TODO: Replace with findByIdAndRemove
  * */
 function deleteCategory(id) {
-    var deferred = Q.defer();
+    return Category.findByIdAndRemove(id).exec();
+}
 
-    getCategory(id)
-        .then(function (category) {
-            if (category) {
-                category.remove(function (err) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve();
-                    }
-                });
-            } else {
-                deferred.reject();
-            }
-        }, function (error) {
-            deferred.reject(error);
-        });
-
-    return deferred.promise;
+/**
+ * Updates a category in the database
+ * Returns a promise
+ * */
+function updateCategory(category) {
+    var update = {name: category.name};
+    var options = {new: true};
+    return Category.findByIdAndUpdate({_id: category._id}, update, options).exec();
 }
 
 /**
@@ -121,29 +111,9 @@ function getCenter(id) {
 
 /**
  * Deletes a center with given ObjectId
- * TODO: Replace with findByIdAndRemove
  * */
 function deleteCenter(id) {
-    var deferred = Q.defer();
-
-    getCenter(id)
-        .then(function (center) {
-            if (center) {
-                center.remove(function (err) {
-                    if (err) {
-                        deferred.reject(err);
-                    } else {
-                        deferred.resolve();
-                    }
-                });
-            } else {
-                deferred.reject();
-            }
-        }, function (error) {
-            deferred.reject(error);
-        });
-
-    return deferred.promise;
+    return Center.findByIdAndRemove(id).exec();
 }
 
 /**
@@ -203,25 +173,9 @@ function getStore(id) {
 
 /**
  * Deletes a store with given ObjectId
- * TODO: replace with findByIdAndRemove
  * */
 function deleteStore(id) {
-    var deferred = Q.defer();
-
-    getStore(id)
-        .then(function (store) {
-            store.remove(function (err) {
-                if (err) {
-                    deferred.reject(err);
-                } else {
-                    deferred.resolve();
-                }
-            });
-        }, function (error) {
-            deferred.reject(error);
-        });
-
-    return deferred.promise;
+    return Store.findByIdAndRemove(id).exec();
 }
 
 /**
@@ -275,25 +229,9 @@ function getOffer(id) {
 
 /**
  * Deletes an offer with given ObjectId
- * TODO: replace with findByIdAndRemove
  * */
 function deleteOffer(id) {
-    var deferred = Q.defer();
-
-    getOffer(id)
-        .then(function (offer) {
-            offer.remove(function (err) {
-                if (err) {
-                    deferred.reject(err);
-                } else {
-                    deferred.resolve();
-                }
-            });
-        }, function (error) {
-            deferred.reject(error);
-        });
-
-    return deferred.promise;
+    return Offer.findByIdAndRemove(id).exec();
 }
 
 /**
@@ -325,6 +263,7 @@ module.exports = {
     getCategories: getCategories,
     getCategory: getCategory,
     deleteCategory: deleteCategory,
+    updateCategory: updateCategory,
     getCategoryOffers: getCategoryOffers,
 
     createCenter: createCenter,

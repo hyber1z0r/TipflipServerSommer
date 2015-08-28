@@ -95,18 +95,19 @@ var categorySchema = new Schema({
 });
 
 categorySchema.pre('remove', function (next) {
+    console.log('pre hook');
     deletePhoto(path.resolve(__dirname, '../public/' + this.imagePath));
-    var offer = mongoose.model('Offer');
-    var profile = mongoose.model('Profile');
-    //TODO: Replace with findByIdAndRemove
-    offer.find({_category: this._id}).exec()
-        .then(function (offers) {
-            var len = offers.length;
-            for (var i = 0; i < len; i++) {
-                offers[i].remove();
-            }
-        });
-    profile.update({_categories: this._id}, {$pull: {_categories: this._id}}).exec();
+    //var offer = mongoose.model('Offer');
+    //var profile = mongoose.model('Profile');
+    ////TODO: Replace with findByIdAndRemove
+    //offer.find({_category: this._id}).exec()
+    //    .then(function (offers) {
+    //        var len = offers.length;
+    //        for (var i = 0; i < len; i++) {
+    //            offers[i].remove();
+    //        }
+    //    });
+    //profile.update({_categories: this._id}, {$pull: {_categories: this._id}}).exec();
     next();
 });
 
